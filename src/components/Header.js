@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <header className="h-16 shadow-sm bg-white">
-      <div className="h-full container mx-auto flex items-center px-4 justify-between">
+      <div className="h-full container mx-auto flex items-center px-3 justify-between">
         <div>
           <Link to={"/"}>
             <Logo w={90} h={50} />
@@ -41,9 +41,17 @@ const Header = () => {
           <div>
             <Link
               to={"/login"}
-              className="px-3 py-1 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
+              className="px-3 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-800 "
             >
               Login
+            </Link>
+          </div>
+          <div>
+            <Link
+              to={"/sign-up"}
+              className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-800 "
+            >
+              Sign up
             </Link>
           </div>
         </div>
