@@ -4,11 +4,37 @@ import { HiSearch } from "react-icons/hi";
 import { TiUser } from "react-icons/ti";
 import { TiCoffee } from "react-icons/ti";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
+import { setUserDetails } from "../store/userSlice";
 
 const Header = () => {
+  const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
+  const dispatch = useDispatch();
+
+  console.log("user header", user);
+
+  const handleLogout = async () => {
+    const fetchData = await fetch(SummaryApi.logout_user.url, {
+      method: SummaryApi.logout_user.method,
+      credentials: "include",
+    });
+
+    const dataApi = await fetchData.json();
+
+    if (dataApi.success) {
+      toast.success(dataApi.message);
+      //window.location.reload();
+      dispatch(setUserDetails(null));
+    }
+    if (dataApi.error) {
+      toast.error(dataApi.message);
+    }
+  };
   return (
     <header className="h-16 shadow-sm bg-white">
-      <div className="h-full container mx-auto flex items-center px-3 justify-between">
+      <div className="h-full container mx-auto px-3 flex items-center justify-between">
         <div>
           <Link to={"/"}>
             <Logo w={90} h={50} />
@@ -28,7 +54,15 @@ const Header = () => {
 
         <div className="flex items-center gap-6 ">
           <div className="text-3xl cursor-pointer">
-            <TiUser />
+            {user?.profilePic ? (
+              <img
+                src={user?.profilePic}
+                alt={user?.name}
+                className="w-10 h-10 rounded-full"
+              />
+            ) : (
+              <TiUser />
+            )}
           </div>
           <div className="text-3xl cursor-pointer relative">
             <span>
@@ -39,20 +73,33 @@ const Header = () => {
             </div>
           </div>
           <div>
-            <Link
-              to={"/login"}
-              className="px-3 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-800 "
-            >
-              Login
-            </Link>
+            {user?._id ? (
+              <button
+                onClick={handleLogout}
+                className="px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
+              >
+                Logout
+              </button>
+            ) : (
+              <Link
+                to={"/login"}
+                className="px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
+              >
+                Sign in
+              </Link>
+            )}
           </div>
           <div>
-            <Link
-              to={"/sign-up"}
-              className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-800 "
-            >
-              Sign up
-            </Link>
+            {user?._id ? (
+              <button className="hidden"></button>
+            ) : (
+              <Link
+                to={"/sign-up"}
+                className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
+              >
+                Sign up
+              </Link>
+            )}
           </div>
         </div>
       </div>

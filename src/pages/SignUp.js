@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import loginIcons from "../assest/signin.gif";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import imageTobase64 from "../helper/imageTobase64";
+import homeImg from "../assest/home-img-1.png";
+import bookBg from "../assest/book-bg.jpg";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +32,31 @@ const SignUp = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (data.password === data.confirmPassword) {
+      const dataResponse = await fetch(SummaryApi.signUP.url, {
+        method: SummaryApi.signUP.method,
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const dataJson = await dataResponse.json();
+
+      if (dataJson.success) {
+        toast.success(dataJson.message);
+        navigate("/login");
+      }
+      if (dataJson.error) {
+        toast.error(dataJson.message);
+      }
+    } else {
+      alert("Password and Confirm Password are not same");
+    }
   };
 
   const handleUploadPic = async (e) => {
@@ -45,9 +73,20 @@ const SignUp = () => {
   };
 
   return (
-    <section id="signup">
-      <div className="mx-auto container p-4 ">
-        <div className="bg-white p-5 focus-within:shadow-md rounded-xl w-full max-w-sm mx-auto">
+    <section
+      id="signup"
+      style={{
+        backgroundImage: `url(${bookBg})`, // Use the background image
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <div className="mx-auto container p-4 flex items-center justify-center h-full">
+        <div className="hidden lg:flex w-5/12 mx-4">
+          <img src={homeImg} alt="Coffee Cup" className="w-full h-auto" />
+        </div>
+        <div className="bg-white p-5 focus-within:shadow-md rounded-xl w-full max-w-sm mx-5">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <div>
               <img src={data.profilePic || loginIcons} alt="pic profile" />

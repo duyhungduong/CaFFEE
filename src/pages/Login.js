@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import loginIcons from "../assest/signin.gif";
-
-import { Link } from "react-router-dom";
+import homeImg from "../assest/home-img-3.png";
+import { Link, useNavigate } from "react-router-dom";
+import bookBg from "../assest/book-bg.jpg";
+import SummaryApi from "../common";
+import { toast } from "react-toastify";
+import Context from "../context";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,19 +14,59 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate()
+  const generalContext = useContext(Context)
+  const {fetchUserDetails} = useContext(Context)
+  
+
+  console.log("generalContext", generalContext.fetchUserDetails())
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const dataResponse = await fetch(SummaryApi.signIn.url, {
+      method: SummaryApi.signIn.method,
+      credentials : 'include',
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const dataApi = await dataResponse.json();
+
+    if (dataApi.success) {
+      toast.success(dataApi.message);
+      
+      navigate('/')
+      fetchUserDetails()
+    }
+    if (dataApi.error) {
+      toast.error(dataApi.message);
+    }
   };
 
   console.log("data login", data);
   return (
-    <section id="login">
-      <div className="mx-auto container p-4">
-        <div className="bg-white p-5 w-full max-w-sm mx-auto focus-within:shadow-md rounded-xl">
+    <section
+      id="login"
+      style={{
+        backgroundImage: `url(${bookBg})`, // Use the background image
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+      }}
+    >
+      <div className="mx-auto container p-4 flex items-center justify-center h-full">
+        <div className="hidden lg:flex w-1/2 ">
+          <img src={homeImg} alt="Coffee Cup" className="w-full h-auto" />
+        </div>
+        <div className="bg-white p-5 w-full max-w-sm mx-5 focus-within:shadow-md rounded-xl">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <img src={loginIcons} alt="login icons" />
           </div>
