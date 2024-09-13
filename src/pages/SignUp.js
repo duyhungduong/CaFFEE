@@ -204,7 +204,7 @@ const SignUp = () => {
                 </div>
               </div>
             </div>
-            <button className="bg-amber-900 text-white hover:bg-amber-950 px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-105 transition-all mx-auto block mt-4">
+            <button className="bg-amber-900 text-white hover:bg-amber-950 px-6 py-2 w-full max-w-[150px] rounded-full hover:scale-105 transition-all mx-auto block mt-4 btnUpdateColor addBtnColor">
               Sign Up
             </button>
           </form>

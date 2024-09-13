@@ -26,7 +26,6 @@ function App() {
       dispatch(setUserDetails(dataApi.data))
     }
 
-    console.log("data-user" ,dataResponse)
   }
   //Dang nhap lai thanh cong thi chuc nay se duoc goi vi cookie luu lai thong tin nguoi dung
   useEffect(()=>{

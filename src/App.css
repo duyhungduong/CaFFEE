@@ -1,0 +1,51 @@
+.customShadow {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+body::-webkit-scrollbar {
+  width: 10px;
+}
+body::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(
+    to right,
+    #77a1d3 0%,
+    #79cbca 51%,
+    #77a1d3 100%
+  );
+  border-radius: 50px;
+}
+
+.updateBtnColor {
+  background-color: #4bac4d;
+  &:hover {
+    background-color: #4bac4dc5;
+  }
+}
+.addBtnColor {
+  background-color: #0090da;
+  &:hover {
+    background-color: #0091daa7;
+  }
+}
+.deleteBtnColor,
+.cancelBtnColor {
+  background-color: #e8b298;
+  &:hover {
+    background-color: #eecc8c;
+  }
+}
+.btnColor {
+  color: #fff;
+  margin-right: 2rem;
+  padding: 10px 16px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+.userTable{
+  @apply bg-white
+}
+.userTable th {
+  @apply border text-base font-medium;
+}
+.userTable td {
+  @apply border text-base;
+}

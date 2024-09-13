@@ -1,5 +1,4 @@
-import React from "react";
-import Logo from "./Logo";
+import React, { useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { TiUser } from "react-icons/ti";
 import { TiCoffee } from "react-icons/ti";
@@ -8,12 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
+import caffee from "../assest/caffeelogo.png";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
   const dispatch = useDispatch();
+  const [menuDisplay, setMenuDisplay] = useState(false);
 
-  console.log("user header", user);
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -37,7 +37,13 @@ const Header = () => {
       <div className="h-full container mx-auto px-3 flex items-center justify-between">
         <div>
           <Link to={"/"}>
-            <Logo w={90} h={50} />
+            {/*           
+            <Logo w={90} h={50} /> */}
+            <img
+              src={caffee}
+              alt=""
+              className="w-auto h-auto max-w-[90px] max-h-[50px] object-contain"
+            />
           </Link>
         </div>
 
@@ -47,23 +53,52 @@ const Header = () => {
             placeholder="search..."
             className="w-full outline-none "
           />
-          <div className="text-lg min-w-[50px] h-8 bg-amber-900 flex items-center justify-center rounded-r-full text-white">
+          <div className="text-lg min-w-[50px] h-8 bg-amber-900 flex items-center justify-center rounded-r-full text-white hover:scale-105 transition-all ">
             <HiSearch />
           </div>
         </div>
 
         <div className="flex items-center gap-6 ">
-          <div className="text-3xl cursor-pointer">
-            {user?.profilePic ? (
-              <img
-                src={user?.profilePic}
-                alt={user?.name}
-                className="w-10 h-10 rounded-full"
-              />
-            ) : (
-              <TiUser />
+          <div className="relative flex justify-center">
+            <div
+              className="text-3xl cursor-pointer relative flex justify-center"
+              onClick={() => setMenuDisplay((preve) => !preve)}
+            >
+              {user?.profilePic ? (
+                <img
+                  src={user?.profilePic}
+                  alt={user?.name}
+                  className="w-10 h-10 rounded-full"
+                />
+              ) : (
+                <TiUser />
+              )}
+            </div>
+            {menuDisplay && (
+              <div className="absolute bg-white bottom-0 top-11 h-fit p-3 shadow-lg rounded-lg">
+                <nav className="grid">
+                  <Link
+                    to={"admin-panel"}
+                    className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                    onClick={() => setMenuDisplay((preve) => !preve)}
+                  >
+                    Admin Panel
+                  </Link>
+                  {user?._id ? (
+                    <Link
+                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </Link>
+                  ) : (
+                    <button className="hidden"></button>
+                  )}
+                </nav>
+              </div>
             )}
           </div>
+
           <div className="text-3xl cursor-pointer relative">
             <span>
               <TiCoffee />
@@ -73,32 +108,25 @@ const Header = () => {
             </div>
           </div>
           <div>
-            {user?._id ? (
-              <button
-                onClick={handleLogout}
-                className="px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
-              >
-                Logout
-              </button>
-            ) : (
+            {!user?._id && (
               <Link
                 to={"/login"}
-                className="px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
+                className="px-2 py-2 rounded-full text-white bg-[#4bac4d] hover:bg-[#4bac4dc5] hover:scale-105 transition-all"
               >
                 Sign in
               </Link>
             )}
           </div>
           <div>
-            {user?._id ? (
-              <button className="hidden"></button>
-            ) : (
-              <Link
-                to={"/sign-up"}
-                className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 "
-              >
-                Sign up
-              </Link>
+            {!user?._id && (
+              <div>
+                <Link
+                  to={"/sign-up"}
+                  className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 hover:scale-105 transition-all btnColor"
+                >
+                  Sign up
+                </Link>
+              </div>
             )}
           </div>
         </div>
