@@ -8,12 +8,12 @@ import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
 import caffee from "../assest/caffeelogo.png";
+import ROLE from "../common/role";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
-
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -77,19 +77,22 @@ const Header = () => {
             {menuDisplay && (
               <div className="absolute bg-white bottom-0 top-11 h-fit p-3 shadow-lg rounded-lg">
                 <nav className="grid">
-                  <Link
-                    to={"admin-panel"}
-                    className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
-                    onClick={() => setMenuDisplay((preve) => !preve)}
-                  >
-                    Admin Panel
-                  </Link>
+                  {user?.role === ROLE.ADMIN && (
+                    <Link
+                      to={"/admin-panel/all-products"}
+                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                      onClick={() => setMenuDisplay((preve) => !preve)}
+                    >
+                      Admin Panel
+                    </Link>
+                  )}
+
                   {user?._id ? (
                     <Link
                       className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
                       onClick={handleLogout}
                     >
-                      Logout
+                      Đăng xuất
                     </Link>
                   ) : (
                     <button className="hidden"></button>
@@ -99,8 +102,8 @@ const Header = () => {
             )}
           </div>
 
-          <div className="text-3xl cursor-pointer relative">
-            <span>
+          <div className="text-3xl cursor-pointer relative ">
+            <span className="">
               <TiCoffee />
             </span>
             <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
@@ -113,7 +116,7 @@ const Header = () => {
                 to={"/login"}
                 className="px-2 py-2 rounded-full text-white bg-[#4bac4d] hover:bg-[#4bac4dc5] hover:scale-105 transition-all"
               >
-                Sign in
+                Đăng nhập
               </Link>
             )}
           </div>
@@ -122,9 +125,9 @@ const Header = () => {
               <div>
                 <Link
                   to={"/sign-up"}
-                  className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 hover:scale-105 transition-all btnColor"
+                  className="hidden lg:flex px-2 py-2 rounded-full text-white bg-amber-900 hover:bg-amber-950 hover:scale-105 transition-all btnColor addBtnColor"
                 >
-                  Sign up
+                  Đăng ký
                 </Link>
               </div>
             )}

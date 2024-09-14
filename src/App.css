@@ -35,13 +35,13 @@ body::-webkit-scrollbar-thumb {
 }
 .btnColor {
   color: #fff;
-  margin-right: 2rem;
+  /* margin-right: 2rem; */
   padding: 10px 16px;
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
-.userTable{
-  @apply bg-white
+.userTable {
+  @apply bg-white;
 }
 .userTable th {
   @apply border text-base font-medium;

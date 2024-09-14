@@ -55,7 +55,8 @@ const SignUp = () => {
         toast.error(dataJson.message);
       }
     } else {
-      alert("Password and Confirm Password are not same");
+      toast.error("Password and Confirm Password are not same");
+      //alert("Password and Confirm Password are not same");
     }
   };
 
