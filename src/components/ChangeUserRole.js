@@ -12,7 +12,7 @@ const ChangeUserRole = ({
   role,
   userId,
   onClose,
-  callFunc
+  callFunc,
 }) => {
   const [userRole, setUserRole] = useState(role);
 
@@ -39,7 +39,7 @@ const ChangeUserRole = ({
     if (responseData.success) {
       toast.success(responseData.message);
       onClose();
-      callFunc()
+      callFunc();
     }
     if (responseData.error) {
       toast.error(responseData.message);
@@ -51,8 +51,11 @@ const ChangeUserRole = ({
   return (
     <div className=" fixed top-0 bottom-0 left-0 right-0 w-full h-full z-10 flex items-center bg-slate-100 bg-opacity-30">
       <div className="mx-auto bg-white shadow-md p-4 w-full max-w-sm">
-        <button className="block ml-auto" onClick={onClose}>
-          <IoClose className="text-[#e8b298] hover:text-[#eecc8c]" />
+        <button className="block ml-auto  " onClick={onClose}>
+          <IoClose
+            className="text-xl hover:text-red-600
+          "
+          />
         </button>
 
         <h1 className="pb-4 text-lg font-medium">Change user role</h1>

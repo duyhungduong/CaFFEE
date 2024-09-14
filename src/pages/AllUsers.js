@@ -3,7 +3,7 @@ import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import moment from "moment";
 import { MdOutlineModeEditOutline } from "react-icons/md";
-import ChangeUserRole from "../components/ChangeUserRole";
+import ChangeUserRole from "../components/changeUserRole";
 
 const AllUser = () => {
   const [allUser, setAllUsers] = useState([]);
