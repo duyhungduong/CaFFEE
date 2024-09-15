@@ -7,16 +7,16 @@ import DisplayImage from "./DisplayImage";
 import { MdDelete } from "react-icons/md";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
-
-const UploadProduct = ({ onClose }) => {
+const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   const [data, setData] = useState({
-    productName: "",
-    brandName: "",
-    category: "",
-    productImage: [],
-    description: "",
-    price: "",
-    sellingPrice: "",
+    ...productData,
+    productName: productData?.productName,
+    brandName: productData?.brandName,
+    category: productData?.category,
+    productImage: productData?.productImage || [],
+    description: productData?.description,
+    price: productData?.price,
+    sellingPrice: productData?.sellingPrice,
   });
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
@@ -58,38 +58,37 @@ const UploadProduct = ({ onClose }) => {
     });
   };
 
-
-  {/**Them san pham */}
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-
-    const response = await fetch(SummaryApi.uploadProduct.url,{
-      method: SummaryApi.uploadProduct.method,
-      credentials: 'include',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-
-    const responseData =  await response.json()
-
-    if(responseData.success){
-      toast.success(responseData?.message)
-      onClose()
-    }
-    if(responseData.error){
-      toast.error(responseData?.message)
-    }
-
+  {
+    /**Them san pham */
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    const response = await fetch(SummaryApi.updateProduct.url, {
+      method: SummaryApi.uploadProduct.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
+    const responseData = await response.json();
+
+    if (responseData.success) {
+      toast.success(responseData?.message);
+      onClose();
+      fetchdata()
+    }
+    if (responseData.error) {
+      toast.error(responseData?.message);
+    }
+  };
   return (
     <div className="fixed w-full h-full  bg-slate-100 bg-opacity-30 top-0 left-0 right-0 flex justify-center items-center">
       <div className="bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden">
         <div className="flex justify-between items-center pb-1">
-          <h2 className="font-bold text-lg ">Upload Product</h2>
+          <h2 className="font-bold text-lg ">Edit Product</h2>
           <div
             className="w-fit ml-auto text-xl hover:text-red-600"
             onClick={onClose}
@@ -137,9 +136,7 @@ const UploadProduct = ({ onClose }) => {
             id="category"
             onChange={handleOnChange}
           >
-            <option value={""}>
-                  Chọn loại sản phẩm
-                </option>
+            <option value={""}>Chọn loại sản phẩm</option>
             {productCategory.map((el, index) => {
               return (
                 <option key={el.value + index} value={el.value}>
@@ -246,7 +243,7 @@ const UploadProduct = ({ onClose }) => {
           ></textarea>
 
           <button className="px-4 py-4 mt-2 mb-10 bg-[#0090da] hover:bg-[#0091daa7] text-white rounded-md shadow-xl ">
-            Thêm sản phẩm
+            Cập nhật sản phẩm
           </button>
         </form>
       </div>
@@ -262,4 +259,4 @@ const UploadProduct = ({ onClose }) => {
   );
 };
 
-export default UploadProduct;
+export default AdminEditProduct;
