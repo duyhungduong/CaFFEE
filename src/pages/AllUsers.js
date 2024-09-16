@@ -40,7 +40,7 @@ const AllUser = () => {
   return (
     <div className="bg-white pb-3">
       <table className="w-full userTable">
-        <thead className="bg-black text-white">
+        <thead className="bg-coffee-brown text-white">
           <th>Sr.</th>
           <th>Name</th>
           <th>Email</th>
@@ -63,7 +63,7 @@ const AllUser = () => {
                 <td>{moment(el?.createdAt).format("lll")}</td>
                 <td className="text-center">
                   <button
-                    className="bg-[#4bac4d] rounded-full cursor-pointer p-2 hover:bg-[#4bac4dc5] focus-within:shadow-md m-1 hover:text-white"
+                    className="bg-[#4bac4d] rounded-full text-coffee-dark cursor-pointer p-2 hover:bg-coffee-green focus-within:shadow-md m-1 hover:text-white"
                     onClick={() => {
                       setUpdateUserDetails(el);
                       setOpenUpdateRole(true);

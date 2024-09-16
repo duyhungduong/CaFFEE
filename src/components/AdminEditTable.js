@@ -1,22 +1,23 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
-import productCategory from "../helper/productCategory";
-import { MdCloudUpload } from "react-icons/md";
 import uploadImage from "../helper/uploadImage";
-import DisplayImage from "./DisplayImage";
-import { MdDelete } from "react-icons/md";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
+import tableNumbering from "../helper/tableNumber";
+import tableAreaA from "../helper/tableArea";
+import tableTypeE from "../helper/tableType";
+import { MdCloudUpload, MdDelete } from "react-icons/md";
+import DisplayImage from "./DisplayImage";
 
-const UploadProduct = ({ onClose,fetchData }) => {
+const AdminEditTable = ({ onClose, tableData, fetchdata }) => {
   const [data, setData] = useState({
-    productName: "",
-    brandName: "",
-    category: "",
-    productImage: [],
-    description: "",
-    price: "",
-    sellingPrice: "",
+    ...tableData,
+    tableNumber: tableData?.tableNumber,
+    tableArea: tableData?.tableArea,
+    tableType: tableData?.tableType,
+    tableImage: tableData?.tableImage || [],
+    description: tableData?.description,
+    seatCount: tableData?.seatCount,
   });
   const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
@@ -32,7 +33,7 @@ const UploadProduct = ({ onClose,fetchData }) => {
     });
   };
 
-  const handleUploadProduct = async (e) => {
+  const handleUploadTable = async (e) => {
     const file = e.target.files[0];
 
     const uploadImageCloudinary = await uploadImage(file);
@@ -40,57 +41,58 @@ const UploadProduct = ({ onClose,fetchData }) => {
     setData((preve) => {
       return {
         ...preve,
-        productImage: [...preve.productImage, uploadImageCloudinary.url],
+        tableImage: [...preve.tableImage, uploadImageCloudinary.url],
       };
     });
   };
 
-  const handleDeleteProductImage = async (index) => {
+
+  const handleDeletetableImage = async (index) => {
     console.log("index", index);
-    const newProductImage = [...data.productImage];
-    newProductImage.splice(index, 1);
+    const newtableImage = [...data.tableImage];
+    newtableImage.splice(index, 1);
 
     setData((preve) => {
       return {
         ...preve,
-        productImage: [...newProductImage],
+        tableImage: [...newtableImage],
       };
     });
   };
 
-
-  {/**Them san pham */}
-  const handleSubmit = async(e)=>{
-    e.preventDefault()
-
-    const response = await fetch(SummaryApi.uploadProduct.url,{
-      method: SummaryApi.uploadProduct.method,
-      credentials: 'include',
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data)
-    })
-
-    const responseData =  await response.json()
-
-    if(responseData.success){
-      toast.success(responseData?.message)
-      onClose()
-      fetchData()
-    }
-    if(responseData.error){
-      toast.error(responseData?.message)
-    }
-
+  {
+    /**Cap nhat ban */
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    const response = await fetch(SummaryApi.updateTable.url, {
+      method: SummaryApi.updateTable.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
+    const responseData = await response.json();
+
+    if (responseData.success) {
+      toast.success(responseData?.message);
+      onClose();
+      fetchdata();
+    }
+    if (responseData.error) {
+      toast.error(responseData?.message);
+    }
+  };
+
+  
   return (
     <div className="fixed w-full h-full  bg-slate-100 bg-opacity-30 top-0 left-0 right-0 flex justify-center items-center">
       <div className="bg-white p-4 rounded w-full max-w-2xl h-full max-h-[80%] overflow-hidden">
         <div className="flex justify-between items-center pb-1">
-          <h2 className="font-bold text-lg ">Upload Product</h2>
+          <h2 className="font-bold text-lg ">Edit Product</h2>
           <div
             className="w-fit ml-auto text-xl hover:text-red-600"
             onClick={onClose}
@@ -103,45 +105,16 @@ const UploadProduct = ({ onClose,fetchData }) => {
           className="grid p-4 gap-1.5 overflow-y-scroll h-full pb-5"
           onSubmit={handleSubmit}
         >
-          <label htmlFor="productName">Tên sản phẩm </label>
-          <input
-            type="text"
-            name="productName"
-            id="productName"
-            placeholder=" Nhập tên sản phẩm ... "
-            value={data.productName}
-            onChange={handleOnChange}
-            className="p-3 bg-slate-100 border rounded"
-            required
-          />
-          <label htmlFor="brandName" className="mt-1.5">
-            Tên thương hiệu cà phê{" "}
-          </label>
-          <input
-            type="text"
-            name="brandName"
-            id="brandName"
-            placeholder=" Nhập tên thương hiệu ... "
-            value={data.brandName}
-            onChange={handleOnChange}
-            className="p-3 bg-slate-100 border rounded"
-            required
-          />
-          <label htmlFor="category" className="mt-1.5">
-            {" "}
-            Loại{" "}
-          </label>
+          <label htmlFor="tableNumber">Số thứ tự của bàn trong quán.</label>
           <select
-            value={data.category}
+            value={data.tableNumber}
             className="p-3 bg-slate-100 border rounded"
-            name="category"
-            id="category"
+            name="tableNumber"
+            id="tableNumber"
             onChange={handleOnChange}
           >
-            <option value={""}>
-                  Chọn loại sản phẩm
-                </option>
-            {productCategory.map((el, index) => {
+            <option value={""}>Chọn số thứ tự của bàn</option>
+            {tableNumbering.map((el, index) => {
               return (
                 <option key={el.value + index} value={el.value}>
                   {el.label}
@@ -149,9 +122,44 @@ const UploadProduct = ({ onClose,fetchData }) => {
               );
             })}
           </select>
-          <label htmlFor="productImage" className="mt-1.5">
+          <label htmlFor="tableArea">Khu vực bàn</label>
+          <select
+            value={data.tableArea}
+            className="p-3 bg-slate-100 border rounded"
+            name="tableArea"
+            id="tableArea"
+            onChange={handleOnChange}
+          >
+            <option value={""}>Chọn loại khu vực bàn</option>
+            {tableAreaA.map((el, index) => {
+              return (
+                <option key={el.value + index} value={el.value}>
+                  {el.label}
+                </option>
+              );
+            })}
+          </select>
+          <label htmlFor="tableType">Loại bàn</label>
+          <select
+            value={data.tableType}
+            className="p-3 bg-slate-100 border rounded"
+            name="tableType"
+            id="tableType"
+            onChange={handleOnChange}
+          >
+            <option value={""}>Chọn loại bàn</option>
+            {tableTypeE.map((el, index) => {
+              return (
+                <option key={el.value + index} value={el.value}>
+                  {el.label}
+                </option>
+              );
+            })}
+          </select>
+
+          <label htmlFor="tableImage" className="mt-1.5">
             {" "}
-            Hình ảnh sản phẩm{" "}
+            Hình ảnh bàn{" "}
           </label>
           <label htmlFor="uploadImageInput">
             <div className="bg-slate-100 p-2 border rounded-md h-36 w-full flex justify-center items-center cursor-pointer">
@@ -159,21 +167,21 @@ const UploadProduct = ({ onClose,fetchData }) => {
                 <span className="text-4xl">
                   <MdCloudUpload />
                 </span>
-                <p className="text-xm">Tải lên hình ảnh sản phẩm</p>
+                <p className="text-xm">Tải lên hình ảnh bàn</p>
                 <input
                   type="file"
                   name="uploadImageInput"
                   id="uploadImageInput"
                   className="hidden"
-                  onChange={handleUploadProduct}
+                  onChange={handleUploadTable}
                 />
               </div>
             </div>
           </label>
           <div>
-            {data?.productImage[0] ? (
+            {data?.tableImage[0] ? (
               <div className=" flex items-center gap-2">
-                {data.productImage.map((el, index) => {
+                {data.tableImage.map((el, index) => {
                   return (
                     <div className="relative">
                       <img
@@ -189,7 +197,7 @@ const UploadProduct = ({ onClose,fetchData }) => {
                       />
                       <div
                         className="absolute bottom-0 right-0 p-1 text-white bg-red-600 bg-opacity-20 rounded-full cursor-pointer group-hover:block"
-                        onClick={() => handleDeleteProductImage(index)}
+                        onClick={() => handleDeletetableImage(index)}
                       >
                         <MdDelete />
                       </div>
@@ -200,41 +208,26 @@ const UploadProduct = ({ onClose,fetchData }) => {
             ) : (
               <p className="text-red-400 text-xs">
                 {" "}
-                **Vui lòng tải lên hình ảnh sản phẩm**
+                **Vui lòng tải lên hình ảnh bàn**
               </p>
             )}
           </div>
-
-          <label htmlFor="price" className="mt-1.5">
+          <label htmlFor="seatCount" className="mt-1.5">
             {" "}
-            Giá{" "}
+            Số ghế{" "}
           </label>
           <input
             type="number"
-            name="price"
-            id="price"
-            placeholder=" Nhập giá sản phẩm ... "
-            value={data.price}
-            onChange={handleOnChange}
-            className="p-3 bg-slate-100 border rounded"
-            required
-          />
-          <label htmlFor="sellingPrice" className="mt-1.5">
-            {" "}
-            Giá bán{" "}
-          </label>
-          <input
-            type="number"
-            name="sellingPrice"
-            id="sellingPrice"
-            placeholder=" Nhập giá bán sản phẩm ... "
-            value={data.sellingPrice}
+            name="seatCount"
+            id="seatCount"
+            placeholder=" Nhập số lượng ghế ... "
+            value={data.seatCount}
             onChange={handleOnChange}
             className="p-3 bg-slate-100 border rounded"
             required
           />
           <label htmlFor="description" className="mt-1.5">
-            Mô tả sản phẩm{" "}
+            Mô tả bàn{" "}
           </label>
           <textarea
             name="description"
@@ -245,13 +238,11 @@ const UploadProduct = ({ onClose,fetchData }) => {
             onChange={handleOnChange}
             value={data.description}
           ></textarea>
-
           <button className="px-4 py-4 mt-2 mb-10 bg-[#0090da] hover:bg-[#0091daa7] text-white rounded-md shadow-xl ">
-            Thêm sản phẩm
+          Cập nhật sản phẩm
           </button>
         </form>
       </div>
-
       {/**Hien thi hinh anh khi re chuot */}
       {openFullScreenImage && (
         <DisplayImage
@@ -263,4 +254,4 @@ const UploadProduct = ({ onClose,fetchData }) => {
   );
 };
 
-export default UploadProduct;
+export default AdminEditTable;

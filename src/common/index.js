@@ -36,6 +36,15 @@ const SummaryApi = {
   updateProduct: {
     url: `${backendDomin}/api/update-product`,
     method: "post",
+  },uploadTable:{
+    url: `${backendDomin}/api/upload-table`,
+    method: "post",
+  }, allTable:{
+    url: `${backendDomin}/api/get-table`,
+    method: "get",
+  }, updateTable:{
+    url: `${backendDomin}/api/update-table`,
+    method: "post",
   }
 };
 

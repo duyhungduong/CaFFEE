@@ -2,7 +2,20 @@
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        "pastel-pink": "#FFD1DC",
+        "pastel-yellow": "#FFFACD",
+        "pastel-purple": "#DCC6E0",
+        "pastel-teal": "#A7D8DE",
+        "pastel-blue": "#B3E5FC",
+        "pastel-blue-dark": "#81D4FA",
+        "coffee-beige": "#f5f5dc", // màu be nhẹ
+        "coffee-brown": "#8b4513", // màu nâu cà phê
+        "coffee-dark": "#5d4037", // màu nâu đậm
+        "coffee-green": "#6b8e23",// màu xanh lá nhạt
+      },
+    },
   },
   plugins: [],
 };

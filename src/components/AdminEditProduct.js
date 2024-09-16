@@ -59,7 +59,7 @@ const AdminEditProduct = ({ onClose, productData, fetchdata }) => {
   };
 
   {
-    /**Them san pham */
+    /**Cap nhat san pham */
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
