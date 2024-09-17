@@ -25,27 +25,34 @@ const SummaryApi = {
     url: `${backendDomin}/api/update-user`,
     method: "post",
   },
-  uploadProduct:{
+  uploadProduct: {
     url: `${backendDomin}/api/upload-product`,
     method: "post",
   },
-  allProduct:{
+  allProduct: {
     url: `${backendDomin}/api/get-product`,
     method: "get",
   },
   updateProduct: {
     url: `${backendDomin}/api/update-product`,
     method: "post",
-  },uploadTable:{
+  },
+  uploadTable: {
     url: `${backendDomin}/api/upload-table`,
     method: "post",
-  }, allTable:{
+  },
+  allTable: {
     url: `${backendDomin}/api/get-table`,
     method: "get",
-  }, updateTable:{
+  },
+  updateTable: {
     url: `${backendDomin}/api/update-table`,
     method: "post",
-  }
+  },
+  categoryProduct: {
+    url: `${backendDomin}/api/get-categoryProduct`,
+    method: "get",
+  },
 };
 
 export default SummaryApi;
