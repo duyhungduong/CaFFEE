@@ -2,7 +2,7 @@ const tableType = [
   {
     id: 1,
     label: "VIP table",
-    value: "Vip Table",
+    value: "VIP table",
   },
   {
     id: 2,
@@ -16,8 +16,8 @@ const tableType = [
   },
   {
     id: 4,
-    label: "Dành cho nhóm",
-    value: "Dành cho nhóm",
+    label: "Bàn dành cho nhóm",
+    value: "Bàn dành cho nhóm",
   },
 ];
 
