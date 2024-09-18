@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SummaryApi from "../common";
 import { Link } from "react-router-dom";
+import displayVNCurrency from "../helper/displayCurrency";
 
 const CategoryList = () => {
   const [categoryProduct, setCategoryProduct] = useState([]);
@@ -25,8 +26,8 @@ const CategoryList = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex items-center gap-4 justify-between overflow-scroll scrollbar-none">
+    <div className="container mx-auto p-4 m-2">
+      <div className="flex items-center gap-4 justify-between overflow-scroll scrollbar-coffee p-4">
         {loading
           ? categoryLoading.map((el, index) => {
               return (
@@ -53,9 +54,12 @@ const CategoryList = () => {
                       alt={product?.category}
                     />
                   </div>
-                  <p className="text-center text-sm md:text-base capitalize">
+                  <p className="text-center mt-2 text-sm md:text-base capitalize">
                     {product?.category}
                   </p>
+                  {/* <p className="text-center text-sm md:text-base capitalize">
+                    {displayVNCurrency(product?.price)}
+                  </p> */}
                 </Link>
               );
             })}
@@ -65,3 +69,5 @@ const CategoryList = () => {
 };
 
 export default CategoryList;
+
+

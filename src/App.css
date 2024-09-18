@@ -18,6 +18,29 @@ body::-webkit-scrollbar-thumb {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+/* Custom scrollbar for coffee shop theme */
+.scrollbar-coffee::-webkit-scrollbar {
+  width: 12px; /* Chiều rộng của thanh cuộn */
+}
+.scrollbar-coffee {
+  overflow-y: hidden; /* Tắt thanh cuộn dọc */
+  overflow-x: auto; /* Vẫn cho phép cuộn ngang nếu cần */
+}
+
+.scrollbar-coffee::-webkit-scrollbar-track {
+  background-color: #f1e2c0; /* Màu nền track (phần nền của thanh cuộn) */
+  border-radius: 10px; /* Bo góc của track */
+}
+
+.scrollbar-coffee::-webkit-scrollbar-thumb {
+  background-color: #6f4e37; /* Màu của thanh cuộn (màu nâu cà phê) */
+  border-radius: 10px; /* Bo tròn thanh cuộn */
+  border: 3px solid #f1e2c0; /* Viền thanh cuộn cùng màu với track */
+}
+
+.scrollbar-coffee::-webkit-scrollbar-thumb:hover {
+  background-color: #4b382a; /* Màu của thanh cuộn khi hover */
+}
 
 .updateBtnColor {
   background-color: #4bac4d;
