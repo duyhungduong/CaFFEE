@@ -53,6 +53,18 @@ const SummaryApi = {
     url: `${backendDomin}/api/get-categoryProduct`,
     method: "get",
   },
+  typeTable: {
+    url: `${backendDomin}/api/get-typeTable`,
+    method: "get",
+  },
+  areaTable: {
+    url: `${backendDomin}/api/get-areaTable`,
+    method: "get"
+  },
+  categoryWiseProduct : {
+    url: `${backendDomin}/api/category-product`,
+    method: "post"
+  }
 };
 
 export default SummaryApi;
