@@ -96,7 +96,7 @@ body::-webkit-scrollbar-thumb {
     rgba(200, 200, 200, 0.1) 75%
   );
   background-size: 400px 100%;
-  animation: shimmer 2s infinite linear;
+  animation: shimmer 1s infinite linear;
 }
 
 /* Slower shimmer effect */
@@ -109,5 +109,10 @@ body::-webkit-scrollbar-thumb {
     rgba(200, 200, 200, 0.1) 75%
   );
   background-size: 400px 100%;
-  animation: shimmer 2.5s infinite linear;
+  animation: shimmer 1s infinite linear;
+}
+
+
+input::placeholder {
+  font-family: 'Montserrat', sans-serif;
 }

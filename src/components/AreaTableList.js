@@ -17,7 +17,7 @@ const AreaTableList = () => {
     setTimeout(() => {
       setLoading(false); // Kết thúc loading sau khi hết thời gian trì hoãn
       setAreaTable(dataResponse.data); // Lưu dữ liệu
-    }, 250); // Trì hoãn 2 giây (2000 milliseconds)
+    }, 22250); // Trì hoãn 2 giây (2000 milliseconds)
   };
 
   useEffect(() => {
@@ -31,9 +31,11 @@ const AreaTableList = () => {
               return (
                 <div
                   key={"areaTableLoading" + index}
-                  className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col justify-between w-24 h-24 md:w-28 md:h-28 skeleton-loading"
+                  className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col justify-between items-center skeleton-loading"
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-300 rounded-full mx-auto"></div>
+                  <div className="w-16 h-16 md:w-20 md:h-20 text-center flex items-center justify-center">
+                  <div className="w-20 h-20 object-cover rounded-full mx-auto border-4"></div> 
+                  </div>
                   <p className="text-center mt-2 bg-gray-300 w-12 h-4 mx-auto rounded"></p>
                 </div>
               );

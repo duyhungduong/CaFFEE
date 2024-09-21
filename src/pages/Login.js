@@ -66,7 +66,7 @@ const Login = () => {
         <div className="hidden lg:flex w-1/2 ">
           <img src={homeImg} alt="Coffee Cup" className="w-full h-auto" />
         </div>
-        <div className="bg-white p-5 w-full max-w-sm mx-5 focus-within:shadow-md rounded-xl">
+        <div className="bg-white p-5 w-full max-w-sm mx-5 focus-within:shadow-md rounded-sm">
           <div className="w-20 h-20 mx-auto relative overflow-hidden rounded-full">
             <img src={loginIcons} alt="login icons" />
           </div>
@@ -76,27 +76,27 @@ const Login = () => {
             onSubmit={handleSubmit}
           >
             <div className="grid">
-              <label htmlFor="">Email</label>
-              <div className="bg-slate-200 p-4 rounded-full my-2">
+              {/* <label htmlFor="">Email</label> */}
+              <div className="bg-[#d1c8c1] p-4 rounded-sm my-2">
                 <input
                   name="email"
                   type="email"
                   value={data.email}
                   onChange={handleOnChange}
-                  placeholder="enter your email..."
-                  className="w-full h-full outline-none bg-transparent"
+                  placeholder="EMAIL..."
+                  className="w-full h-full outline-none bg-transparent font-montserrat"
                 />
               </div>
             </div>
             <div className="grid">
-              <label htmlFor="">Password</label>
-              <div className="bg-slate-50 p-4 flex rounded-full my-2">
+              {/* <label htmlFor="">Password</label> */}
+              <div className="bg-[#d1c8c1] p-4 flex rounded-md my-2">
                 <input
                   type={showPassword ? "" : "password"}
                   name="password"
                   value={data.password}
                   onChange={handleOnChange}
-                  placeholder="enter your password..."
+                  placeholder="PASSWORD..."
                   className="w-full h-full outline-none bg-transparent"
                 />
                 <div

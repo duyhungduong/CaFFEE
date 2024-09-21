@@ -32,11 +32,13 @@ const CategoryList = () => {
           ? categoryLoading.map((el, index) => {
               return (
                 <div
-                  key={"categoryLoading" + index}
-                  className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col justify-between w-24 h-24 md:w-28 md:h-28 skeleton-loading"
+                  key={"areaTableLoading" + index}
+                  className="bg-gray-200 p-6 rounded-lg shadow-md flex flex-col justify-between items-center skeleton-loading"
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gray-300 rounded-full mx-auto"></div>
-                  <p className="text-center mt-2 bg-gray-300 w-12 h-4 mx-auto rounded"></p>
+                  <div className="w-16 h-16 md:w-20 md:h-20 text-center flex items-center justify-center">
+                  <div className="bg-gray-500 w-20 h-20 object-cover rounded-full mx-auto"></div> 
+                  </div>
+                  <p className="bg-scale-500 text-center mt-2 w-20 h-4 rounded"></p>
                 </div>
               );
             })

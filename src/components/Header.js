@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
-import caffee from "../assest/caffeelogo.png";
+import caffee from "../assest/logocaffee.png";
 import ROLE from "../common/role";
 
 const Header = () => {
@@ -33,7 +33,7 @@ const Header = () => {
     }
   };
   return (
-    <header className="h-16 shadow-sm bg-white">
+    <header className="h-20 shadow-sm bg-[#f6f4f3] fixed w-full z-20">
       <div className="h-full container mx-auto px-3 flex items-center justify-between">
         <div>
           <Link to={"/"}>
@@ -42,7 +42,7 @@ const Header = () => {
             <img
               src={caffee}
               alt=""
-              className="w-auto h-auto max-w-[90px] max-h-[50px] object-contain"
+              className="w-auto h-auto max-w-[150px] max-h-[60px] object-contain"
             />
           </Link>
         </div>
@@ -51,7 +51,7 @@ const Header = () => {
           <input
             type="text"
             placeholder="search..."
-            className="w-full outline-none "
+            className="w-full outline-none bg-[#f6f4f3]"
           />
           <div className="text-lg min-w-[50px] h-8 bg-amber-900 flex items-center justify-center rounded-r-full text-white hover:scale-105 transition-all ">
             <HiSearch />
