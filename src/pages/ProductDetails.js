@@ -84,7 +84,7 @@ const ProductDetails = () => {
         </div>
         {/**Details */}
         <div>
-                product details
+                <p>{data?.brandName}</p>
         </div>
       </div>
     </div>
