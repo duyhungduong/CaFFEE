@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import fetchCategoryWiseProduct from "../helper/fetchCategoryWiseProduct";
 import displayVNCurrency from "../helper/displayCurrency";
 import { TbShoppingCartFilled } from "react-icons/tb";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import addToCart from "../helper/addToCart";
 
 const VerticalCardProduct = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -12,14 +14,21 @@ const VerticalCardProduct = ({ category, heading }) => {
   const [scroll, setScroll] = useState(0)
   const scrollElement = useRef()
 
-  const fetchData = async () => {
-    setLoading(true);
-    const categoryProduct = await fetchCategoryWiseProduct(category);
-    setTimeout(() => {
+
+  //Dieu chinh lai
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const categoryProduct = await fetchCategoryWiseProduct(category);
+      setTimeout(() => {
+        setLoading(false);
+        setData(categoryProduct?.data);
+      }, 250);
+    } catch (error) {
       setLoading(false);
-      setData(categoryProduct?.data);
-    }, 550);
-  };
+      console.error("Error fetching data", error);
+    }
+  }, [category]);
 
   
 
@@ -62,7 +71,7 @@ const VerticalCardProduct = ({ category, heading }) => {
           ))
         ) : (
           data.map((product, index) => (
-            <div key={index} className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-sm shadow-md">
+            <Link to={"product/"+product?._id} key={index} className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-sm shadow-md">
               <div className="bg-slate-400 h-72 p-3 min-w-[200px] md:min-w-[145px] flex justify-center items-center">
                 <img className="object-scale-down h-full hover:scale-110 transition-all" src={product.productImage[0]} alt="" />
               </div>
@@ -73,11 +82,11 @@ const VerticalCardProduct = ({ category, heading }) => {
                   <p className="text-red-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>
                   <p className="text-slate-500 line-through">{displayVNCurrency(product?.price)}</p>
                 </div>
-                <button className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green">
+                <button className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green" onClick={(e)=>addToCart(e,product?._id)}>
                   <TbShoppingCartFilled /> Add to Cart
                 </button>
               </div>
-            </div>
+            </Link>
           ))
         )}
       </div>
