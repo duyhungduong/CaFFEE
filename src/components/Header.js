@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { TiUser } from "react-icons/ti";
 import { TiCoffee } from "react-icons/ti";
+import { FaTablets } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SummaryApi from "../common";
@@ -9,11 +10,13 @@ import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
 import caffee from "../assest/logocaffee.png";
 import ROLE from "../common/role";
+import Context from "../context";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
+  const context = useContext(Context);
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -32,6 +35,8 @@ const Header = () => {
       toast.error(dataApi.message);
     }
   };
+
+  console.log("context ", context);
   return (
     <header className="h-20 shadow-sm bg-[#f6f4f3] fixed w-full z-20">
       <div className="h-full container mx-auto px-3 flex items-center justify-between">
@@ -101,15 +106,33 @@ const Header = () => {
               </div>
             )}
           </div>
+          {user?._id && (
+            <Link to={"/cart"} className="text-3xl cursor-pointer relative ">
+            {
+              user?.role === ROLE.GENERAL ? (
+                <div>
+                <span className="">
+                <FaTablets />
+              </span>
+              <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
+                <p className="text-xs">{context?.cartProductCount}</p>
+              </div>
+                </div>
+              ) : (
+                <div>
+                  <span className="">
+                <TiCoffee />
+              </span>
+              <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
+                <p className="text-xs">{context?.cartProductCount}</p>
+              </div>
+                </div>
+              )
+            }
+              
+            </Link>
+          )}
 
-          <div className="text-3xl cursor-pointer relative ">
-            <span className="">
-              <TiCoffee />
-            </span>
-            <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
-              <p className="text-xs">0</p>
-            </div>
-          </div>
           <div>
             {!user?._id && (
               <Link

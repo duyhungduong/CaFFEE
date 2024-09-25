@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import fetchCategoryWiseProduct from "../helper/fetchCategoryWiseProduct";
 import displayVNCurrency from "../helper/displayCurrency";
 import { TbShoppingCartFilled } from "react-icons/tb";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import addToCart from "../helper/addToCart";
+import Context from "../context";
 
 const HorizontalCardProduct = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -24,6 +25,12 @@ const HorizontalCardProduct = ({ category, heading }) => {
     }, 350);
   };
   
+  const { fetchUserAddToCart } = useContext(Context)
+
+    const handleAddToCart = async(e,id)=>{
+       await addToCart(e,id)
+       fetchUserAddToCart()
+    }
 
   useEffect(() => {
     fetchData();
@@ -102,7 +109,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
                         </p>
                       </div>
                       <button 
-                      onClick={(e)=>addToCart(e,product?._id)}
+                      onClick={(e)=>handleAddToCart(e,product?._id)}
                       className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-brown text-coffee-dark hover:from-coffee-light hover:to-coffee-green rounded-lg">
                         <TbShoppingCartFilled /> Add to Cart
                       </button>

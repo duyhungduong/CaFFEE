@@ -59,15 +59,40 @@ const SummaryApi = {
   },
   areaTable: {
     url: `${backendDomin}/api/get-areaTable`,
-    method: "get"
+    method: "get",
   },
-  categoryWiseProduct : {
+  categoryWiseProduct: {
     url: `${backendDomin}/api/category-product`,
-    method: "post"
+    method: "post",
   },
-  productDetails:{
+  productDetails: {
     url: `${backendDomin}/api/product-details`,
-    method: "post"
+    method: "post",
+  },
+  addToCartProduct: {
+    url: `${backendDomin}/api/addtocart`,
+    method: "post",
+  },
+  addToCartTable :{
+    url: `${backendDomin}/api/addtabletocart`,
+    method: "post",
+  },
+  addToCartProductCount :{
+    url: `${backendDomin}/api/countAddToCartProduct`,
+    method: "get",
+  },addToCartTableCount :{
+    url: `${backendDomin}/api/countaddtocarttable`,
+    method: "get",
+  }, addToProductView : {
+    url: `${backendDomin}/api/view-cart-product`,
+    method: "get",
+  }, updateCartProduct : {
+    url: `${backendDomin}/api/update-cart-product`,
+    method: "post",
+  },
+  deleteCartProduct : {
+      url : `${backendDomin}/api/delete-cart-product`,
+      method : 'post'
   }
 };
 

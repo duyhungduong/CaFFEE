@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SummaryApi from "./common";
 import Context from "./context";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,8 @@ import { setUserDetails } from "./store/userSlice";
 
 function App() {
   const dispatch = useDispatch()
+  const [cartProductCount,setCartProductCount] = useState(0)
+
   //Can 1 context de chia se chuc nang nay
   const fetchUserDetails = async() =>{
     const dataResponse = await fetch(SummaryApi.current_user.url,{
@@ -27,18 +29,36 @@ function App() {
     }
 
   }
+
+  const fetchUserAddToCart = async() =>{
+    const dataResponse = await fetch(SummaryApi.addToCartProductCount.url,{
+      method: SummaryApi.addToCartProductCount.method,
+      credentials : 'include'
+    })
+
+    const dataApi = await dataResponse.json()
+
+    setCartProductCount(dataApi.data?.count)
+  }
+
   //Dang nhap lai thanh cong thi chuc nay se duoc goi vi cookie luu lai thong tin nguoi dung
   useEffect(()=>{
     //user Details
     fetchUserDetails()
+    //user Add to cart count
+    fetchUserAddToCart()
 
   })
   return (
     <>
       <Context.Provider value={{
-        fetchUserDetails //nap thong tin nguoi dung
+        fetchUserDetails, //nap thong tin nguoi dung
+        cartProductCount, //nap so luong san pham trong gio hang
+        fetchUserAddToCart
       }}>
-      <ToastContainer />
+      <ToastContainer
+      position="top-center"
+       />
       <Header />
       <main className="min-h-[calc(100vh-110px)] pt-20">
         <Outlet />

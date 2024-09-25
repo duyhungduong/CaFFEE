@@ -1,14 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import fetchCategoryWiseProduct from "../helper/fetchCategoryWiseProduct";
 import displayVNCurrency from "../helper/displayCurrency";
 import { TbShoppingCartFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import addToCart from "../helper/addToCart";
+import Context from "../context";
 
 const CategoryWiseProductDisplay = ({ category, heading }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loadingList = new Array(20).fill(null);
+
+  const { fetchUserAddToCart} = useContext(Context)
+
+  const handleAddToCart = async(e, id) => {
+    await addToCart(e, id)
+    fetchUserAddToCart()
+  }
 
   const fetchData = useCallback(async () => {
     try {
@@ -64,7 +72,7 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
                 </div>
                 <button
                   className="mt-2 text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green"
-                  onClick={(e) => addToCart(e, product?._id)}
+                  onClick={(e)=>handleAddToCart(e, product?._id)}
                 >
                   <TbShoppingCartFilled /> Add to Cart
                 </button>

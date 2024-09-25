@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { TiUser } from "react-icons/ti";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import ROLE from "../common/role";
-import { FaUsers, FaTable, FaBoxOpen, FaSignOutAlt } from "react-icons/fa";
+import { FaUsers, FaBoxOpen, FaSignOutAlt } from "react-icons/fa";
+import { FaTablets } from "react-icons/fa";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
@@ -71,7 +72,7 @@ const AdminPanel = () => {
               <FaBoxOpen className="text-xl" /> Products
             </Link>
             <Link to="all-tables" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-              <FaTable className="text-xl" /> Tables
+            <FaTablets className="text-xl" /> Tables
             </Link>
           </nav>
         </div>

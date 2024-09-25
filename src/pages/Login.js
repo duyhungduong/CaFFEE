@@ -6,6 +6,7 @@ import bookBg from "../assest/book-bg.jpg";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import Context from "../context";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,7 +17,7 @@ const Login = () => {
 
   const navigate = useNavigate()
   const generalContext = useContext(Context)
-  const {fetchUserDetails} = useContext(Context)
+  const {fetchUserDetails, fetchUserAddToCart} = useContext(Context)
   
 
   console.log("generalContext", generalContext.fetchUserDetails())
@@ -43,7 +44,8 @@ const Login = () => {
       toast.success(dataApi.message);
       
       navigate('/')
-      fetchUserDetails()
+      fetchUserDetails() // Thong tin tai khoan
+      fetchUserAddToCart() // Thong tin gio hang
     }
     if (dataApi.error) {
       toast.error(dataApi.message);
@@ -103,7 +105,7 @@ const Login = () => {
                   className="cursor-pointer text-lg"
                   onClick={() => setShowPassword((preve) => !preve)}
                 >
-                  {/* <span>{showPassword ? <FaEyeSlash /> : <FaEye />}</span> */}
+                  <span>{showPassword ? <FaEyeSlash /> : <FaEye />}</span>
                 </div>
               </div>
               <Link

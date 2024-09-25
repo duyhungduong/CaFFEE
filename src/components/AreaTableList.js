@@ -17,7 +17,7 @@ const AreaTableList = () => {
     setTimeout(() => {
       setLoading(false); // Kết thúc loading sau khi hết thời gian trì hoãn
       setAreaTable(dataResponse.data); // Lưu dữ liệu
-    }, 22250); // Trì hoãn 2 giây (2000 milliseconds)
+    }, 250); // Trì hoãn 2 giây (2000 milliseconds)
   };
 
   useEffect(() => {

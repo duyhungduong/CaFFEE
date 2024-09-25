@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 import fetchCategoryWiseProduct from "../helper/fetchCategoryWiseProduct";
 import displayVNCurrency from "../helper/displayCurrency";
 import { TbShoppingCartFilled } from "react-icons/tb";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import addToCart from "../helper/addToCart";
+import Context from "../context";
 
 const VerticalCardProduct = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -30,7 +31,12 @@ const VerticalCardProduct = ({ category, heading }) => {
     }
   }, [category]);
 
-  
+  const { fetchUserAddToCart } = useContext(Context)
+
+  const handleAddToCart = async(e,id)=>{
+    await addToCart(e,id)
+    fetchUserAddToCart()
+ }
 
   useEffect(() => {
     fetchData();
@@ -82,8 +88,8 @@ const VerticalCardProduct = ({ category, heading }) => {
                   <p className="text-red-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>
                   <p className="text-slate-500 line-through">{displayVNCurrency(product?.price)}</p>
                 </div>
-                <button className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green" onClick={(e)=>addToCart(e,product?._id)}>
-                  <TbShoppingCartFilled /> Add to Cart
+                <button className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green" onClick={(e)=>handleAddToCart(e,product?._id)}>
+                  <TbShoppingCartFilled /> Thêm vào giỏ
                 </button>
               </div>
             </Link>
