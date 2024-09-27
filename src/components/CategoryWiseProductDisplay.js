@@ -5,6 +5,7 @@ import { TbShoppingCartFilled } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import addToCart from "../helper/addToCart";
 import Context from "../context";
+import scrollTop from "../helper/scrollTop";
 
 const CategoryWiseProductDisplay = ({ category, heading }) => {
   const [data, setData] = useState([]);
@@ -52,9 +53,10 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
         ) : (
           data.map((product) => (
             <Link
-              to={`product/${product?._id}`}
+              to={"/product/"+product?._id}
               key={product._id}
               className="bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"
+              onClick={scrollTop}
             >
               <div className="bg-slate-400 h-48 p-3 flex justify-center items-center">
                 <img

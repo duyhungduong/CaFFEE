@@ -11,6 +11,7 @@ import AllTables from "../pages/AllTables";
 import CategoryProduct from "../pages/CategoryProduct";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
+import SearchProduct from "../pages/SearchProduct";
 
 const router = createBrowserRouter([
   {
@@ -34,9 +35,9 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path:"category-product/:categoryName",
-        element: <CategoryProduct/>
-      },
+        path : "product-category",
+        element : <CategoryProduct/>
+    },
       {
         path: "product/:id",
         element : <ProductDetails/>
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <Cart/>
+      },
+      {
+        path: "search",
+        element: <SearchProduct/>
       },
       {
         path: "admin-panel",

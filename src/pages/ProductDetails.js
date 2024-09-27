@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import SummaryApi from "../common";
 import { FaStar } from "react-icons/fa";
 import { FaStarHalf } from "react-icons/fa6";
 import displayVNCurrency from "../helper/displayCurrency";
 import VerticalCardProduct from "../components/VerticalCardProduct";
 import CategoryWiseProductDisplay from "../components/CategoryWiseProductDisplay";
+import addToCart from "../helper/addToCart";
+import Context from "../context";
 
 const ProductDetails = () => {
   const [data, setData] = useState({
@@ -22,13 +24,16 @@ const ProductDetails = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const productImageListLoading = new Array(4).fill(null)
+  const productImageListLoading = new Array(4).fill(null);
 
-  const [activeImage, setActiveImage] = useState("")
+  const [activeImage, setActiveImage] = useState("");
 
   const [zoomStyle, setZoomStyle] = useState({});
 
-  console.log("product id", params);
+    
+  const { fetchUserAddToCart } = useContext(Context)
+
+  const navigate = useNavigate()
 
   const fetchProductDetails = async () => {
     setLoading(true);
@@ -48,7 +53,7 @@ const ProductDetails = () => {
     setTimeout(() => {
       setLoading(false);
       setData(dataResponse?.data);
-      setActiveImage(dataResponse?.data?.productImage[0])
+      setActiveImage(dataResponse?.data?.productImage[0]);
     }, 250);
   };
 
@@ -56,23 +61,21 @@ const ProductDetails = () => {
 
   useEffect(() => {
     fetchProductDetails();
-  }, []);
+  }, [params]);
 
-  const handleMouseEnterProduct = (imgURL) =>{
-    setActiveImage(imgURL)
-  }
-
-  
+  const handleMouseEnterProduct = (imgURL) => {
+    setActiveImage(imgURL);
+  };
 
   const handleMouseMove = (e) => {
     const { left, top, width, height } = e.target.getBoundingClientRect();
-    const x =  ((e.pageX - left) / width) * 100;
-    const y =  ((e.pageY - top) / height) * 100;
+    const x = ((e.pageX - left) / width) * 100;
+    const y = ((e.pageY - top) / height) * 100;
 
     setZoomStyle({
       transformOrigin: `${x}% ${y}%`,
       transform: "scale(1.2)", // Adjust to 1.2 or 1.3 for a more subtle effect
-    transition: "transform 0.2s ease-in-out", // Smooth transition
+      transition: "transform 0.2s ease-in-out", // Smooth transition
     });
   };
 
@@ -81,6 +84,18 @@ const ProductDetails = () => {
       transformOrigin: "center center",
       transform: "scale(1)", // Trả ảnh về kích thước gốc
     });
+  };
+
+  const handleAddToCart = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart();
+  };
+
+  const handleBuyProduct = async (e, id) => {
+    await addToCart(e, id);
+    fetchUserAddToCart();
+    
+    navigate("/cart");
   };
 
   return (
@@ -100,17 +115,18 @@ const ProductDetails = () => {
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
               />
-              
             )}
           </div>
           <div className="flex flex-row lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto scrollbar-none">
             {loading
-              ? new Array(4).fill(null).map((_, index) => (
-                  <div
-                    key={index}
-                    className="w-20 h-20 bg-skeleton-loading rounded-lg"
-                  />
-                ))
+              ? new Array(4)
+                  .fill(null)
+                  .map((_, index) => (
+                    <div
+                      key={"loadingImage" + index}
+                      className="w-20 h-20 bg-skeleton-loading rounded-lg"
+                    />
+                  ))
               : data?.productImage?.map((imgURL, index) => (
                   <div
                     key={index}
@@ -195,14 +211,20 @@ const ProductDetails = () => {
             {loading ? (
               <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
             ) : (
-              <button className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all">
+              <button
+                className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                onClick={(e) => handleBuyProduct(e, data?._id)}
+              >
                 Mua
               </button>
             )}
             {loading ? (
               <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
             ) : (
-              <button className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark transition-all">
+              <button
+                className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark transition-all"
+                onClick={(e) => handleAddToCart(e, data?._id)}
+              >
                 Thêm vào giỏ
               </button>
             )}
@@ -228,11 +250,12 @@ const ProductDetails = () => {
         </div>
       </div>
       <div>
-      {
-        data.category && (
-          <CategoryWiseProductDisplay category={data?.category} heading={"Recommended Product"} />
-        )
-      }
+        {data.category && (
+          <CategoryWiseProductDisplay
+            category={data?.category}
+            heading={"Recommended Product"}
+          />
+        )}
       </div>
     </div>
   );

@@ -137,3 +137,20 @@ input::placeholder {
     background-position: 400% 0;
   }
 }
+
+/* Hieu ung xuat hiẹn cua product */
+
+@keyframes fadeIn {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}

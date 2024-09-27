@@ -46,7 +46,7 @@ const CategoryList = () => {
               return (
                 <Link
                 key={product?.category + index}
-                  to={"/category-product/" + product?.category}
+                to={"/product-category?category="+product?.category}
                   className="cursor-pointer bg-coffee-beige p-6 rounded-lg shadow-md transition-all hover:shadow-lg flex flex-col justify-between"
                 >
                   <div className="w-16 h-16 md:w-20 md:h-20 text-center flex items-center justify-center">

@@ -3,7 +3,7 @@ import { HiSearch } from "react-icons/hi";
 import { TiUser } from "react-icons/ti";
 import { TiCoffee } from "react-icons/ti";
 import { FaTablets } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
@@ -17,6 +17,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
   const context = useContext(Context);
+  const navigate = useNavigate()
+  const searchInput = useLocation()
+  const URLSearch = new URLSearchParams(searchInput?.search)
+  const searchQuery = URLSearch.getAll("q")
+  const [search , setSearch] = useState(searchQuery)
+
+  
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -28,15 +35,28 @@ const Header = () => {
 
     if (dataApi.success) {
       toast.success(dataApi.message);
+      setMenuDisplay(false)
       //window.location.reload();
       dispatch(setUserDetails(null));
+      navigate("/")
     }
     if (dataApi.error) {
       toast.error(dataApi.message);
     }
   };
 
-  console.log("context ", context);
+  // console.log("context ", context);
+  const handleSearch = (e)=>{
+    const { value } = e.target
+    //setSearch(value)
+    setSearch(value)
+    if(value){
+      navigate(`/search?q=${value}`)
+    }else{
+      navigate("/search")
+    }
+  }
+
   return (
     <header className="h-20 shadow-sm bg-[#f6f4f3] fixed w-full z-20">
       <div className="h-full container mx-auto px-3 flex items-center justify-between">
@@ -57,6 +77,8 @@ const Header = () => {
             type="text"
             placeholder="search..."
             className="w-full outline-none bg-[#f6f4f3]"
+            onChange={handleSearch} 
+            value={search}
           />
           <div className="text-lg min-w-[50px] h-8 bg-amber-900 flex items-center justify-center rounded-r-full text-white hover:scale-105 transition-all ">
             <HiSearch />
@@ -79,7 +101,7 @@ const Header = () => {
                 <TiUser />
               )}
             </div>
-            {menuDisplay && (
+            {user?._id && menuDisplay && (
               <div className="absolute bg-white bottom-0 top-11 h-fit p-3 shadow-lg rounded-lg">
                 <nav className="grid">
                   {user?.role === ROLE.ADMIN && (

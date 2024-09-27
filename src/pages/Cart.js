@@ -18,7 +18,7 @@ const Cart = () => {
         "content-type": "application/json",
       },
     });
-    setLoading(false);
+    //setLoading(false);
     const responseData = await response.json();
 
     if (responseData.success) {
@@ -26,8 +26,22 @@ const Cart = () => {
     }
   };
 
+  const handleLoading = async() =>{
+    
+    await fetchData()
+  }
+
   useEffect(() => {
-    fetchData();
+
+    //  fetchData();
+    setLoading(true)
+
+    setTimeout(()=>{
+      handleLoading()
+    setLoading(false)
+    },250)
+
+    
   }, []);
 
   const increaseQty = async (id, qty) => {
@@ -117,8 +131,8 @@ const Cart = () => {
           {loading
             ? loadingCart.map((_, index) => (
                 <div
-                  key={index}
-                  className="w-full bg-slate-300 h-40 my-3 border border-black rounded bg-skeleton-loading"
+                  key={"Add to Cart Loading"+index}
+                  className="w-full bg-slate-300 h-40 my-3 border border-slate-50 rounded skeleton-loading"
                 ></div>
               ))
             : data.map((product) => (
@@ -135,13 +149,16 @@ const Cart = () => {
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <h2 className="text-lg font-semibold text-gray-800">
+                      <h2 className="text-xl font-semibold text-gray-800">
                         {product?.productId?.productName}
                       </h2>
                       <p className="text-gray-500 capitalize">
                         {product?.productId?.category}
                       </p>
-                      <p className="font-semibold text-coffee-green">
+                      <p className="font-semibold text-gray-500 line-through">
+                        {displayVNCurrency(product?.productId?.price)}
+                      </p>
+                      <p className="font-semibold text-2xl text-coffee-green">
                         {displayVNCurrency(product?.productId?.sellingPrice)}
                       </p>
                     </div>
@@ -176,7 +193,7 @@ const Cart = () => {
         </div>
 
         {/* Tổng kết giỏ hàng */}
-        <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6">
+        <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6 mb-6">
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Summary</h2>
           <div className="flex justify-between items-center mb-4">
             <p className="text-gray-600">Total Quantity</p>
