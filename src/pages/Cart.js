@@ -3,6 +3,7 @@ import SummaryApi from "../common";
 import Context from "../context";
 import displayVNCurrency from "../helper/displayCurrency";
 import { MdDelete } from "react-icons/md";
+import {loadStripe} from '@stripe/stripe-js';
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -114,6 +115,34 @@ const Cart = () => {
     (preve, curr) => preve + curr.quantity * curr?.productId?.sellingPrice,
     0
   );
+  // console.log("totalQty", totalQty)
+  // console.log("totalPrice", totalPrice)
+
+  const handlePayment = async() =>{
+
+    
+    const stripePromise = await loadStripe('pk_test_51Q3uSAG27K4Z31a03jXRBSu4hP801vrr3cBVu3smG5OWj4AWolCXoOTynMbMxjGLEeGeFvu5ZZ6VsS5qim1HY7gJ00l1RmpCII');
+
+    const response = await fetch(SummaryApi.payment.url,{
+      method: SummaryApi.payment.method,
+      credentials: 'include',
+      headers: {
+        "content-type": "application/json",
+        },
+        body: JSON.stringify(
+          {
+            cartItems: data
+          }
+          )
+    })
+      const responseData = await response.json()
+
+      if(responseData?.id){
+        stripePromise.redirectToCheckout({ sessionId : responseData.id})
+    }
+
+      console.log('responseData',responseData)
+  }
 
   return (
     <div className="container mx-auto py-8">
@@ -193,7 +222,10 @@ const Cart = () => {
         </div>
 
         {/* Tổng kết giỏ hàng */}
-        <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6 mb-6">
+        {
+          data[0] && (
+            <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6 mb-6">
+        <div>
           <h2 className="text-lg font-semibold text-gray-800 mb-4">Summary</h2>
           <div className="flex justify-between items-center mb-4">
             <p className="text-gray-600">Total Quantity</p>
@@ -205,10 +237,16 @@ const Cart = () => {
               {displayVNCurrency(totalPrice)}
             </p>
           </div>
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors">
+          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+          onClick={handlePayment}>
             Proceed to Checkout
           </button>
         </div>
+          
+        </div>
+          )
+        }
+        
       </div>
     </div>
   );
