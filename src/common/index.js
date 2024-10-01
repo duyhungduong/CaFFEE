@@ -105,7 +105,12 @@ const SummaryApi = {
     payment : {
       url : `${backendDomin}/api/checkout`,
       method : 'post'
-    }
+    },
+    testpayment : {
+      url : `${backendDomin}/api/testcheckout`,
+      method : 'post'
+    },
+    
 
 };
 
