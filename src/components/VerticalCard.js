@@ -5,16 +5,27 @@ import { TbShoppingCartFilled } from "react-icons/tb";
 import displayVNCurrency from "../helper/displayCurrency";
 import Context from "../context";
 import addToCart from "../helper/addToCart";
+import addToFavorite from "../helper/addToFavorite";
+import { useSelector } from "react-redux";
+import ROLE from "../common/role";
+import { MdFavorite } from "react-icons/md";
 
 const VerticalCard = ({ loading, data = [] }) => {
   const loadingList = new Array(20).fill(null);
+  const user = useSelector((state) => state?.user?.user);
 
-  const { fetchUserAddToCart } = useContext(Context);
+  const { fetchUserAddToCart } = useContext(Context)
+  
+  const { fetchUserAddToFavorite } = useContext(Context);
 
-  const handleAddToCart = async (e, id) => {
-    await addToCart(e, id);
-    fetchUserAddToCart();
-  };
+  const handleAddToCart = async(e,id)=>{
+    await addToCart(e,id)
+    fetchUserAddToCart()
+ }
+ const handleAddToFavorite = async (e, id) => {
+  await addToFavorite(e, id);
+  fetchUserAddToFavorite();
+};
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -62,12 +73,20 @@ const VerticalCard = ({ loading, data = [] }) => {
                   {displayVNCurrency(product?.price)}
                 </p>
               </div>
-              <button
+              {
+                user?.role === ROLE.GENERAL ? (<button
+                className="mt-2 text-sm flex items-center gap-2 px-3 py-1  bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg transition-all transform hover:scale-105 hover:shadow-lg"
+                onClick={(e) => handleAddToFavorite(e, product?._id)}
+              >
+                <MdFavorite /> Favorite
+              </button>): (<button
                 className="mt-2 text-sm flex items-center gap-2 px-3 py-1  bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg transition-all transform hover:scale-105 hover:shadow-lg"
                 onClick={(e) => handleAddToCart(e, product?._id)}
               >
                 <TbShoppingCartFilled /> Add to Cart
-              </button>
+              </button>)
+              }
+              
             </div>
           </Link>
         ))

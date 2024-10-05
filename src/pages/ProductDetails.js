@@ -8,6 +8,10 @@ import VerticalCardProduct from "../components/VerticalCardProduct";
 import CategoryWiseProductDisplay from "../components/CategoryWiseProductDisplay";
 import addToCart from "../helper/addToCart";
 import Context from "../context";
+import { useSelector } from "react-redux";
+import { MdFavoriteBorder } from "react-icons/md";
+import ROLE from "../common/role";
+import addToFavorite from "../helper/addToFavorite";
 
 const ProductDetails = () => {
   const [data, setData] = useState({
@@ -20,6 +24,7 @@ const ProductDetails = () => {
     sellingPrice: "",
   });
 
+  const user = useSelector((state) => state?.user?.user);
   const params = useParams();
 
   const [loading, setLoading] = useState(false);
@@ -32,6 +37,8 @@ const ProductDetails = () => {
 
     
   const { fetchUserAddToCart } = useContext(Context)
+  
+  const { fetchUserAddToFavorite } = useContext(Context);
 
   const navigate = useNavigate()
 
@@ -89,6 +96,10 @@ const ProductDetails = () => {
   const handleAddToCart = async (e, id) => {
     await addToCart(e, id);
     fetchUserAddToCart();
+  };
+  const handleAddToFavorite = async (e, id) => {
+    await addToFavorite(e, id);
+    fetchUserAddToFavorite();
   };
 
   const handleBuyProduct = async (e, id) => {
@@ -206,8 +217,20 @@ const ProductDetails = () => {
               </p>
             )}
           </div>
-
-          <div className="flex space-x-4">
+            {
+              user?.role === ROLE.GENERAL ? (<div className="flex space-x-4">
+            {loading ? (
+              <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
+            ) : (
+              <button
+                className="w-full flex items-center gap-2 lg:w-2/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                onClick={(e) => handleAddToFavorite(e, data?._id)}
+              >
+                <MdFavoriteBorder /> Thêm vào yêu thích
+              </button>
+            )}
+            
+          </div>) : (<div className="flex space-x-4">
             {loading ? (
               <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
             ) : (
@@ -228,7 +251,9 @@ const ProductDetails = () => {
                 Thêm vào giỏ
               </button>
             )}
-          </div>
+          </div>)
+            }
+          
 
           <div>
             {loading ? (

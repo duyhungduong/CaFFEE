@@ -24,6 +24,18 @@ const tableNumber = [
         id: 6,
         label: "06",
         value: "06",
+    },{
+        id: 7,
+        label: "07",
+        value: "07",
+    },{
+        id: 8,
+        label: "08",
+        value: "08",
+    },{
+        id:9,
+        label: "09",
+        value: "09",
     }
 ]
 

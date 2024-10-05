@@ -14,6 +14,7 @@ import { setUserDetails } from "./store/userSlice";
 function App() {
   const dispatch = useDispatch()
   const [cartProductCount,setCartProductCount] = useState(0)
+  const [favoriteProductCount, setFavoriteProductCount] = useState(0)
 
   //Can 1 context de chia se chuc nang nay
   const fetchUserDetails = async() =>{
@@ -40,6 +41,15 @@ function App() {
 
     setCartProductCount(dataApi.data?.count)
   }
+  const fetchUserAddToFavorite = async() =>{
+    const dataResponse = await fetch(SummaryApi.addToFavoriteProductCount.url,{
+      method: SummaryApi.addToFavoriteProductCount.method,
+      credentials : 'include'
+    })
+    const dataApi = await dataResponse.json()
+
+    setFavoriteProductCount(dataApi.data?.count)
+  }
 
   //Dang nhap lai thanh cong thi chuc nay se duoc goi vi cookie luu lai thong tin nguoi dung
   useEffect(()=>{
@@ -47,6 +57,8 @@ function App() {
     fetchUserDetails()
     //user Add to cart count
     fetchUserAddToCart()
+    //user Add to favorite count
+    fetchUserAddToFavorite()
 
   })
   return (
@@ -54,7 +66,9 @@ function App() {
       <Context.Provider value={{
         fetchUserDetails, //nap thong tin nguoi dung
         cartProductCount, //nap so luong san pham trong gio hang
-        fetchUserAddToCart
+        fetchUserAddToCart,
+        favoriteProductCount,
+        fetchUserAddToFavorite,
       }}>
       <ToastContainer
       position="top-center"

@@ -3,6 +3,7 @@ import { IoClose } from 'react-icons/io5';
 import tableNumbering from '../helper/tableNumber'
 import tableAreaA from '../helper/tableArea';
 import tableTypeE from '../helper/tableType';
+import tableStatusS from '../helper/Table/tableStatus'
 import { MdCloudUpload, MdDelete } from 'react-icons/md';
 import uploadImage from "../helper/uploadImage";
 import DisplayImage from './DisplayImage';
@@ -19,6 +20,8 @@ const UploadTable = ({
         tableImage: [],
         description: "",
         seatCount: "",
+        tableStatus: "",
+        isAvailableTable: true,
       });
       const [openFullScreenImage, setOpenFullScreenImage] = useState(false);
   const [fullScreenImage, setFullScreenImage] = useState("");
@@ -241,6 +244,49 @@ const handleDeletetableImage = async (index) => {
             onChange={handleOnChange}
             value={data.description}
           ></textarea>
+          <label htmlFor="tableStatus">Tình trạng bàn</label>
+          <select
+            value={data.tableStatus}
+            className="p-3 bg-slate-100 border rounded"
+            name="tableStatus"
+            id="tableStatus"
+            onChange={handleOnChange}
+          >
+            {/* <option value={""}>
+                  Chọn Tình trạng bàn
+                </option> */}
+            {tableStatusS.map((el, index) => {
+              return (
+                <option key={el.value + index} value={el.value}>
+                  {el.label}
+                </option>
+              );
+            })}
+          </select>
+          <label htmlFor="isAvailableTable">Bàn có khả dụng?</label>
+          <div className="flex gap-4 mt-2">
+                        <label className="flex items-center gap-1">
+                            <input
+                                type="radio"
+                                name="isAvailableTable"
+                                value={true}
+                                checked={data.isAvailableTable === true}
+                                onChange={() => setData({ ...data, isAvailableTable: true })}
+                            />
+                            <span>Khả dụng</span>
+                        </label>
+                        <label className="flex items-center gap-1">
+                            <input
+                                type="radio"
+                                name="isAvailableTable"
+                                value={false}
+                                checked={data.isAvailableTable === false}
+                                onChange={() => setData({ ...data, isAvailableTable: false })}
+                            />
+                            <span>Không khả dụng</span>
+                        </label>
+                    </div>
+          
           <button className="px-4 py-4 mt-2 mb-10 bg-[#0090da] hover:bg-[#0091daa7] text-white rounded-md shadow-xl ">
             Thêm sản phẩm
           </button>

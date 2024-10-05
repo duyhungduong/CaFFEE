@@ -57,6 +57,10 @@ const SummaryApi = {
     url: `${backendDomin}/api/get-typeTable`,
     method: "get",
   },
+  typeWiseTable:{
+     url: `${backendDomin}/api/type-table`,
+     method: "post",
+  },
   areaTable: {
     url: `${backendDomin}/api/get-areaTable`,
     method: "get",
@@ -73,6 +77,10 @@ const SummaryApi = {
     url: `${backendDomin}/api/addtocart`,
     method: "post",
   },
+  addToFavoriteProduct:{
+    url: `${backendDomin}/api/addtofavorite`,
+    method: "post",
+  },
   addToCartTable :{
     url: `${backendDomin}/api/addtabletocart`,
     method: "post",
@@ -80,19 +88,33 @@ const SummaryApi = {
   addToCartProductCount :{
     url: `${backendDomin}/api/countAddToCartProduct`,
     method: "get",
-  },addToCartTableCount :{
+  },
+  addToFavoriteProductCount : {
+    url: `${backendDomin}/api/countAddToFavoriteProduct`,
+    method: "get",
+  },
+  addToCartTableCount :{
     url: `${backendDomin}/api/countaddtocarttable`,
     method: "get",
-  }, addToProductView : {
+  }, 
+  addToProductView : {
     url: `${backendDomin}/api/view-cart-product`,
     method: "get",
-  }, updateCartProduct : {
+  },
+  addToFavoriteProductView : {
+    url: `${backendDomin}/api/view-favorite-product`,
+    method: "get",
+  },
+  updateCartProduct : {
     url: `${backendDomin}/api/update-cart-product`,
     method: "post",
   },
   deleteCartProduct : {
       url : `${backendDomin}/api/delete-cart-product`,
       method : 'post'
+  }, deleteFavoriteProduct :{
+    url : `${backendDomin}/api/delete-favorite-product`,
+    method : 'post'
   },
     searchProduct : {
         url : `${backendDomin}/api/search`,

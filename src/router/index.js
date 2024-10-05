@@ -16,6 +16,7 @@ import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import OrderPage from "../pages/OrderPage";
 import TestCart from "../pages/Test/TestCart";
+import Favorite from "../pages/Favorite";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         element: <Cart/>
+      },
+      {
+        path: "favorite",
+        element: <Favorite/>
       },
       {
         path: "cart-test",

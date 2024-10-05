@@ -6,18 +6,28 @@ import { Link } from "react-router-dom";
 import addToCart from "../helper/addToCart";
 import Context from "../context";
 import scrollTop from "../helper/scrollTop";
+import { useSelector } from "react-redux";
+import ROLE from "../common/role";
+import { MdFavorite } from "react-icons/md";
+import addToFavorite from "../helper/addToFavorite";
 
 const CategoryWiseProductDisplay = ({ category, heading }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const loadingList = new Array(20).fill(null);
+  const user = useSelector((state) => state?.user?.user);
 
   const { fetchUserAddToCart} = useContext(Context)
+  const { fetchUserAddToFavorite } = useContext(Context);
 
   const handleAddToCart = async(e, id) => {
     await addToCart(e, id)
     fetchUserAddToCart()
   }
+  const handleAddToFavorite = async (e, id) => {
+    await addToFavorite(e, id);
+    fetchUserAddToFavorite();
+  };
 
   const fetchData = useCallback(async () => {
     try {
@@ -72,12 +82,20 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
                   <p className="text-red-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>
                   <p className="text-slate-500 line-through">{displayVNCurrency(product?.price)}</p>
                 </div>
-                <button
-                  className="mt-2 text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-white rounded-lg transition-all hover:from-coffee-light hover:to-coffee-green"
+                {
+                  user?.role === ROLE.GENERAL ? (<button
+                  className="mt-2 text-sm flex text-coffee-dark items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light  rounded-lg transition-all hover:from-pastel-teal hover:to-pastel-blue-dark"
+                  onClick={(e)=>handleAddToFavorite(e, product?._id)}
+                >
+                  <MdFavorite /> Favorite
+                </button>) : (<button
+                  className="mt-2 text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-lg transition-all hover:from-pastel-teal hover:to-pastel-blue-dark"
                   onClick={(e)=>handleAddToCart(e, product?._id)}
                 >
                   <TbShoppingCartFilled /> Add to Cart
-                </button>
+                </button>)
+                }
+                
               </div>
             </Link>
           ))

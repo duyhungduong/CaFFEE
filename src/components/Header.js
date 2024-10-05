@@ -11,6 +11,7 @@ import { setUserDetails } from "../store/userSlice";
 import caffee from "../assest/logocaffee.png";
 import ROLE from "../common/role";
 import Context from "../context";
+import { MdFavorite } from "react-icons/md";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
@@ -129,30 +130,30 @@ const Header = () => {
             )}
           </div>
           {user?._id && (
-            <Link to={"/cart"} className="text-3xl cursor-pointer relative ">
+            <div className="text-3xl cursor-pointer relative ">
             {
               user?.role === ROLE.GENERAL ? (
-                <div>
+                <Link to={"/favorite"}>
                 <span className="">
-                <FaTablets />
+                <MdFavorite />
               </span>
               <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
-                <p className="text-xs">{context?.cartProductCount}</p>
+                <p className="text-xs">{context?.favoriteProductCount}</p>
               </div>
-                </div>
+                </Link>
               ) : (
-                <div>
+                <Link  to={"/cart"}>
                   <span className="">
                 <TiCoffee />
               </span>
               <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
                 <p className="text-xs">{context?.cartProductCount}</p>
               </div>
-                </div>
+                </Link>
               )
             }
               
-            </Link>
+            </div>
           )}
 
           <div>
