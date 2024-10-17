@@ -17,6 +17,12 @@ import Cancel from "../pages/Cancel";
 import OrderPage from "../pages/OrderPage";
 import TestCart from "../pages/Test/TestCart";
 import Favorite from "../pages/Favorite";
+import Booking from "../pages/Booking";
+import AllOrder from "../pages/AllOrder";
+import TableDetails from "../pages/TableDetails";
+import BookingPage from "../pages/BookingPage";
+import Dashboard from "../pages/Dashboard";
+import AllBooking from "../pages/AllBooking";
 
 const router = createBrowserRouter([
   {
@@ -48,12 +54,24 @@ const router = createBrowserRouter([
         element : <ProductDetails/>
       },
       {
+        path: "table/:id",
+        element : <TableDetails/>
+      },
+      {
         path: "cart",
         element: <Cart/>
       },
       {
         path: "favorite",
         element: <Favorite/>
+      },
+      {
+        path: "booking",
+        element: <Booking/>
+      },
+      {
+        path: "booking-list",
+        element: <BookingPage/>
       },
       {
         path: "cart-test",
@@ -69,7 +87,7 @@ const router = createBrowserRouter([
         element: <Cancel/>
       },
       {
-        path: "/order",
+        path: "order",
         element: <OrderPage/>
       },
       {
@@ -92,6 +110,18 @@ const router = createBrowserRouter([
             path: "all-tables",
             element: <AllTables />,
           },
+          {
+            path: "all-orders",
+            element: <AllOrder/>
+          },
+          {
+            path: "dashboard",
+            element: <Dashboard/>
+          },
+          {
+            path : "all-booking",
+            element: <AllBooking/>
+          }
         ],
       },
     ],

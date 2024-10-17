@@ -100,7 +100,7 @@ const VerticalCardProduct = ({ category, heading }) => {
         ) : (
           data.products.map((product) => (
             <Link to={`product/${product?._id}`} key={product?._id} className="w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300">
-              <div className="bg-slate-400 h-72 p-3 min-w-[200px] md:min-w-[145px] flex justify-center items-center rounded-lg overflow-hidden">
+              <div className="bg-coffee-background h-80 p-3 min-w-[200px] md:min-w-[145px] flex justify-center items-center rounded-lg overflow-hidden">
                 <img className="object-cover h-full w-full hover:scale-110 transition-transform duration-300" src={product.productImage[0]} alt={product?.productName} />
               </div>
               <div className="p-4 grid gap-2">
@@ -119,7 +119,7 @@ const VerticalCardProduct = ({ category, heading }) => {
                   </button>
                 ) : (
                   <button
-                    className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-dark text-coffee-light rounded-lg transition-all hover:from-pastel-teal hover:to-pastel-blue-dark"
+                    className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige text-coffee-dark t0-coffee-light rounded-lg transition-all hover:from-pastel-teal hover:to-pastel-blue-dark"
                     onClick={(e) => handleAddToCart(e, product?._id)}
                   >
                     <TbShoppingCartFilled /> Thêm vào giỏ

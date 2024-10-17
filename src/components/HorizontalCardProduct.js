@@ -16,12 +16,12 @@ const ProductCard = ({ product, userRole, handleAction, isFavorite }) => {
   return (
     <Link
       to={`product/${product._id}`}
-      className="relative w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-44 bg-white rounded-lg shadow-lg flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2" // Sản phẩm nhỏ hơn một chút khi rê chuột vào
+      className="relative w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-44 bg-white rounded-lg hover:shadow-md shadow-slate-600 flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 mb-3 " // Sản phẩm nhỏ hơn một chút khi rê chuột vào
       style={{ overflow: "visible", zIndex: 1 }}
     >
-      <div className="bg-slate-400 h-full p-4 min-w-[120px] md:min-w-[145px] rounded-l-lg">
+      <div className="bg-coffee-background h-full p-4 min-w-[120px] md:min-w-[145px] rounded-l-lg">
         <img
-          className="object-cover h-full w-full rounded-md transition-transform hover:scale-110"
+          className="object-cover  h-full w-full rounded-md transition-transform hover:scale-110"
           src={product.productImage[0]}
           alt={product.productName}
         />
@@ -41,7 +41,7 @@ const ProductCard = ({ product, userRole, handleAction, isFavorite }) => {
         </div>
         <button
           onClick={(e) => handleAction(e, product._id)}
-          className="text-sm flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-light text-white hover:from-coffee-light hover:to-coffee-brown rounded-lg shadow-md z-20"
+          className="text-sm flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg shadow-md z-20"
         >
           {isFavorite ? <MdFavorite /> : <TbShoppingCartFilled />}
           {isFavorite ? "Favorite" : "Add to Cart"}
@@ -124,7 +124,7 @@ const HorizontalCardProduct = ({ category, heading }) => {
 
         {/* Thanh sản phẩm */}
         <div
-          className="flex items-center gap-6 overflow-x-scroll scrollbar-none transition-all px-16" // Thêm padding để tạo không gian tránh các nút cuộn
+          className="flex items-center gap-6 overflow-x-scroll scrollbar-none transition-all px-8" // Thêm padding để tạo không gian tránh các nút cuộn
           ref={scrollElement}
           style={{ scrollBehavior: "smooth" }}
         >

@@ -15,6 +15,7 @@ function App() {
   const dispatch = useDispatch()
   const [cartProductCount,setCartProductCount] = useState(0)
   const [favoriteProductCount, setFavoriteProductCount] = useState(0)
+  const [orderCount, setOrderCount] = useState(0)
 
   //Can 1 context de chia se chuc nang nay
   const fetchUserDetails = async() =>{
@@ -50,6 +51,14 @@ function App() {
 
     setFavoriteProductCount(dataApi.data?.count)
   }
+  const fetchUserOrderProduct = async() =>{
+    const dataResponse = await fetch(SummaryApi.orderProductCount.url,{
+      method: SummaryApi.orderProductCount.method,
+      credentials : 'include'
+    })
+    const dataApi = await dataResponse.json()
+    setOrderCount(dataApi.data?.count)
+  }
 
   //Dang nhap lai thanh cong thi chuc nay se duoc goi vi cookie luu lai thong tin nguoi dung
   useEffect(()=>{
@@ -59,7 +68,8 @@ function App() {
     fetchUserAddToCart()
     //user Add to favorite count
     fetchUserAddToFavorite()
-
+    //admin or emloyee order for cumstomer
+    fetchUserOrderProduct()
   })
   return (
     <>
@@ -69,6 +79,8 @@ function App() {
         fetchUserAddToCart,
         favoriteProductCount,
         fetchUserAddToFavorite,
+        fetchUserOrderProduct,
+        orderCount,
       }}>
       <ToastContainer
       position="top-center"

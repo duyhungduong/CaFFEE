@@ -33,10 +33,10 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
     try {
       setLoading(true);
       const categoryProduct = await fetchCategoryWiseProduct(category);
-      setTimeout(() => {
+      
         setLoading(false);
         setData(categoryProduct?.data);
-      }, 250);
+      
     } catch (error) {
       setLoading(false);
       console.error("Error fetching data", error);
@@ -68,7 +68,7 @@ const CategoryWiseProductDisplay = ({ category, heading }) => {
               className="bg-white rounded-lg shadow-md transition-transform transform hover:scale-105"
               onClick={scrollTop}
             >
-              <div className="bg-slate-400 h-48 p-3 flex justify-center items-center">
+              <div className="bg-coffee-background h-70 p-3 flex justify-center items-center">
                 <img
                   className="object-cover h-full hover:scale-110 transition-all"
                   src={product.productImage[0]}

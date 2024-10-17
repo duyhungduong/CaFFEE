@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import CancelImage from '../assest/UX Success GIF.gif'
 const Cancel = () => {
+  
   return (
     <div className='bg-white  max-w-2xl mx-auto flex justify-center items-center flex-col p-4 mt-10 rounded shadow-md transition-transform transform hover:scale-105 hover:shadow-lg'><img src={CancelImage} alt="" className=''/>
     <p className='text-red-600 font-bold text-xl'>Payment Cancel</p>

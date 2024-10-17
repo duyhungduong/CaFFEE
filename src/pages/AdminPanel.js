@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { IoReorderFour } from "react-icons/io5";
 import { TiUser } from "react-icons/ti";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import ROLE from "../common/role";
@@ -9,6 +9,8 @@ import { FaTablets } from "react-icons/fa";
 import SummaryApi from "../common";
 import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
+import { MdDashboard } from "react-icons/md";
+import { TbBrandBooking } from "react-icons/tb";
 
 
 const AdminPanel = () => {
@@ -65,6 +67,9 @@ const AdminPanel = () => {
         {/* Navigation Links */}
         <div className="mt-4">
           <nav className="grid gap-4">
+            <Link to="dashboard" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+              <MdDashboard className="text-xl" /> Dashboard
+            </Link>
             <Link to="all-users" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
               <FaUsers className="text-xl" /> Users
             </Link>
@@ -74,6 +79,13 @@ const AdminPanel = () => {
             <Link to="all-tables" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
             <FaTablets className="text-xl" /> Tables
             </Link>
+            <Link to="all-orders" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <IoReorderFour className="text-xl" /> Orders
+            </Link>
+            <Link to="all-booking" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <TbBrandBooking  className="text-xl" /> Booking
+            </Link>
+
           </nav>
         </div>
 

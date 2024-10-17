@@ -35,12 +35,11 @@ const ProductDetails = () => {
 
   const [zoomStyle, setZoomStyle] = useState({});
 
-    
-  const { fetchUserAddToCart } = useContext(Context)
-  
+  const { fetchUserAddToCart } = useContext(Context);
+
   const { fetchUserAddToFavorite } = useContext(Context);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fetchProductDetails = async () => {
     setLoading(true);
@@ -57,11 +56,9 @@ const ProductDetails = () => {
 
     const dataResponse = await response.json();
 
-    setTimeout(() => {
-      setLoading(false);
-      setData(dataResponse?.data);
-      setActiveImage(dataResponse?.data?.productImage[0]);
-    }, 250);
+    setLoading(false);
+    setData(dataResponse?.data);
+    setActiveImage(dataResponse?.data?.productImage[0]);
   };
 
   console.log("data product ", data);
@@ -105,7 +102,7 @@ const ProductDetails = () => {
   const handleBuyProduct = async (e, id) => {
     await addToCart(e, id);
     fetchUserAddToCart();
-    
+
     navigate("/cart");
   };
 
@@ -113,7 +110,7 @@ const ProductDetails = () => {
     <div className="container mx-auto p-4">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-white rounded-lg shadow-lg p-6">
         {/** Product Images */}
-        <div className="flex flex-col lg:flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-6">
           <div className="w-full lg:w-3/4">
             {loading ? (
               <div className="w-full h-96 bg-skeleton-loading rounded-lg" />
@@ -128,7 +125,7 @@ const ProductDetails = () => {
               />
             )}
           </div>
-          <div className="flex flex-row lg:flex-col gap-4 overflow-x-auto lg:overflow-y-auto scrollbar-none">
+          <div className="flex flex-row lg:flex-col gap-5 overflow-x-auto lg:overflow-y-auto scrollbar-none">
             {loading
               ? new Array(4)
                   .fill(null)
@@ -141,7 +138,7 @@ const ProductDetails = () => {
               : data?.productImage?.map((imgURL, index) => (
                   <div
                     key={index}
-                    className="w-20 h-20 p-1 border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition-transform hover:scale-105 cursor-pointer"
+                    className="w-24 h-24 p-1 border border-gray-300 rounded-lg shadow-sm hover:shadow-lg transition-transform hover:scale-105 cursor-pointer"
                     onClick={() => handleMouseEnterProduct(imgURL)}
                   >
                     <img
@@ -217,43 +214,43 @@ const ProductDetails = () => {
               </p>
             )}
           </div>
-            {
-              user?.role === ROLE.GENERAL ? (<div className="flex space-x-4">
-            {loading ? (
-              <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
-            ) : (
-              <button
-                className="w-full flex items-center gap-2 lg:w-2/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
-                onClick={(e) => handleAddToFavorite(e, data?._id)}
-              >
-                <MdFavoriteBorder /> Thêm vào yêu thích
-              </button>
-            )}
-            
-          </div>) : (<div className="flex space-x-4">
-            {loading ? (
-              <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
-            ) : (
-              <button
-                className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
-                onClick={(e) => handleBuyProduct(e, data?._id)}
-              >
-                Mua
-              </button>
-            )}
-            {loading ? (
-              <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
-            ) : (
-              <button
-                className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark transition-all"
-                onClick={(e) => handleAddToCart(e, data?._id)}
-              >
-                Thêm vào giỏ
-              </button>
-            )}
-          </div>)
-            }
-          
+          {user?.role === ROLE.GENERAL ? (
+            <div className="flex space-x-4">
+              {loading ? (
+                <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
+              ) : (
+                <button
+                  className="w-full flex items-center gap-2 lg:w-2/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                  onClick={(e) => handleAddToFavorite(e, data?._id)}
+                >
+                  <MdFavoriteBorder /> Thêm vào yêu thích
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="flex space-x-4">
+              {loading ? (
+                <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
+              ) : (
+                <button
+                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                  onClick={(e) => handleBuyProduct(e, data?._id)}
+                >
+                  Mua
+                </button>
+              )}
+              {loading ? (
+                <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
+              ) : (
+                <button
+                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark transition-all"
+                  onClick={(e) => handleAddToCart(e, data?._id)}
+                >
+                  Thêm vào giỏ
+                </button>
+              )}
+            </div>
+          )}
 
           <div>
             {loading ? (

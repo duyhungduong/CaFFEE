@@ -1,4 +1,5 @@
-const backendDomin = "http://localhost:8080";
+const backendDomin = process.env.REACT_APP_BACKEND_URL; //"http://localhost:8080";
+//console.log("backendDomin", backendDomin)
 
 const SummaryApi = {
   signUP: {
@@ -57,9 +58,9 @@ const SummaryApi = {
     url: `${backendDomin}/api/get-typeTable`,
     method: "get",
   },
-  typeWiseTable:{
-     url: `${backendDomin}/api/type-table`,
-     method: "post",
+  typeWiseTable: {
+    url: `${backendDomin}/api/type-table`,
+    method: "post",
   },
   areaTable: {
     url: `${backendDomin}/api/get-areaTable`,
@@ -77,63 +78,96 @@ const SummaryApi = {
     url: `${backendDomin}/api/addtocart`,
     method: "post",
   },
-  addToFavoriteProduct:{
+  addToFavoriteProduct: {
     url: `${backendDomin}/api/addtofavorite`,
     method: "post",
   },
-  addToCartTable :{
+  addToCartTable: {
     url: `${backendDomin}/api/addtabletocart`,
     method: "post",
   },
-  addToCartProductCount :{
+  addToCartProductCount: {
     url: `${backendDomin}/api/countAddToCartProduct`,
     method: "get",
   },
-  addToFavoriteProductCount : {
+  addToFavoriteProductCount: {
     url: `${backendDomin}/api/countAddToFavoriteProduct`,
     method: "get",
   },
-  addToCartTableCount :{
+  addToCartTableCount: {
     url: `${backendDomin}/api/countaddtocarttable`,
     method: "get",
-  }, 
-  addToProductView : {
+  },
+  addToProductView: {
     url: `${backendDomin}/api/view-cart-product`,
     method: "get",
   },
-  addToFavoriteProductView : {
+  addToFavoriteProductView: {
     url: `${backendDomin}/api/view-favorite-product`,
     method: "get",
   },
-  updateCartProduct : {
+  addToBookingTable :{
+    url: `${backendDomin}/api/view-booking-table`,
+    method: "get",
+  },
+  updateCartProduct: {
     url: `${backendDomin}/api/update-cart-product`,
     method: "post",
   },
-  deleteCartProduct : {
-      url : `${backendDomin}/api/delete-cart-product`,
-      method : 'post'
-  }, deleteFavoriteProduct :{
-    url : `${backendDomin}/api/delete-favorite-product`,
-    method : 'post'
+  deleteCartProduct: {
+    url: `${backendDomin}/api/delete-cart-product`,
+    method: "post",
   },
-    searchProduct : {
-        url : `${backendDomin}/api/search`,
-        method : 'get'
+  deleteFavoriteProduct: {
+    url: `${backendDomin}/api/delete-favorite-product`,
+    method: "post",
+  },
+  searchProduct: {
+    url: `${backendDomin}/api/search`,
+    method: "get",
+  },
+  filterProduct: {
+    url: `${backendDomin}/api/filter-product`,
+    method: "post",
+  },
+  payment: {
+    url: `${backendDomin}/api/checkout`,
+    method: "post",
+  },
+  testpayment: {
+    url: `${backendDomin}/api/testcheckout`,
+    method: "post",
+  },
+  getOrder: {
+    url: `${backendDomin}/api/order-list`,
+    method: "get",
+  },
+  allOrder: {
+    url: `${backendDomin}/api/all-order`,
+    method: "get",
+  },
+  tableDetails: {
+    url: `${backendDomin}/api/table-details`,
+    method: "post",
+  }, bookingTable: {
+    url : `${backendDomin}/api/booking`,
+    method: "post",
+  },
+    orderProductCount: {
+      url : `${backendDomin}/api/countOrderProduct`,
+      method: "get",
+  },
+    getBooking : {
+      url : `${backendDomin}/api/booking-list`,
+      method: "get",
+    }, changeStatusTable : {
+      url : `${backendDomin}/api/change-table-status`,
+      method: "post",
     },
-    filterProduct : {
-        url : `${backendDomin}/api/filter-product`,
-        method : 'post'
-    },
-    payment : {
-      url : `${backendDomin}/api/checkout`,
-      method : 'post'
-    },
-    testpayment : {
-      url : `${backendDomin}/api/testcheckout`,
-      method : 'post'
-    },
-    
-
+    allBooking: {
+    url: `${backendDomin}/api/all-booking`,
+    method: "get",
+  },
 };
 
 export default SummaryApi;

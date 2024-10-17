@@ -17,7 +17,7 @@ const Login = () => {
 
   const navigate = useNavigate()
   const generalContext = useContext(Context)
-  const {fetchUserDetails, fetchUserAddToCart} = useContext(Context)
+  const {fetchUserDetails, fetchUserAddToCart , fetchUserAddToFavorite} = useContext(Context)
   
 
   console.log("generalContext", generalContext.fetchUserDetails())
@@ -45,7 +45,8 @@ const Login = () => {
       
       navigate('/')
       fetchUserDetails() // Thong tin tai khoan
-      fetchUserAddToCart() // Thong tin gio hang
+      fetchUserAddToCart()// Thong tin gio hang
+      fetchUserAddToFavorite() //Thong tin trang san pham yeu thich
     }
     if (dataApi.error) {
       toast.error(dataApi.message);

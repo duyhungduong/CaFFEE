@@ -76,7 +76,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow-md pl-3">
           <input
             type="text"
-            placeholder="search..."
+            placeholder="tìm kiếm"
             className="w-full outline-none bg-[#f6f4f3]"
             onChange={handleSearch} 
             value={search}
@@ -106,25 +106,52 @@ const Header = () => {
               <div className="absolute bg-white bottom-0 top-11 h-fit p-3 shadow-lg rounded-lg">
                 <nav className="grid">
                   {user?.role === ROLE.ADMIN && (
-                    <Link
-                      to={"/admin-panel/all-products"}
+                    
+                      <Link
+                      to={"/admin-panel/dashboard"}
                       className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
                       onClick={() => setMenuDisplay((preve) => !preve)}
                     >
                       Admin Panel
                     </Link>
                   )}
+                  {
+                    user?.role !== ROLE.GENERAL && (
+                      <Link to={"/order"}
+                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md flex "
+                      onClick={() => setMenuDisplay((preve) => !preve)}
+                      >
+                      Order
+                      <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center m-1">
+                {/* <p className="text-xs">0</p> */}
+                <p className="text-xs">{context?.orderCount}</p>
+                
+              </div>
+                      </Link>
+                    )
+                  }
+                  {user?._id && (
+                      <Link
+                      to={"/booking-list"}
+                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                      onClick={() => setMenuDisplay((preve) => !preve)}
+                    >
+                      Booking List
+                    </Link>
+                    
+                  )
+                  }
 
-                  {user?._id ? (
-                    <Link
+                  {user?._id && (
+                      <Link
                       className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
                       onClick={handleLogout}
                     >
                       Đăng xuất
                     </Link>
-                  ) : (
-                    <button className="hidden"></button>
-                  )}
+                    
+                  )
+                  } 
                 </nav>
               </div>
             )}

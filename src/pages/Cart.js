@@ -3,7 +3,7 @@ import SummaryApi from "../common";
 import Context from "../context";
 import displayVNCurrency from "../helper/displayCurrency";
 import { MdDelete } from "react-icons/md";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 
 const Cart = () => {
   const [data, setData] = useState([]);
@@ -21,28 +21,23 @@ const Cart = () => {
     });
     //setLoading(false);
     const responseData = await response.json();
+    console.log("responseData cart", responseData)
 
     if (responseData.success) {
       setData(responseData.data);
     }
   };
 
-  const handleLoading = async() =>{
-    
-    await fetchData()
-  }
+  const handleLoading = async () => {
+    await fetchData();
+  };
 
   useEffect(() => {
-
     //  fetchData();
-    setLoading(true)
+    setLoading(true);
+    handleLoading();
+    setLoading(false);
 
-    setTimeout(()=>{
-      handleLoading()
-    setLoading(false)
-    },250)
-
-    
   }, []);
 
   const increaseQty = async (id, qty) => {
@@ -118,31 +113,28 @@ const Cart = () => {
   // console.log("totalQty", totalQty)
   // console.log("totalPrice", totalPrice)
 
-  const handlePayment = async() =>{
+  const handlePayment = async () => {
+    //const stripePromise = await loadStripe('pk_test_51Q3uSAG27K4Z31a03jXRBSu4hP801vrr3cBVu3smG5OWj4AWolCXoOTynMbMxjGLEeGeFvu5ZZ6VsS5qim1HY7gJ00l1RmpCII');
+    const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
-    
-    const stripePromise = await loadStripe('pk_test_51Q3uSAG27K4Z31a03jXRBSu4hP801vrr3cBVu3smG5OWj4AWolCXoOTynMbMxjGLEeGeFvu5ZZ6VsS5qim1HY7gJ00l1RmpCII');
-
-    const response = await fetch(SummaryApi.payment.url,{
+    const response = await fetch(SummaryApi.payment.url, {
       method: SummaryApi.payment.method,
-      credentials: 'include',
+      credentials: "include",
       headers: {
         "content-type": "application/json",
-        },
-        body: JSON.stringify(
-          {
-            cartItems: data
-          }
-          )
-    })
-      const responseData = await response.json()
+      },
+      body: JSON.stringify({
+        cartItems: data,
+      }),
+    });
+    const responseData = await response.json();
 
-      if(responseData?.id){
-        stripePromise.redirectToCheckout({ sessionId : responseData.id})
+    if (responseData?.id) {
+      stripePromise.redirectToCheckout({ sessionId: responseData.id });
     }
 
-      console.log('responseData',responseData)
-  }
+    console.log("responseData", responseData);
+  };
 
   return (
     <div className="container mx-auto py-8">
@@ -160,7 +152,7 @@ const Cart = () => {
           {loading
             ? loadingCart.map((_, index) => (
                 <div
-                  key={"Add to Cart Loading"+index}
+                  key={"Add to Cart Loading" + index}
                   className="w-full bg-slate-300 h-40 my-3 border border-slate-50 rounded skeleton-loading"
                 ></div>
               ))
@@ -222,35 +214,34 @@ const Cart = () => {
         </div>
 
         {/* Tổng kết giỏ hàng */}
-        {
-          data[0] && (
-            <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6 mb-6">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Summary</h2>
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-gray-600">Total Quantity</p>
-            <p className="font-semibold text-gray-800">{totalQty}</p>
+        {data[0] && (
+          <div className="w-full lg:w-1/4 bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div>
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Summary
+              </h2>
+              <div className="flex justify-between items-center mb-4">
+                <p className="text-gray-600">Total Quantity</p>
+                <p className="font-semibold text-gray-800">{totalQty}</p>
+              </div>
+              <div className="flex justify-between items-center mb-6">
+                <p className="text-gray-600">Total Price</p>
+                <p className="font-semibold text-coffee-green">
+                  {displayVNCurrency(totalPrice)}
+                </p>
+              </div>
+              <button
+                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={handlePayment}
+              >
+                Proceed to Checkout
+              </button>
+            </div>
           </div>
-          <div className="flex justify-between items-center mb-6">
-            <p className="text-gray-600">Total Price</p>
-            <p className="font-semibold text-coffee-green">
-              {displayVNCurrency(totalPrice)}
-            </p>
-          </div>
-          <button className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          onClick={handlePayment}>
-            Proceed to Checkout
-          </button>
-        </div>
-          
-        </div>
-          )
-        }
-        
+        )}
       </div>
     </div>
   );
 };
 
 export default Cart;
-

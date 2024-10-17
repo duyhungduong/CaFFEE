@@ -3,6 +3,7 @@ import Context from "../context";
 import SummaryApi from "../common";
 import displayVNCurrency from "../helper/displayCurrency";
 import { MdDelete } from "react-icons/md";
+import { IoHeartDislike } from "react-icons/io5";
 
 const Favorite = () => {
   const [data, setData] = useState([]);
@@ -34,10 +35,10 @@ const Favorite = () => {
     //  fetchData();
     setLoading(true);
 
-    setTimeout(() => {
+    
       handleLoading();
       setLoading(false);
-    }, 250);
+    
   }, []);
 
 
@@ -113,7 +114,7 @@ const Favorite = () => {
                     className="text-red-600 hover:text-red-800 cursor-pointer"
                     onClick={() => deleteFavoriteProduct(product?._id)}
                   >
-                    <MdDelete size={24} />
+                    <IoHeartDislike size={24} />
                   </div>
                 </div>
               ))}
