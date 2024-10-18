@@ -4,12 +4,23 @@ import Context from "../context";
 import displayVNCurrency from "../helper/displayCurrency";
 import { MdDelete } from "react-icons/md";
 import { loadStripe } from "@stripe/stripe-js";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BsCashCoin } from "react-icons/bs";
+import { FaCcVisa } from "react-icons/fa6";
+import { BsBank2 } from "react-icons/bs";
+import { IoClose } from "react-icons/io5";
+import image0 from "../assest/transferImg.jpg";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const context = useContext(Context);
   const loadingCart = new Array(context.cartProductCount).fill(null);
+  const [openTransfer, setOpenTransfer] = useState(false);
+
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const response = await fetch(SummaryApi.addToProductView.url, {
@@ -21,7 +32,7 @@ const Cart = () => {
     });
     //setLoading(false);
     const responseData = await response.json();
-    console.log("responseData cart", responseData)
+    console.log("responseData cart", responseData);
 
     if (responseData.success) {
       setData(responseData.data);
@@ -37,7 +48,6 @@ const Cart = () => {
     setLoading(true);
     handleLoading();
     setLoading(false);
-
   }, []);
 
   const increaseQty = async (id, qty) => {
@@ -115,7 +125,9 @@ const Cart = () => {
 
   const handlePayment = async () => {
     //const stripePromise = await loadStripe('pk_test_51Q3uSAG27K4Z31a03jXRBSu4hP801vrr3cBVu3smG5OWj4AWolCXoOTynMbMxjGLEeGeFvu5ZZ6VsS5qim1HY7gJ00l1RmpCII');
-    const stripePromise = await loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+    const stripePromise = await loadStripe(
+      process.env.REACT_APP_STRIPE_PUBLIC_KEY
+    );
 
     const response = await fetch(SummaryApi.payment.url, {
       method: SummaryApi.payment.method,
@@ -134,6 +146,39 @@ const Cart = () => {
     }
 
     console.log("responseData", responseData);
+  };
+
+  const user = useSelector((state) => state?.user?.user);
+  // console.log(" user?.email", user?._id)
+
+  const handleCashPayment = async () => {
+    const totalAmount = totalPrice; // Hoặc giá trị tổng bạn đã tính
+    const response = await fetch(SummaryApi.payInCash.url, {
+      method: SummaryApi.payInCash.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        cartItems: data,
+        email: user?.email, // Giả sử bạn có thông tin email người dùng trong context
+        userId: user?._id, // Giả sử bạn có thông tin userId trong context
+        totalAmount: totalAmount,
+      }),
+    });
+
+    const responseData = await response.json();
+    console.log("handleCashPayment responseData", responseData);
+    if (responseData.success) {
+      // Bạn có thể xử lý để thông báo cho người dùng đã lưu đơn hàng thành công
+      // alert("Order saved successfully!");
+      toast.success(responseData.message)
+      navigate("/success");
+      // Nếu cần, bạn có thể xóa giỏ hàng sau khi thanh toán
+      context.fetchUserAddToCart(); // Cập nhật lại giỏ hàng
+    } else {
+      alert("Error saving order");
+    }
   };
 
   return (
@@ -231,15 +276,60 @@ const Cart = () => {
                 </p>
               </div>
               <button
-                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow-md mb-4"
                 onClick={handlePayment}
               >
-                Proceed to Checkout
+                <FaCcVisa className="text-2xl" /> Proceed to Checkout
+              </button>
+
+              <button
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300 shadow-md mb-4"
+                onClick={handleCashPayment}
+              >
+                <BsCashCoin className="text-2xl" /> Pay in Cash
+              </button>
+
+              <button
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-md"
+                onClick={() => setOpenTransfer(true)}
+              >
+                <BsBank2 className="text-2xl" /> Transfer
               </button>
             </div>
           </div>
         )}
       </div>
+      {openTransfer && (
+        <div className="fixed inset-0 bg-slate-100 bg-opacity-30 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg shadow-xl max-w-[90%] max-h-[90%] overflow-auto">
+            <div className="flex justify-between items-center p-4 border-b">
+              <h2 className="font-bold text-lg sm:text-xl">Bank Transfer</h2>
+              <div
+                className="text-2xl text-gray-600 hover:text-red-600 cursor-pointer"
+                onClick={() => setOpenTransfer(false)}
+              >
+                <IoClose />
+              </div>
+            </div>
+            <div className="p-4 flex justify-center items-center">
+              {/* Hiển thị ảnh giữ đúng tỉ lệ */}
+              <img
+                src={image0}
+                alt="Bank Transfer QR Code"
+                className="max-w-full max-h-[70vh] object-contain rounded-lg"
+              />
+            </div>
+            <div className="p-4">
+              <button
+                onClick={handleCashPayment}
+                className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Xác nhận đã thanh toán
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -106,7 +106,7 @@ const SummaryApi = {
     url: `${backendDomin}/api/view-favorite-product`,
     method: "get",
   },
-  addToBookingTable :{
+  addToBookingTable: {
     url: `${backendDomin}/api/view-booking-table`,
     method: "get",
   },
@@ -149,24 +149,30 @@ const SummaryApi = {
   tableDetails: {
     url: `${backendDomin}/api/table-details`,
     method: "post",
-  }, bookingTable: {
-    url : `${backendDomin}/api/booking`,
+  },
+  bookingTable: {
+    url: `${backendDomin}/api/booking`,
     method: "post",
   },
-    orderProductCount: {
-      url : `${backendDomin}/api/countOrderProduct`,
-      method: "get",
+  orderProductCount: {
+    url: `${backendDomin}/api/countOrderProduct`,
+    method: "get",
   },
-    getBooking : {
-      url : `${backendDomin}/api/booking-list`,
-      method: "get",
-    }, changeStatusTable : {
-      url : `${backendDomin}/api/change-table-status`,
-      method: "post",
-    },
-    allBooking: {
+  getBooking: {
+    url: `${backendDomin}/api/booking-list`,
+    method: "get",
+  },
+  changeStatusTable: {
+    url: `${backendDomin}/api/change-table-status`,
+    method: "post",
+  },
+  allBooking: {
     url: `${backendDomin}/api/all-booking`,
     method: "get",
+  },
+  payInCash: {
+    url: `${backendDomin}/api/pay-In-Cash`,
+    method: "post",
   },
 };
 

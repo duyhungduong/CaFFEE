@@ -28,7 +28,7 @@ function ResponsiveContainerChart() {
       </div>
       <div className="w-full h-auto">
         <AreaChart
-          width={1600} // Tăng chiều rộng
+          width={1200} // Tăng chiều rộng
           height={320} // Tăng chiều cao
           data={data}
           margin={{ top: 20, right: 40, left: 20, bottom: 10 }} // Điều chỉnh margin

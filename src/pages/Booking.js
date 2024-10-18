@@ -28,34 +28,40 @@ const Booking = () => {
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
-
+  
+    const arrivalTimeMillis = Date.parse(formData.arrivalTime);
+    const endTimeMillis = Date.parse(formData.endTime);
+  
+    // Kiểm tra nếu endTime được điền và khoảng cách thời gian vượt quá 12 tiếng
+    if (formData.endTime && (endTimeMillis - arrivalTimeMillis) > 12 * 60 * 60 * 1000) {
+      toast.error("The end time cannot be more than 12 hours after the arrival time.");
+      return;
+    }
+  
     const dataToSubmit = {
-        ...formData,
-        tableId: tableData?._id,
-        userId: user?._id,
+      ...formData,
+      tableId: tableData?._id,
+      userId: user?._id,
     };
-    console.log("user?._id", user?._id)
-
-    //console.log(dataToSubmit); // In ra dữ liệu trước khi gửi
-
+  
     const dataResponse = await fetch(SummaryApi.bookingTable.url, {
-        method: SummaryApi.bookingTable.method,
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify(dataToSubmit),
+      method: SummaryApi.bookingTable.method,
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(dataToSubmit),
     });
     const dataJson = await dataResponse.json();
-
+  
     if (dataJson.success) {
-        toast.success(dataJson.message);
-        await changeStatusTable()
-        navigate("/booking-list");
-        
+      toast.success(dataJson.message);
+      await changeStatusTable();
+      navigate("/booking-list");
     } else if (dataJson.error) {
-        toast.error(dataJson.message);
+      toast.error(dataJson.message);
     }
-};
+  };
+  
 
 const changeStatusTable = async () => {
   const fetchResponse = await fetch(SummaryApi.changeStatusTable.url, {

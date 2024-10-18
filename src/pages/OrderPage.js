@@ -41,86 +41,83 @@ const OrderPage = () => {
 
       {/* Order List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {data.map((item, index) => (
-          <div
-            key={item.userId + index}
-            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
-          >
-            {/* Order Header */}
-            <div className="p-4 border-b bg-slate-50">
-              <p className="font-medium text-lg text-gray-800">
-                {moment(item.createdAt).format("LLL")}
+      {data?.map((item, index) => (
+  <div
+    key={item.userId + index}
+    className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
+  >
+    <div className="p-4 border-b bg-slate-50">
+      <p className="font-medium text-lg text-gray-800">
+        {moment(item.createdAt).format("LLL")}
+      </p>
+    </div>
+
+    <div className="p-4">
+      {item?.productDetails?.map((product, index) => (
+        <div
+          key={product?.productId + index}
+          className="flex gap-3 bg-slate-100 mb-4 p-3 rounded-lg shadow-sm"
+        >
+          <img
+            src={product?.image?.[0] || "fallback-image.jpg"} // Kiểm tra tồn tại
+            className="w-24 h-24 object-scale-down rounded-md"
+            alt="Product"
+          />
+          <div>
+            <h2 className="font-semibold text-lg text-gray-700 mb-1">
+              {product?.name || "No Name"}
+            </h2>
+            <div className="text-gray-600">
+              <p className="text-lg text-red-500">
+                {displayVNCurrency(product?.price || 0)}
               </p>
-            </div>
-
-            {/* Product Details */}
-            <div className="p-4">
-              {item?.productDetails.map((product, index) => (
-                <div
-                  key={product.productId + index}
-                  className="flex gap-3 bg-slate-100 mb-4 p-3 rounded-lg shadow-sm"
-                >
-                  <img
-                    src={product.image[0]}
-                    className="w-24 h-24 object-scale-down rounded-md"
-                    alt="Product"
-                  />
-                  <div>
-                    <h2 className="font-semibold text-lg text-gray-700 mb-1">
-                      {product.name}
-                    </h2>
-                    <div className="text-gray-600">
-                      <p className="text-lg text-red-500">
-                        {displayVNCurrency(product.price)}
-                      </p>
-                      <p>Quantity: {product.quantity}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Payment & Shipping Details */}
-            <div className="p-4 border-t bg-slate-50">
-              <div className="mb-2">
-                <h3 className="text-lg font-medium text-gray-800">
-                  Payment Details
-                </h3>
-                <p className="text-gray-600">
-                  Payment Method: {item.paymentDetails.payment_method_type[0]}
-                </p>
-                <p className="text-gray-600">
-                  Payment Status: {item.paymentDetails.payment_status}
-                </p>
-              </div>
-
-              <div className="mb-2">
-                <h3 className="text-lg font-medium text-gray-800">
-                  Shipping Details
-                </h3>
-                {item.shipping_options.map((shipping, index) => (
-                  <div key={shipping.shipping_rate} className="text-gray-600">
-                    <p>
-                      Shipping Amount:{" "}
-                      {shipping.shipping_amount === 0 ? (
-                        <span className="text-sm italic text-gray-500">
-                          Free Shipping
-                        </span>
-                      ) : (
-                        displayVNCurrency(shipping.shipping_amount)
-                      )}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Total Amount */}
-              <div className="text-right font-semibold text-lg text-gray-800">
-                Total: {displayVNCurrency(item.totalAmount)}
-              </div>
+              <p>Quantity: {product?.quantity || 0}</p>
             </div>
           </div>
+        </div>
+      ))}
+    </div>
+
+    <div className="p-4 border-t bg-slate-50">
+      <div className="mb-2">
+        <h3 className="text-lg font-medium text-gray-800">
+          Payment Details
+        </h3>
+        <p className="text-gray-600">
+          Payment Method: {item?.paymentDetails?.payment_method_type?.[0] || "N/A"}
+        </p>
+        <p className="text-gray-600">
+          Payment Status: {item?.paymentDetails?.payment_status || "N/A"}
+        </p>
+      </div>
+
+      <div className="mb-2">
+        <h3 className="text-lg font-medium text-gray-800">
+          Shipping Details
+        </h3>
+        {item?.shipping_options?.map((shipping, index) => (
+          <div key={shipping?.shipping_rate || index} className="text-gray-600">
+            <p>
+              Shipping Amount:{" "}
+              {shipping?.shipping_amount === 0 ? (
+                <span className="text-sm italic text-gray-500">
+                  Free Shipping
+                </span>
+              ) : (
+                displayVNCurrency(shipping?.shipping_amount || 0)
+              )}
+            </p>
+          </div>
         ))}
+      </div>
+
+      <div className="text-right font-semibold text-lg text-gray-800">
+        Total: {displayVNCurrency(item?.totalAmount || 0)}
+      </div>
+    </div>
+  </div>
+))}
+
       </div>
     </div>
   );

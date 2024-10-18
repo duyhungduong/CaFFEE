@@ -23,6 +23,7 @@ import TableDetails from "../pages/TableDetails";
 import BookingPage from "../pages/BookingPage";
 import Dashboard from "../pages/Dashboard";
 import AllBooking from "../pages/AllBooking";
+import AdminInfomationPage from "../pages/Admin/AdminInformationPage";
 
 const router = createBrowserRouter([
   {
@@ -121,7 +122,11 @@ const router = createBrowserRouter([
           {
             path : "all-booking",
             element: <AllBooking/>
-          }
+          },
+          {
+            path: "admin-info",
+            element:<AdminInfomationPage/>
+          },
         ],
       },
     ],
