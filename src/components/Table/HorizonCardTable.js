@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { Link, useNavigate } from "react-router-dom";
 import { PiCursorClickDuotone } from "react-icons/pi";
 import { CgUnavailable } from "react-icons/cg";
-import Context from "../../context";
 import fetchTypeWiseTable from "../../helper/Table/fetchTypeWiseTable";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -13,33 +12,25 @@ const HorizonCardTable = ({ tableType, heading }) => {
   const [loading, setLoading] = useState(false);
   const scrollElement = useRef();
   const loadingList = new Array(20).fill(null);
-  const { fetchUserAddToCart } = useContext(Context);
   const user = useSelector((state) => state?.user?.user);
   const navigate = useNavigate();
 
-  const fetchData = async () => {
+  // Sử dụng useCallback để tối ưu hàm fetchData
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       const categoryProduct = await fetchTypeWiseTable(tableType);
-      setData(categoryProduct?.data || []); // If there's no data, set an empty array
+      setData(categoryProduct?.data || []); // Nếu không có dữ liệu, set mảng rỗng
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleAddToCart = async (e, id) => {
-    try {
-      fetchUserAddToCart(id); // Call add to cart function with the product id
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-    }
-  };
+  }, [tableType]);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(); // Gọi hàm fetchData khi component mount
+  }, [fetchData]); // Thêm fetchData vào dependency array
 
   const scrollRight = () => {
     scrollElement.current.scrollBy({
@@ -54,15 +45,15 @@ const HorizonCardTable = ({ tableType, heading }) => {
       behavior: "smooth",
     });
   };
-  const handleBooking = () => {
-    if(!user?._id){
-      toast.error("Vui lòng đăng nhập trước khi Booking");
-      navigate("/login");
-    }else{
-      navigate("/booking", { state: { tableData: data } }); // Chuyển hướng đến trang Booking với dữ liệu
-    }
-    
-  };
+
+  // const handleBooking = () => {
+  //   if (!user?._id) {
+  //     toast.error("Vui lòng đăng nhập trước khi Booking");
+  //     navigate("/login");
+  //   } else {
+  //     navigate("/booking", { state: { tableData: data } });
+  //   }
+  // };
 
   return (
     <div className="container mx-auto px-2 py-4 relative">
@@ -105,84 +96,100 @@ const HorizonCardTable = ({ tableType, heading }) => {
                   </div>
                 </div>
               ))
-            : data.map((table, index) => (
+            : data.map((table, index) =>
                 table?.isAvailableTable ? (
-                    <Link
-  to={"table/" + table?._id}
-  className="relative w-full min-w-[360px] md:min-w-[400px] max-w-[360px] md:max-w-[400px] h-48 bg-white rounded-lg hover:shadow-md shadow-coffee-dark flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2"
-  style={{ overflow: "visible", zIndex: 1 }}
->
-                      <div className="bg-coffee-background h-full p-3 min-w-[120px] md:min-w-[145px] rounded-l-lg flex items-center justify-center">
-                        {table?.tableImage?.[0] && (
-                          <img
-                            className="object-cover  h-full w-full rounded-md transition-transform hover:scale-110"
-                            src={table.tableImage[0]}
-                            alt={table?.tableNumber}
-                            key={index}
-                          />
-                        )}
-                      </div>
-                      <div className="p-4 grid">
-                        <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
-                          Bàn số {table?.tableNumber}
-                        </h2>
-                        <p className="capitalize text-slate-500">
-                          {table?.tableType}
+                  <Link
+                    to={"table/" + table?._id}
+                    className="relative w-full min-w-[360px] md:min-w-[400px] max-w-[360px] md:max-w-[400px] h-48 bg-white rounded-lg hover:shadow-md shadow-coffee-dark flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2"
+                    style={{ overflow: "visible", zIndex: 1 }}
+                    key={
+                      index + table?.tableNumber + table?.tableType + table?._id
+                    }
+                  >
+                    <div className="bg-coffee-background hover:bg-gradient-to-r hover:from-coffee-background hover:to-coffee-light h-full p-3 min-w-[120px] md:min-w-[145px] rounded-l-lg flex items-center justify-center">
+                      {table?.tableImage?.[0] && (
+                        <img
+                          className="object-cover  h-full w-full rounded-md transition-transform hover:scale-110"
+                          src={table.tableImage[0]}
+                          alt={table?.tableNumber}
+                          key={
+                            index +
+                            table?.tableNumber +
+                            table?.tableType +
+                            table?._id
+                          }
+                        />
+                      )}
+                    </div>
+                    <div className="p-4 grid">
+                      <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
+                        Bàn số {table?.tableNumber}
+                      </h2>
+                      <p className="capitalize text-slate-500">
+                        {table?.tableType}
+                      </p>
+                      <div className="flex gap-2">
+                        <p className="text-[#00d084] font-medium">
+                          {table?.tableStatus}
                         </p>
-                        <div className="flex gap-2">
-                          <p className="text-red-600 font-medium">
-                            {table?.tableStatus}
-                          </p>
-                          <p className="text-slate-500 font-medium">
-                            {table?.tableArea}
-                          </p>
-                        </div>
-                        <button
-                          onClick={(e) => handleAddToCart(e, table?._id)}
-                          className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg"
-                        >
-                          <PiCursorClickDuotone /> Booking
-                        </button>
+                        <p className="text-slate-500 font-medium">
+                          {table?.tableArea}
+                        </p>
                       </div>
-                    </Link>
-                  ) : (
-                    <div
-                      // to={"product/" + table?._id}
-                      className="relative w-full min-w-[360px] md:min-w-[400px] max-w-[360px] md:max-w-[400px] h-48 bg-red-200 rounded-xl shadow-lg flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 cursor-not-allowed" // Sản phẩm nhỏ hơn một chút khi rê chuột vào
-                      style={{ overflow: "visible", zIndex: 1 }}
+                      <Link
+                    to={"table/" + table?._id}
+                        className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg"
                       >
-                      <div className="bg-red-100 h-full p-3 min-w-[120px] md:min-w-[145px] flex items-center justify-center">
-                        {table?.tableImage?.[0] && (
-                          <img
-                            className="object-scale-down h-full w-full  transition-transform hover:scale-110"
-                            src={table.tableImage[0]}
-                            alt={table?.tableNumber}
-                            key={index}
-                          />
-                        )}
-                      </div>
-                      <div className="p-4 grid gap-2">
-                        <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
-                          Bàn số {table?.tableNumber}
-                        </h2>
-                        <p className="capitalize text-slate-500">
-                          {table?.tableType}
+                        <PiCursorClickDuotone /> Booking
+                      </Link>
+                    </div>
+                  </Link>
+                ) : (
+                  <div
+                    // to={"product/" + table?._id}
+                    className="relative w-full min-w-[360px] md:min-w-[400px] max-w-[360px] md:max-w-[400px] h-48 bg-red-200 rounded-xl shadow-lg flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 cursor-not-allowed" // Sản phẩm nhỏ hơn một chút khi rê chuột vào
+                    style={{ overflow: "visible", zIndex: 1 }}
+                    key={
+                      index + table?.tableNumber + table?.tableType + table?._id
+                    }
+                  >
+                    <div className="bg-red-100 h-full p-3 min-w-[120px] md:min-w-[145px] flex items-center justify-center">
+                      {table?.tableImage?.[0] && (
+                        <img
+                          className="object-scale-down h-full w-full  transition-transform hover:scale-110"
+                          src={table.tableImage[0]}
+                          alt={table?.tableNumber}
+                          key={
+                            index +
+                            table?.tableNumber +
+                            table?.tableType +
+                            table?._id
+                          }
+                        />
+                      )}
+                    </div>
+                    <div className="p-4 grid gap-2">
+                      <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
+                        Bàn số {table?.tableNumber}
+                      </h2>
+                      <p className="capitalize text-slate-500">
+                        {table?.tableType}
+                      </p>
+                      <div className="flex gap-2">
+                        <p className="text-red-600 font-medium">
+                          {table?.tableStatus}
                         </p>
-                        <div className="flex gap-2">
-                          <p className="text-red-600 font-medium">
-                            {table?.tableStatus}
-                          </p>
-                          <p className="text-slate-500 font-medium">
-                            {table?.tableArea}
-                          </p>
-                        </div>
-                        <div className="text-sm flex items-center cursor-not-allowed gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-pink hover:to-pastel-purple rounded-lg">
-                          <CgUnavailable /> Bàn không khả dụng
-                        </div>
+                        <p className="text-slate-500 font-medium">
+                          {table?.tableArea}
+                        </p>
+                      </div>
+                      <div className="text-sm flex items-center cursor-not-allowed gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-pink hover:to-pastel-purple rounded-lg">
+                        <CgUnavailable /> Bàn không khả dụng
                       </div>
                     </div>
-                  )
-              ))}
+                  </div>
+                )
+              )}
         </div>
       </div>
     </div>

@@ -1,15 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Context from "../../context";
-import addToCart from "../../helper/addToCart";
-import addToFavorite from "../../helper/addToFavorite";
+// import Context from "../../context";
+// import addToCart from "../../helper/addToCart";
+// import addToFavorite from "../../helper/addToFavorite";
 import fetchTypeWiseTable from "../../helper/Table/fetchTypeWiseTable";
-import { TbShoppingCartFilled } from "react-icons/tb";
 import { MdFavorite } from "react-icons/md";
-import ROLE from "../../common/role";
 import scrollTop from "../../helper/scrollTop";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FaSadCry } from "react-icons/fa";
 
 const TypeWiseTableDisplay = ({ tableType, heading }) => {
   const [data, setData] = useState([]);
@@ -18,17 +17,17 @@ const TypeWiseTableDisplay = ({ tableType, heading }) => {
   const user = useSelector((state) => state?.user?.user);
   
   const navigate = useNavigate();
-  const { fetchUserAddToCart } = useContext(Context);
-  const { fetchUserAddToFavorite } = useContext(Context);
+  // const { fetchUserAddToCart } = useContext(Context);
+  // const { fetchUserAddToFavorite } = useContext(Context);
 
-  const handleAddToCart = async (e, id) => {
-    await addToCart(e, id);
-    fetchUserAddToCart();
-  };
-  const handleAddToFavorite = async (e, id) => {
-    await addToFavorite(e, id);
-    fetchUserAddToFavorite();
-  };
+  // const handleAddToCart = async (e, id) => {
+  //   await addToCart(e, id);
+  //   fetchUserAddToCart();
+  // };
+  // const handleAddToFavorite = async (e, id) => {
+  //   await addToFavorite(e, id);
+  //   fetchUserAddToFavorite();
+  // };
 
   const fetchData = useCallback(async () => {
     try {
@@ -51,6 +50,10 @@ const TypeWiseTableDisplay = ({ tableType, heading }) => {
     }
     
   };
+
+  const handleClickUnBooking = ()=>{
+    toast.error("Bàn đã được đặt. Quý khách vui lòng chọn bàn khác!!!")
+  }
 
   useEffect(() => {
     fetchData();
@@ -118,7 +121,7 @@ const TypeWiseTableDisplay = ({ tableType, heading }) => {
                     
                     key={product._id}
                     className="bg-red-200 rounded-lg shadow-md transition-transform transform hover:scale-105 cursor-not-allowed"
-                    onClick={scrollTop}
+                    onClick={handleClickUnBooking}
                   >
                     <div className="bg-red-400 h-72 p-3 flex justify-center items-center">
                       <img
@@ -145,9 +148,9 @@ const TypeWiseTableDisplay = ({ tableType, heading }) => {
                       {
                         <button
                           className="mt-2 text-sm flex text-coffee-dark items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light  rounded-lg transition-all hover:from-pastel-pink hover:to-pastel-purple cursor-not-allowed"
-                          onClick={(e) => handleAddToFavorite(e, product?._id)}
+                          onClick={scrollTop}
                         >
-                          <MdFavorite /> Booking
+                          <FaSadCry /> Bàn không khả dụng
                         </button>
                       }
                     </div>

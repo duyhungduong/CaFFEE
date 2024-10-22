@@ -276,13 +276,6 @@ const Cart = () => {
                 </p>
               </div>
               <button
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow-md mb-4"
-                onClick={handlePayment}
-              >
-                <FaCcVisa className="text-2xl" /> Proceed to Checkout
-              </button>
-
-              <button
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-all duration-300 shadow-md mb-4"
                 onClick={handleCashPayment}
               >
@@ -290,11 +283,20 @@ const Cart = () => {
               </button>
 
               <button
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-md"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all duration-300 shadow-md mb-4"
                 onClick={() => setOpenTransfer(true)}
               >
                 <BsBank2 className="text-2xl" /> Transfer
               </button>
+
+              <button
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 shadow-md"
+                onClick={handlePayment}
+              >
+                <FaCcVisa className="text-2xl" /> Proceed to Checkout
+              </button>
+
+              
             </div>
           </div>
         )}

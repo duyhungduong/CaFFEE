@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import image0 from "../assest/mapdemo.png";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -16,6 +16,15 @@ const Booking = () => {
   const { tableData } = location.state || {};
   const user = useSelector((state) => state?.user?.user);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Nếu không có tableData, chuyển hướng người dùng về trang chủ và thông báo lỗi
+    if (!tableData) {
+      toast.error("Vui lòng chọn bàn trước khi vào trang này!!!");
+      navigate("/");
+    }
+    
+  }, [tableData, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

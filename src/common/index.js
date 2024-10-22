@@ -174,6 +174,35 @@ const SummaryApi = {
     url: `${backendDomin}/api/pay-In-Cash`,
     method: "post",
   },
+  sendMessageToreceiver : {
+    url: `${backendDomin}/api/send-message`,
+    method: "post",
+  },
+  getMessage : {
+    url: `${backendDomin}/api/getMessage`,
+    method: "get",
+  },
+  markMessage : {
+    url: `${backendDomin}/api/mark-as-read`,
+    method: "put",
+  },
+  getCountUnreadMessage : {
+    url: `${backendDomin}/api/count-unreadmessage`,
+    method: "get",
+  },
+  getCountBookingTable : {
+    url: `${backendDomin}/api/count-booking-table`,
+    method: "get",
+  },
+  filterTable : {
+    url: `${backendDomin}/api/filter-table`,
+    method: "post",
+  },
+  sendToAll : {
+    url: `${backendDomin}/api/send-to-all`,
+    method: "post",
+  },
+
 };
 
 export default SummaryApi;

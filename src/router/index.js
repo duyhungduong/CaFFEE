@@ -24,6 +24,9 @@ import BookingPage from "../pages/BookingPage";
 import Dashboard from "../pages/Dashboard";
 import AllBooking from "../pages/AllBooking";
 import AdminInfomationPage from "../pages/Admin/AdminInformationPage";
+import Notification from "../pages/Notification";
+import TypeTable from "../pages/TypeTable";
+import SendMessageToAll from "../pages/SendMessageToAll";
 
 const router = createBrowserRouter([
   {
@@ -47,53 +50,61 @@ const router = createBrowserRouter([
         element: <SignUp />,
       },
       {
-        path : "product-category",
-        element : <CategoryProduct/>
-    },
+        path: "product-category",
+        element: <CategoryProduct />,
+      },
       {
         path: "product/:id",
-        element : <ProductDetails/>
+        element: <ProductDetails />,
       },
       {
         path: "table/:id",
-        element : <TableDetails/>
+        element: <TableDetails />,
+      },
+      {
+        path: "table-tableType",
+        element: <TypeTable/>,
       },
       {
         path: "cart",
-        element: <Cart/>
+        element: <Cart />,
+      },
+      {
+        path: "noti",
+        element: <Notification />,
       },
       {
         path: "favorite",
-        element: <Favorite/>
+        element: <Favorite />,
       },
       {
         path: "booking",
-        element: <Booking/>
+        element: <Booking />,
       },
       {
         path: "booking-list",
-        element: <BookingPage/>
+        element: <BookingPage />,
       },
       {
         path: "cart-test",
-        element: <TestCart/>
+        element: <TestCart />,
       },
-      
+
       {
         path: "success",
-        element: <Success/>
+        element: <Success />,
       },
       {
         path: "cancel",
-        element: <Cancel/>
+        element: <Cancel />,
       },
       {
         path: "order",
-        element: <OrderPage/>
+        element: <OrderPage />,
       },
       {
         path: "search",
-        element: <SearchProduct/>
+        element: <SearchProduct />,
       },
       {
         path: "admin-panel",
@@ -113,19 +124,23 @@ const router = createBrowserRouter([
           },
           {
             path: "all-orders",
-            element: <AllOrder/>
+            element: <AllOrder />,
           },
           {
             path: "dashboard",
-            element: <Dashboard/>
+            element: <Dashboard />,
           },
           {
-            path : "all-booking",
-            element: <AllBooking/>
+            path: "all-booking",
+            element: <AllBooking />,
           },
           {
             path: "admin-info",
-            element:<AdminInfomationPage/>
+            element: <AdminInfomationPage />,
+          },
+          {
+            path: "admin-send-message",
+            element: <SendMessageToAll/>,
           },
         ],
       },

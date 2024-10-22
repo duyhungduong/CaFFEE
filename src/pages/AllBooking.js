@@ -1,25 +1,89 @@
-import React, { useEffect, useState } from 'react'
-import SummaryApi from '../common'
-import moment from 'moment';
+import React, { useEffect, useState } from "react";
+import SummaryApi from "../common";
+import moment from "moment";
+import Switch from "react-switch";
+import { WiStars } from "react-icons/wi";
+import { MdEventBusy } from "react-icons/md";
+import { toast } from "react-toastify";
+import { FaRegMessage } from "react-icons/fa6";
+import SendMessage from "../components/SendMessage";
+import { useSelector } from "react-redux";
 
 const AllBooking = () => {
-    const [data,setData] = useState([])
+  const [data, setData] = useState([]);
 
-    const fetchBookingDetails = async()=>{
-      const response = await fetch(SummaryApi.allBooking.url,{
-        method : SummaryApi.allBooking.method,
-        credentials : 'include'
-      })
-  
-      const responseData = await response.json()
-  
-      setData(responseData.data)
-      console.log("booking list",responseData)
+  const user = useSelector((state) => state?.user?.user);
+  // Lưu trạng thái clean cho từng item
+  const [openUpdateRole, setOpenUpdateRole] = useState({});
+  const handleChangeSend = (tableId, nextChecked) => {
+    setOpenUpdateRole((prevState) => ({
+      ...prevState,
+      [tableId]: nextChecked,
+    }));
+  }
+
+  const [formData, setFormData] = useState({
+    sender: "", // Tham chiếu đến ObjectId của sender
+    receiver: "", // Tham chiếu đến ObjectId của receiver
+    message: "Hello!",
+    read: false,
+  });
+
+  const changeStatusTable = async (tableId, tableStatus, isAvailableTable) => {
+    const fetchResponse = await fetch(SummaryApi.changeStatusTable.url, {
+      method: SummaryApi.changeStatusTable.method,
+      credentials: "include",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        tableId: tableId,
+        tableStatus: tableStatus,
+        isAvailableTable: isAvailableTable,
+      }),
+    });
+
+    const responseData = await fetchResponse.json();
+
+    if (responseData.success) {
+      toast.success(responseData.message);
+      // onClose();
+      // callFunc();
     }
-  
-    useEffect(()=>{
-      fetchBookingDetails()
-    },[])
+    if (responseData.error) {
+      toast.error(responseData.message);
+    }
+
+    console.log("changeStatusTable updated: ", responseData);
+  };
+
+  const handleChange = async (tableId, nextChecked) => {
+    if (nextChecked) {
+      // alert("Dung", tableId) //true, "Đang trống"
+      changeStatusTable(tableId, "Đang trống", true);
+      await fetchBookingDetails();
+    } else {
+      //alert("Sai") // false, "Da dat" "Đã đặt"
+      changeStatusTable(tableId, "Đã đặt", false);
+      await fetchBookingDetails();
+    }
+  };
+
+  const fetchBookingDetails = async () => {
+    const response = await fetch(SummaryApi.allBooking.url, {
+      method: SummaryApi.allBooking.method,
+      credentials: "include",
+    });
+
+    const responseData = await response.json();
+
+    setData(responseData.data);
+    console.log("booking list", responseData);
+  };
+
+  useEffect(() => {
+    fetchBookingDetails();
+  }, []);
   return (
     <div className="container mx-auto py-8">
       {/* Header Section */}
@@ -55,7 +119,8 @@ const AllBooking = () => {
                 {item.tableId?.tableType}
               </h2>
               <p className="text-gray-600 text-sm mb-4">
-                Bàn số {item?.tableId?.tableNumber} - {item?.tableId?.description}
+                Bàn số {item?.tableId?.tableNumber} -{" "}
+                {item?.tableId?.description}
               </p>
 
               {/* Booking Time */}
@@ -76,8 +141,56 @@ const AllBooking = () => {
                   <span className="font-medium">Notes:</span> {item.notes}
                 </div>
               )}
-              
+              <div className="flex items-center justify-between p-2 mt-4">
+                <span className="text-gray-700">Trạng thái : </span>
+                <div className="flex items-center gap-2">
+                  {item?.tableId?.isAvailableTable ? (
+                    <p className="flex items-center">
+                      <WiStars className="text-3xl text-[#00d084]" />
+                      Đã trả bàn
+                    </p>
+                  ) : (
+                    <p className="flex items-center">
+                      <MdEventBusy className="text-2xl text-[#d9534f]" />
+                      Đang được sử dụng
+                    </p>
+                  )}
+                </div>
+                <Switch
+                  onChange={(checked) =>
+                    handleChange(item?.tableId?._id, checked)
+                  }
+                  checked={item?.tableId?.isAvailableTable}
+                  onColor="#00d084"
+                  offColor="#d9534f"
+
+                  // checkedIcon={<FaRegLightbulb  />}
+                  // uncheckedIcon={<FaBroom  />}
+                />
+              </div>
+              <div className="flex items-center justify-between p-2 mt-4">
+                <span className="text-gray-700">Liên hệ người đặt : </span>
+                <div className="flex items-center gap-2 text-sm">
+                  {item?.userId?.email}
+                </div>
+                <div className="hover:bg-slate-300 hover:shadow-md  w-5 h-5 flex justify-center items-center rounded-full">
+                  <FaRegMessage
+                    className="hover:scale-105 transition-all transform"
+                    onClick={() => {
+                      handleChangeSend(item?.tableId?._id,true);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
+            {openUpdateRole[item?.tableId?._id] && (
+              <SendMessage
+                onClose={() => setOpenUpdateRole(false)}
+                sender={user?._id}
+                receiver={item?.userId?._id}
+                callFunc={fetchBookingDetails}
+              />
+            )}
           </div>
         ))}
       </div>
@@ -85,4 +198,4 @@ const AllBooking = () => {
   );
 };
 
-export default AllBooking
+export default AllBooking;

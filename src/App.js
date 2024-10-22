@@ -16,6 +16,9 @@ function App() {
   const [cartProductCount,setCartProductCount] = useState(0)
   const [favoriteProductCount, setFavoriteProductCount] = useState(0)
   const [orderCount, setOrderCount] = useState(0)
+  const [bookingCount, setBookingCount] = useState(0)
+  const [unreadMessage, setUnreadMessage] = useState(0);
+
 
   //Can 1 context de chia se chuc nang nay
   const fetchUserDetails = async() =>{
@@ -42,6 +45,7 @@ function App() {
 
     setCartProductCount(dataApi.data?.count)
   }
+
   const fetchUserAddToFavorite = async() =>{
     const dataResponse = await fetch(SummaryApi.addToFavoriteProductCount.url,{
       method: SummaryApi.addToFavoriteProductCount.method,
@@ -51,6 +55,7 @@ function App() {
 
     setFavoriteProductCount(dataApi.data?.count)
   }
+
   const fetchUserOrderProduct = async() =>{
     const dataResponse = await fetch(SummaryApi.orderProductCount.url,{
       method: SummaryApi.orderProductCount.method,
@@ -59,6 +64,26 @@ function App() {
     const dataApi = await dataResponse.json()
     setOrderCount(dataApi.data?.count)
   }
+  
+  const fetchUserBookingProduct = async() =>{
+    const dataResponse = await fetch(SummaryApi.getCountBookingTable.url,{
+      method: SummaryApi.getCountBookingTable.method,
+      credentials : 'include'
+    })
+    const dataApi = await dataResponse.json()
+    setBookingCount(dataApi.data?.count)
+  }
+  
+  const fetchUserMessage = async() =>{
+    const dataResponse = await fetch(SummaryApi.getCountUnreadMessage.url,{
+      method: SummaryApi.getCountUnreadMessage.method,
+      credentials : 'include'
+    })
+    const dataApi = await dataResponse.json()
+    setUnreadMessage(dataApi.data?.count)
+    // console.log("dataApi.data?.count", dataApi.data?.count)
+  }
+
 
   //Dang nhap lai thanh cong thi chuc nay se duoc goi vi cookie luu lai thong tin nguoi dung
   useEffect(()=>{
@@ -70,6 +95,10 @@ function App() {
     fetchUserAddToFavorite()
     //admin or emloyee order for cumstomer
     fetchUserOrderProduct()
+    //general count booking 
+    fetchUserBookingProduct()
+    //user message
+    fetchUserMessage()
   })
   return (
     <>
@@ -81,6 +110,10 @@ function App() {
         fetchUserAddToFavorite,
         fetchUserOrderProduct,
         orderCount,
+        fetchUserMessage,
+        unreadMessage,
+        fetchUserBookingProduct,
+        bookingCount,
       }}>
       <ToastContainer
       position="top-center"

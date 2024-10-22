@@ -3,6 +3,9 @@ import SummaryApi from "../common";
 import moment from "moment";
 import displayVNCurrency from "../helper/displayCurrency";
 import { toast } from "react-toastify";
+import { FcShipped } from "react-icons/fc";
+import { FcMoneyTransfer } from "react-icons/fc";
+import { FcSimCardChip } from "react-icons/fc";
 
 const AllOrder = () => {
   const [data, setData] = useState([]);
@@ -14,21 +17,20 @@ const AllOrder = () => {
         method: SummaryApi.allOrder.method,
         credentials: "include",
       });
-  
+
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-  
+
       const responseData = await response.json();
       setData(responseData.data);
       groupOrdersByMonth(responseData.data);
     } catch (error) {
       console.error("Failed to fetch order details:", error);
       //thông báo lỗi cho người dùng
-      toast.error("Failed to fetch order details!!!")
+      toast.error("Failed to fetch order details!!!");
     }
   };
-  
 
   // Hàm nhóm đơn hàng theo tháng và tính tổng số tiền của từng tháng
   const groupOrdersByMonth = (orders) => {
@@ -58,16 +60,17 @@ const AllOrder = () => {
   }, []);
 
   return (
-    <div className="min-h-[calc(100vh-200px)] py-8 bg-gray-100">
+    <div className="min-h-[calc(100vh-200px)] py-8 bg-gray-100 ">
       {/* Display Total Price at the top */}
       <div className="max-w-5xl mx-auto mb-8 p-4 bg-white shadow-lg rounded-lg text-center">
         <h2 className="text-2xl font-bold text-coffee-brown">
-          Total Orders Value: {displayVNCurrency(totalPrice)}
+          Total Orders Value: {displayVNCurrency(totalPrice)} - Total Orders :{" "}
+          {data?.length}
         </h2>
       </div>
 
       {/* Orders grouped by month */}
-      <div className="max-w-5xl mx-auto p-4 space-y-8">
+      <div className="max-w-5xl mx-auto p-4 space-y-8 ">
         {Object.keys(groupedOrders).length === 0 ? (
           <p className="text-center text-gray-600">No Order available</p>
         ) : (
@@ -82,7 +85,9 @@ const AllOrder = () => {
                 Total for {monthYear}:{" "}
                 {displayVNCurrency(
                   groupedOrders[monthYear].totalAmountForMonth
-                )}
+                )}{" "}
+                - Total Order {monthYear}:{" "}
+                {groupedOrders[monthYear]?.orders?.length}
               </p>
               {/* Hiển thị các đơn hàng của từng tháng */}
               {groupedOrders[monthYear].orders.map((item, index) => (
@@ -97,10 +102,10 @@ const AllOrder = () => {
                         {moment(item.createdAt).format("lll")}
                       </p>
                       <p className="text-gray-500">
-                        {item?.userId?.name || "Customer Name"}
+                        {item?.userId?.name || "Emloyee Name"}
                       </p>
                       <p className="text-gray-500">
-                        {item?.email || "Customer Email"}
+                        {item?.email || "Emloyee Email"}
                       </p>
                     </div>
                     <div className="text-lg font-semibold text-coffee-brown">
@@ -148,8 +153,8 @@ const AllOrder = () => {
                         Payment Method:{" "}
                         {item?.paymentDetails?.payment_method_type?.[0]}
                       </p>
-                      <p>
-                        Payment Status: {item?.paymentDetails?.payment_status}
+                      <p className="flex items-center">
+                        Payment Status:{" "}<FcMoneyTransfer className="mx-1"/>{" "} {item?.paymentDetails?.payment_status}
                       </p>
                     </div>
 
@@ -165,7 +170,14 @@ const AllOrder = () => {
                             className="mt-2"
                           >
                             Shipping Amount:{" "}
-                            {displayVNCurrency(shipping?.shipping_amount)}
+                            {shipping?.shipping_amount === 0 ? (
+                              <span className="text-sm flex items-center italic text-gray-500">
+                                <FcShipped />
+                                Free Shipping
+                              </span>
+                            ) : (
+                              displayVNCurrency(shipping?.shipping_amount || 0)
+                            )}
                           </div>
                         ))
                       ) : (

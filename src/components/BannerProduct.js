@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FaAngleLeft } from "react-icons/fa6";
-import { FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 import image0 from "../assest/banner/White Coffee Banner.png";
 import image1 from "../assest/banner/Beige Green Modern Abstract Cappuccino Banner Landscape.png";
@@ -16,94 +16,107 @@ import image4Mobile from "../assest/banner/mobile- Yellow and Orange Modern Simp
 
 const BannerProduct = () => {
   const [currentImage, setCurrentImage] = useState(0);
-  const desktopImages = [image0, image1, image2, image3, image4];
-  const mobileImages = [
-    image0Mobile,
-    image1Mobile,
-    image2Mobile,
-    image3Mobile,
-    image4Mobile,
+  
+  // Arrays for desktop and mobile images
+  const desktopImages = [
+    { src: image0, category: "americano" },
+    { src: image1, category: "hotcoffee" },
+    { src: image2, category: "cappuccino" },
+    { src: image3, category: "brownie" },
+    { src: image4, category: "cake" }
   ];
 
-  const nextImage = () =>{
-    if(desktopImages.length - 1 > currentImage){
-       setCurrentImage(preve => preve + 1 )
-    }else{
-      setCurrentImage(0)
+  const mobileImages = [
+    { src: image0Mobile, category: "americano" },
+    { src: image1Mobile, category: "hotcoffee" },
+    { src: image2Mobile, category: "cappuccino" },
+    { src: image3Mobile, category: "brownie" },
+    { src: image4Mobile, category: "cake" }
+  ];
+
+  const nextImage = () => {
+    if (desktopImages.length - 1 > currentImage) {
+      setCurrentImage((prev) => prev + 1);
+    } else {
+      setCurrentImage(0);
     }
-   
-  }
+  };
 
-  const preveImage = ()=> {
-    if(currentImage > 0) {
-      setCurrentImage(preve => preve - 1)
-    }else{
-      setCurrentImage(desktopImages.length - 1)
+  const preveImage = () => {
+    if (currentImage > 0) {
+      setCurrentImage((prev) => prev - 1);
+    } else {
+      setCurrentImage(desktopImages.length - 1);
     }
-  }
+  };
 
-  useEffect(()=>{
-    const interval = setInterval(()=>{
-      if(desktopImages.length - 1 > currentImage){
-        setCurrentImage(preve => preve + 1 )
-     }else{
-       setCurrentImage(0)
-     }
-    }, 7500)
-    return ()=> clearInterval(interval)
-  },[currentImage])
-
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (desktopImages.length - 1 > currentImage) {
+        setCurrentImage((prev) => prev + 1);
+      } else {
+        setCurrentImage(0);
+      }
+    }, 7500);
+    return () => clearInterval(interval);
+  }, [currentImage]);
 
   return (
     <div className="mx-auto container p-2 px-4 rounded">
       <div className="h-90 md:h-auto w-full bg-slate-100 relative">
         <div className="absolute z-10 h-full w-full flex items-center">
-          <div className=" w-full flex justify-between text-base">
-            <button onClick={preveImage} className="bg-white shadow-md rounded-full p-1">
+          <div className="w-full flex justify-between text-base">
+            <button
+              onClick={preveImage}
+              className="bg-white shadow-md rounded-full p-1"
+            >
               <FaAngleLeft />
             </button>
-            <button onClick={nextImage} className="bg-white shadow-md rounded-full p-1">
+            <button
+              onClick={nextImage}
+              className="bg-white shadow-md rounded-full p-1"
+            >
               <FaAngleRight />
             </button>
           </div>
         </div>
 
-        {/** Desktop and tablet*/ }
+        {/* Desktop and tablet */}
         <div className="hidden md:flex h-full w-full overflow-hidden">
-          {desktopImages.map((imageURL, index) => {
-            return (
-              <div
-                className="w-full h-full min-w-full min-h-full transition-all"
-                key={imageURL}
-                style={{ transform: `translateX(-${currentImage * 100}%)` }}
-              >
+          {desktopImages.map((image, index) => (
+            <div
+              className="w-full h-full min-w-full min-h-full transition-all"
+              key={image.src}
+              style={{ transform: `translateX(-${currentImage * 100}%)` }}
+            >
+              <Link to={`/product-category?category=${image.category}`}>
                 <img
-                  src={imageURL}
-                  alt=""
+                  src={image.src}
+                  alt={image.category}
                   className="w-full h-full object-cover object-center rounded-2xl"
                 />
-              </div>
-            );
-          })}
+              </Link>
+            </div>
+          ))}
         </div>
 
-        {/** Mobile  */}
+        {/* Mobile */}
         <div className="flex h-full w-full overflow-hidden md:hidden">
-          {mobileImages.map((imageURL, index) => {
-            return (
-              <div
-                className="w-full h-full min-w-full min-h-full transition-all"
-                key={imageURL}
-                style={{ transform: `translateX(-${currentImage * 100}%)` }}
-              >
+          {mobileImages.map((image, index) => (
+            <div
+              className="w-full h-full min-w-full min-h-full transition-all"
+              key={image.src}
+              style={{ transform: `translateX(-${currentImage * 100}%)` }}
+            >
+              <Link to={`/product-category?category=${image.category}`}>
                 <img
-                  src={imageURL}
-                  alt=""
+                  src={image.src}
+                  alt={image.category}
                   className="w-full h-full object-cover object-center rounded-2xl"
                 />
-              </div>
-            );
-          })}
+              </Link>
+            </div>
+          ))}
         </div>
       </div>
     </div>

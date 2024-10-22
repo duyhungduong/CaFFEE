@@ -35,7 +35,7 @@ const VerticalCard = ({ loading, data = [] }) => {
             key={index}
             className="bg-gray-100 rounded-lg shadow-md p-4 animate-pulse"
           >
-            <div className="bg-slate-200 h-48 w-full mb-4"></div>
+            <div className="bg-slate-200 h-72 w-full mb-4"></div>
             <div className="h-4 bg-gray-400 rounded mb-2"></div>
             <div className="h-4 bg-gray-400 rounded mb-2"></div>
             <div className="h-6 bg-gray-400 rounded"></div>
@@ -52,7 +52,7 @@ const VerticalCard = ({ loading, data = [] }) => {
               animationDelay: `${index * 100}ms`,
             }}
           >
-            <div className="bg-slate-50 h-48 p-3 flex justify-center items-center">
+            <div className="bg-coffee-background h-72 p-3 flex justify-center items-center">
               <img
                 className="object-cover h-full hover:scale-110 transition-all"
                 src={product?.productImage[0]}

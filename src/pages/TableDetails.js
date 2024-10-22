@@ -13,6 +13,8 @@ import TypeWiseTableDisplay from "../components/Table/TypeWiseTableDisplay";
 import { TbBrandBooking } from "react-icons/tb";
 import { toast } from "react-toastify";
 
+import scrollTop from "../helper/scrollTop";
+
 const TableDetails = () => {
   const [data, setData] = useState({
     tableNumber: "",
@@ -62,6 +64,8 @@ const fetchProductDetails = async () => {
 
   useEffect(() => {
     fetchProductDetails();
+    scrollTop()
+
   }, [params]);
 
   const handleMouseEnterProduct = (imgURL) => {

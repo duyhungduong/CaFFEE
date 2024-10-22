@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import { TiUser } from "react-icons/ti";
 import { TiCoffee } from "react-icons/ti";
-import { FaTablets } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import SummaryApi from "../common";
@@ -12,19 +11,19 @@ import caffee from "../assest/logocaffee.png";
 import ROLE from "../common/role";
 import Context from "../context";
 import { MdFavorite } from "react-icons/md";
+import { FaBell } from "react-icons/fa6";
+import { TbBellRingingFilled } from "react-icons/tb";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
   const dispatch = useDispatch();
   const [menuDisplay, setMenuDisplay] = useState(false);
   const context = useContext(Context);
-  const navigate = useNavigate()
-  const searchInput = useLocation()
-  const URLSearch = new URLSearchParams(searchInput?.search)
-  const searchQuery = URLSearch.getAll("q")
-  const [search , setSearch] = useState(searchQuery)
-
-  
+  const navigate = useNavigate();
+  const searchInput = useLocation();
+  const URLSearch = new URLSearchParams(searchInput?.search);
+  const searchQuery = URLSearch.getAll("q");
+  const [search, setSearch] = useState(searchQuery);
 
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
@@ -36,10 +35,10 @@ const Header = () => {
 
     if (dataApi.success) {
       toast.success(dataApi.message);
-      setMenuDisplay(false)
+      setMenuDisplay(false);
       //window.location.reload();
       dispatch(setUserDetails(null));
-      navigate("/")
+      navigate("/");
     }
     if (dataApi.error) {
       toast.error(dataApi.message);
@@ -47,16 +46,17 @@ const Header = () => {
   };
 
   // console.log("context ", context);
-  const handleSearch = (e)=>{
-    const { value } = e.target
+  const handleSearch = (e) => {
+    const { value } = e.target;
     //setSearch(value)
-    setSearch(value)
-    if(value){
-      navigate(`/search?q=${value}`)
-    }else{
-      navigate("/search")
+    setSearch(value);
+    if (value) {
+      navigate(`/search?q=${value}`);
+    } else {
+      navigate("/search");
     }
-  }
+  };
+  // console.log("context?.unreadMessage", context?.unreadMessage);
 
   return (
     <header className="h-20 shadow-sm bg-[#f6f4f3] fixed w-full z-20">
@@ -78,7 +78,7 @@ const Header = () => {
             type="text"
             placeholder="tìm kiếm"
             className="w-full outline-none bg-[#f6f4f3]"
-            onChange={handleSearch} 
+            onChange={handleSearch}
             value={search}
           />
           <div className="text-lg min-w-[50px] h-8 bg-amber-900 flex items-center justify-center rounded-r-full text-white hover:scale-105 transition-all ">
@@ -103,83 +103,124 @@ const Header = () => {
               )}
             </div>
             {user?._id && menuDisplay && (
-              <div className="absolute bg-white bottom-0 top-11 h-fit p-3 shadow-lg rounded-lg">
-                <nav className="grid">
+              <div className="absolute bg-white bottom-0 top-11 w-48 h-fit p-3 shadow-lg rounded-lg">
+                <nav className="grid gap-2">
                   {user?.role === ROLE.ADMIN && (
-                    
-                      <Link
+                    <Link
                       to={"/admin-panel/dashboard"}
-                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                      className="block text-sm font-medium text-gray-700 hover:text-amber-600 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
                       onClick={() => setMenuDisplay((preve) => !preve)}
                     >
                       Admin Panel
                     </Link>
                   )}
-                  {
-                    user?.role !== ROLE.GENERAL && (
-                      <Link to={"/order"}
-                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md flex "
+                  {user?.role !== ROLE.GENERAL && (
+                    <Link
+                      to={"/order"}
+                      className="block text-sm font-medium text-gray-700 hover:text-amber-600 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
                       onClick={() => setMenuDisplay((preve) => !preve)}
-                      >
+                    >
                       Order
-                      <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center m-1">
-                {/* <p className="text-xs">0</p> */}
-                <p className="text-xs">{context?.orderCount}</p>
-                
-              </div>
-                      </Link>
-                    )
-                  }
+                      <span className="bg-amber-900 text-white text-xs font-bold mx-2 p-1 rounded-full">
+                        {context?.orderCount}
+                      </span>
+                    </Link>
+                  )}
                   {user?._id && (
-                      <Link
+                    <Link
                       to={"/booking-list"}
-                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                      className="block text-sm font-medium text-gray-700 hover:text-amber-600 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
                       onClick={() => setMenuDisplay((preve) => !preve)}
                     >
                       Booking List
+                      <span className="bg-amber-900 text-white text-xs font-bold mx-2 p-1 rounded-full">
+                        {context?.bookingCount}
+                      </span>
                     </Link>
-                    
-                  )
-                  }
+
+                  )}
 
                   {user?._id && (
-                      <Link
-                      className="whitespace-nowrap hover:text-amber-600 bg-slate-50 p-3 rounded-md "
+                    <Link
+                      className="block text-sm font-medium text-gray-700 hover:text-amber-600 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
                       onClick={handleLogout}
                     >
                       Đăng xuất
                     </Link>
-                    
-                  )
-                  } 
+                  )}
                 </nav>
               </div>
             )}
           </div>
           {user?._id && (
             <div className="text-3xl cursor-pointer relative ">
-            {
-              user?.role === ROLE.GENERAL ? (
-                <Link to={"/favorite"}>
-                <span className="">
-                <MdFavorite />
-              </span>
-              <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
-                <p className="text-xs">{context?.favoriteProductCount}</p>
-              </div>
-                </Link>
+              {user?.role === ROLE.GENERAL ? (
+                <div className="flex items-center gap-5">
+                  {
+                    <Link to={"/noti"}>
+                      <span className="text-xl">
+                        {context?.unreadMessage ? (
+                          <TbBellRingingFilled
+                            className="text-red-500 hover:text-red-800"
+                            size={28}
+                          />
+                        ) : (
+                          <FaBell size={28} />
+                        )}
+                      </span>
+                      {context?.unreadMessage ? (
+                        <div className="bg-red-500 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -left-3">
+                          <p className="text-xs">{context?.unreadMessage}</p>
+                        </div>
+                      ) : (
+                        <div>
+                          <p></p>
+                        </div>
+                      )}
+                    </Link>
+                  }
+                  <Link to={"/favorite"}>
+                    <span className="">
+                      <MdFavorite />
+                    </span>
+                    <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
+                      <p className="text-xs">{context?.favoriteProductCount}</p>
+                    </div>
+                  </Link>
+                </div>
               ) : (
-                <Link  to={"/cart"}>
-                  <span className="">
-                <TiCoffee />
-              </span>
-              <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
-                <p className="text-xs">{context?.cartProductCount}</p>
-              </div>
-                </Link>
-              )
-            }
-              
+                <div className="flex items-center gap-5">
+                  {
+                    <Link to={"/noti"}>
+                      <span className="text-xl">
+                        {context?.unreadMessage ? (
+                          <TbBellRingingFilled
+                            className="text-red-500 hover:text-red-800"
+                            size={28}
+                          />
+                        ) : (
+                          <FaBell size={24} />
+                        )}
+                      </span>
+                      {context?.unreadMessage ? (
+                        <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -left-3">
+                          <p className="text-xs">{context?.unreadMessage}</p>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
+                    </Link>
+                  }
+                  <Link to={"/cart"}>
+                    <span className="">
+                      <TiCoffee />
+                    </span>
+                    <div className="bg-amber-900 text-white w-4 h-4 flex rounded-full p-1 items-center justify-center absolute -top-2 -right-3">
+                      <p className="text-xs">{context?.cartProductCount}</p>
+                    </div>
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

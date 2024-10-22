@@ -11,8 +11,8 @@ import { toast } from "react-toastify";
 import { setUserDetails } from "../store/userSlice";
 import { MdDashboard } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
-import { FcInfo } from "react-icons/fc";
 import { HiInformationCircle } from "react-icons/hi";
+import { FaBuysellads } from "react-icons/fa6";
 
 const AdminPanel = () => {
   const user = useSelector((state) => state?.user?.user);// Them "? " neu ko co san user thi se thanh loi~
@@ -44,14 +44,6 @@ const AdminPanel = () => {
     }
   };
 
-  const handleInformartion = () =>{
-    // if(!user?._id){
-    //   toast.error("Vui lòng đăng nhập trước khi Booking");
-    //   navigate("/login");
-    // }else{
-    //   navigate("/booking", { state: { tableData: data } }); // Chuyển hướng đến trang Booking với dữ liệu
-    // }
-  }
 
   return (
     <div className="min-h-[calc(100vh-130px)] md:flex hidden">
@@ -94,6 +86,9 @@ const AdminPanel = () => {
             </Link>
             <Link to="all-booking" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
             <TbBrandBooking  className="text-xl" /> Booking
+            </Link>
+            <Link to="admin-send-message" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <FaBuysellads  className="text-xl" /> Ads
             </Link>
             <Link to="admin-info"  className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
             <HiInformationCircle  className="text-xl" /> Thông tin tài khoản

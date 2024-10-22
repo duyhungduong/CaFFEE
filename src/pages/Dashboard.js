@@ -5,11 +5,12 @@ import Widget from '../components/componentsofAdmin/Widget';
 import PieChartt from '../components/componentsofAdmin/Widget/Chart/PieChartt';
 import ResponsiveContainerChart from '../components/componentsofAdmin/Widget/Chart/ResponsiveContainerChart';
 import BarChartt from '../components/componentsofAdmin/Widget/Chart/BarChartt';
+import scrollTop from "../helper/scrollTop";
 
 const Dashboard = () => {
     const [user, setUser] = useState([]);
     const [product, setProduct] = useState([]);
-    const [employee, setEmployee] = useState([]);
+    // const [employee, setEmployee] = useState([]);
     const [earning, setEarning] = useState([]);
     const [table, setTable] = useState([]);
     const [booking, setBooking] = useState([]);
@@ -68,6 +69,7 @@ const Dashboard = () => {
     ];
 
     useEffect(() => {
+        scrollTop()
         fetchAllUsers();
         fetchAllProduct();
         fetchAllTable();

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -6,21 +7,86 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-
-const data = [
-  { name: "January", Total: 1200 },
-  { name: "February", Total: 2100 },
-  { name: "March", Total: 800 },
-  { name: "April", Total: 1600 },
-  { name: "May", Total: 900 },
-  { name: "June", Total: 1700 },
-  { name: "July", Total: 1200 },
-  { name: "August", Total: 2100 },
-  { name: "September", Total: 800 },
-  { name: "October", Total: 1600 },
-];
+import SummaryApi from "../../../../../common";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 function ResponsiveContainerChart() {
+  const initialData = [
+    { name: "January", Total: 0 },
+    { name: "February", Total: 0 },
+    { name: "March", Total: 0 },
+    { name: "April", Total: 1600 },
+    { name: "May", Total: 900 },
+    { name: "June", Total: 1700 },
+    { name: "July", Total: 1200 },
+    { name: "August", Total: 2100 },
+    { name: "September", Total: 800 },
+    { name: "October", Total: 1600 },
+    { name: "November", Total: 0 },
+    { name: "December", Total: 0 },
+  ];
+
+  const [data, setData] = useState(initialData);
+  const [groupedOrders, setGroupedOrders] = useState({});
+
+  const fetchOrderDetails = async () => {
+    try {
+      const response = await fetch(SummaryApi.allOrder.url, {
+        method: SummaryApi.allOrder.method,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      groupOrdersByMonth(responseData.data); // Nhóm đơn hàng theo tháng
+    } catch (error) {
+      console.error("Failed to fetch order details:", error);
+      toast.error("Failed to fetch order details!!!");
+    }
+  };
+
+  // Hàm nhóm đơn hàng theo tháng và tính tổng số tiền của từng tháng
+  const groupOrdersByMonth = (orders) => {
+    const grouped = {};
+
+    orders.forEach((order) => {
+      const monthYear = moment(order.createdAt).format("MMMM"); // Lấy tháng bằng tên tháng
+
+      if (!grouped[monthYear]) {
+        grouped[monthYear] = {
+          orders: [],
+          totalAmountForMonth: 0,
+        };
+      }
+
+      grouped[monthYear].orders.push(order);
+      grouped[monthYear].totalAmountForMonth += order.totalAmount; // Cộng dồn tổng số tiền
+    });
+
+    setGroupedOrders(grouped);
+    updateDataWithGroupedOrders(grouped);
+  };
+
+  // Hàm so sánh và thay thế giá trị Total trong data
+  const updateDataWithGroupedOrders = (grouped) => {
+    const updatedData = data.map((item) => {
+      const monthData = grouped[item.name]; // Kiểm tra nếu tháng trong data tồn tại trong groupedOrders
+      if (monthData) {
+        return { ...item, Total: monthData.totalAmountForMonth }; // Thay thế Total bằng totalAmountForMonth
+      }
+      return item; // Nếu không có thay đổi, giữ nguyên item
+    });
+    setData(updatedData); // Cập nhật lại data
+  };
+
+  useEffect(() => {
+    fetchOrderDetails();
+  }, []);
+
   return (
     <div className="flex-3 p-6 rounded-lg shadow-lg">
       <div className="mb-4">
@@ -30,8 +96,8 @@ function ResponsiveContainerChart() {
         <AreaChart
           width={1200} // Tăng chiều rộng
           height={320} // Tăng chiều cao
-          data={data}
-          margin={{ top: 20, right: 40, left: 20, bottom: 10 }} // Điều chỉnh margin
+          data={data} // Sử dụng data đã được cập nhật
+          margin={{ top: 20, right: 40, left: 20, bottom: 10 }}
         >
           <defs>
             <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
@@ -49,7 +115,6 @@ function ResponsiveContainerChart() {
               boxShadow: "0px 0px 15px rgba(0, 0, 0, 0.1)",
             }}
           />
-
           <Area
             type="monotone"
             dataKey="Total"

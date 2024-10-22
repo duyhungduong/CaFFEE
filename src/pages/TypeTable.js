@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import productCategory from "../helper/productCategory";
-import VerticalCard from "../components/VerticalCard";
 import SummaryApi from "../common";
+import productCategory from "../helper/tableType";
+import VerticalTableCard from "../components/Table/VerticalTableCard";
 
-const CategoryProduct = () => {
+import scrollTop from "../helper/scrollTop";
+
+const TypeTable = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -23,8 +25,8 @@ const CategoryProduct = () => {
   const [sortBy, setSortBy] = useState("");
 
   const fetchData = async () => {
-    const response = await fetch(SummaryApi.filterProduct.url, {
-      method: SummaryApi.filterProduct.method,
+    const response = await fetch(SummaryApi.filterTable.url, {
+      method: SummaryApi.filterTable.method,
       headers: {
         "content-type": "application/json",
       },
@@ -49,6 +51,7 @@ const CategoryProduct = () => {
   };
 
   useEffect(() => {
+    scrollTop()
     fetchData();
   }, [filterCategoryList]);
 
@@ -72,7 +75,7 @@ const CategoryProduct = () => {
       return `category=${el}&&`;
     });
 
-    navigate("/product-category?" + urlFormat.join(""));
+    navigate("/table-tableType?" + urlFormat.join(""));
   }, [selectCategory]);
 
   const handleOnChangeSortBy = (e) => {
@@ -81,11 +84,11 @@ const CategoryProduct = () => {
     setSortBy(value);
 
     if (value === "asc") {
-      setData((preve) => preve.sort((a, b) => a.sellingPrice - b.sellingPrice));
+      setData((preve) => preve.sort((a, b) => a.tableNumber - b.tableNumber));
     }
 
     if (value === "dsc") {
-      setData((preve) => preve.sort((a, b) => b.sellingPrice - a.sellingPrice));
+      setData((preve) => preve.sort((a, b) => b.tableNumber - a.tableNumber));
     }
   };
 
@@ -96,7 +99,7 @@ const CategoryProduct = () => {
       {/** Responsive Layout */}
       <div className="lg:grid lg:grid-cols-[200px,1fr] gap-4">
         {/**Left side - Sidebar for large screens */}
-        <div className="bg-white p-2 lg:min-h-[calc(100vh-120px)] overflow-y-auto border rounded mb-4 lg:mb-0">
+        <div className="bg-coffee-background p-2 lg:min-h-[calc(100vh-120px)] overflow-y-auto border rounded mb-4 lg:mb-0">
           {/**Sort By */}
           <div className="">
             <h3 className="text-base uppercase font-medium text-slate-500 border-b pb-1 border-slate-300">
@@ -112,7 +115,7 @@ const CategoryProduct = () => {
                   onChange={handleOnChangeSortBy}
                   value={"asc"}
                 />
-                <label>Price - Low to High</label>
+                <label>Number Table - Low to High</label>
               </div>
 
               <div className="flex items-center gap-3">
@@ -123,16 +126,14 @@ const CategoryProduct = () => {
                   onChange={handleOnChangeSortBy}
                   value={"dsc"}
                 />
-                <label>Price - High to Low</label>
+                <label>Number Table - High to Low</label>
               </div>
             </form>
           </div>
-          {/**Filter by*/}
           <div className="">
             <h3 className="text-base uppercase font-medium text-slate-500 border-b pb-1 border-slate-300">
-              Category
+              TableType
             </h3>
-
             <form className="text-sm flex flex-col gap-2 py-2">
               {productCategory.map((categoryName, index) => {
                 return (
@@ -154,7 +155,6 @@ const CategoryProduct = () => {
             </form>
           </div>
         </div>
-
         {/**Right side - Product Result (no grid wrapping here) */}
         <div className="lg:px-4 lg:min-h-[calc(100vh-120px)] lg:overflow-y-auto">
           <p className="font-medium text-slate-800 text-lg my-2">
@@ -162,7 +162,7 @@ const CategoryProduct = () => {
           </p>
 
           {data.length !== 0 && !loading && (
-            <VerticalCard data={data} loading={loading} />
+            <VerticalTableCard data={data} loading={loading} />
           )}
         </div>
       </div>
@@ -170,4 +170,4 @@ const CategoryProduct = () => {
   );
 };
 
-export default CategoryProduct;
+export default TypeTable;

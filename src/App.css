@@ -112,7 +112,9 @@ body::-webkit-scrollbar-thumb {
   animation: shimmer 1s infinite linear;
 }
 
-
+ /* Dieu chinh font placeholder
+  */
+  
 input::placeholder {
   font-family: 'Montserrat', sans-serif;
 }

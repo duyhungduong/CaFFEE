@@ -18,6 +18,10 @@ module.exports = {
         
         'coffee-light': '#f3e5d5', // màu xanh lá nhạt
       },
+      fontFamily: {
+        serif: ['Merriweather', 'serif'],
+        sans: ['Poppins', 'sans-serif'],
+      },
     },
   },
   plugins: [],
