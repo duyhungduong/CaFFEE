@@ -202,6 +202,10 @@ const SummaryApi = {
     url: `${backendDomin}/api/send-to-all`,
     method: "post",
   },
+  getDiscountProduct: {
+    url: `${backendDomin}/api/get-discount-product`,
+    method: "get",
+  }
 
 };
 

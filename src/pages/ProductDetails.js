@@ -12,6 +12,8 @@ import { useSelector } from "react-redux";
 import { MdFavoriteBorder } from "react-icons/md";
 import ROLE from "../common/role";
 import addToFavorite from "../helper/addToFavorite";
+import { BiSolidDiscount } from "react-icons/bi";
+import scrollTop from "../helper/scrollTop";
 
 const ProductDetails = () => {
   const [data, setData] = useState({
@@ -64,6 +66,7 @@ const ProductDetails = () => {
   console.log("data product ", data);
 
   useEffect(() => {
+    scrollTop()
     fetchProductDetails();
   }, [params]);
 
@@ -173,9 +176,23 @@ const ProductDetails = () => {
             {loading ? (
               <div className="w-40 h-6 bg-skeleton-loading mt-2 rounded" />
             ) : (
-              <p className="capitalize text-sm text-gray-400">
+              <div>
+                {data?.sellingPrice === data?.price ? (
+                  <p className="capitalize text-slate-500">{data.category}</p>
+                ) : (
+                  <div className="items-center flex gap-2">
+                    <p className="capitalize text-slate-500 text-base">
+                      {data.category}
+                    </p>
+                    <p className="flex items-center gap-3 justify-center mx-2 text-lg bg-yellow-200 rounded-md p-1 hover:shadow-md transition-transform duration-300 transform hover:scale-105">
+                      <BiSolidDiscount /> Giảm giá
+                    </p>
+                  </div>
+                )}
+                {/* <p className="capitalize text-sm text-gray-400">
                 Category: {data?.category}
-              </p>
+              </p> */}
+              </div>
             )}
           </div>
 
@@ -198,21 +215,39 @@ const ProductDetails = () => {
           )}
 
           <div className="flex items-center space-x-3">
-            {loading ? (
-              <div className="w-32 h-8 bg-skeleton-loading rounded" />
-            ) : (
-              <p className="text-3xl font-semibold text-coffee-green">
-                {displayVNCurrency(data?.sellingPrice)}
-              </p>
-            )}
+            {
+              // Hiển thị giá sản phẩm
+              data?.sellingPrice === data?.price ? (
+                <div>
+                  {loading ? (
+                    <div className="w-32 h-8 bg-skeleton-loading rounded" />
+                  ) : (
+                    <p className="text-3xl font-semibold text-[#00d084] transition-transform duration-300 transform hover:scale-105">
+                      {displayVNCurrency(data.sellingPrice)}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  {loading ? (
+                    <div className="w-32 h-8 bg-skeleton-loading rounded" />
+                  ) : (
+                    <p className="text-3xl font-semibold text-[#00d084] transition-transform duration-300 transform hover:scale-105">
+                      {displayVNCurrency(data?.sellingPrice)}
+                    </p>
+                  )}
 
-            {loading ? (
-              <div className="w-24 h-6 bg-skeleton-loading rounded" />
-            ) : (
-              <p className="text-xl text-gray-500 line-through">
-                {displayVNCurrency(data?.price)}
-              </p>
-            )}
+                  {loading ? (
+                    <div className="w-24 h-6 bg-skeleton-loading rounded" />
+                  ) : (
+                    <p className="text-xl text-gray-500 line-through">
+                      {displayVNCurrency(data?.price)}
+                    </p>
+                  )}
+                </div>
+              )
+            }
+            
           </div>
           {user?.role === ROLE.GENERAL ? (
             <div className="flex space-x-4">

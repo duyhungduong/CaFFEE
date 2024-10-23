@@ -6,7 +6,7 @@ const AdminInfomationPage = () => {
   const user = useSelector((state) => state?.user?.user);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-coffee-background py-12  overflow-y-scroll h-[calc(100vh-190px)]">
+    <div className="min-h-screen flex items-center justify-center bg-coffee-background py-12 h-[calc(100vh-190px)]">
       <div className="bg-white shadow-2xl rounded-lg p-8 w-full max-w-lg mx-5 ">
         {/* Profile Image */}
         <div className="w-36 h-36 mx-auto relative overflow-hidden rounded-full border-4 border-coffee-brown shadow-md">

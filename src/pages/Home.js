@@ -6,12 +6,14 @@ import AreaTableList from "../components/AreaTableList";
 import HorizontalCardProduct from "../components/HorizontalCardProduct";
 import VerticalCardProduct from "../components/VerticalCardProduct";
 import HorizonCardTable from "../components/Table/HorizonCardTable";
+import HorizontalCardDiscountProduct from "../components/HorizontalCardDiscountProduct";
 
 const Home = () => {
   return (
     <div>
       <CategoryList />
       <BannerProduct />
+      <HorizontalCardDiscountProduct heading={"Sale"}/>
       <HorizontalCardProduct category={"latte"} heading={"Enjoy Latte"} />
       <HorizontalCardProduct category={"matcha"} heading={"Enjoy Matcha"} />
       <HorizontalCardProduct category={"cake"} heading={"Enjoy 1st Cake"} />

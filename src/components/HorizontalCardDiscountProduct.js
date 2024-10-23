@@ -11,72 +11,78 @@ import { MdFavorite } from "react-icons/md";
 import { useSelector } from "react-redux";
 import ROLE from "../common/role";
 import { BiSolidDiscount } from "react-icons/bi";
+import SummaryApi from "../common";
 
 // Tạo thành phần tái sử dụng ProductCard
 const ProductCard = ({ product, userRole, handleAction, isFavorite }) => {
   return (
     <Link
-      to={`product/${product._id}`}
-      className="relative w-full min-w-[280px] md:min-w-[320px] max-w-[280px] md:max-w-[320px] h-44 bg-white rounded-lg hover:shadow-md shadow-slate-600 flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 mb-3 " // Sản phẩm nhỏ hơn một chút khi rê chuột vào
-      style={{ overflow: "visible", zIndex: 1 }}
+  to={`product/${product._id}`}
+  className="relative w-full min-w-[300px] md:min-w-[340px] max-w-[300px] md:max-w-[340px] h-44 bg-white rounded-lg hover:shadow-md shadow-slate-600 flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 mb-3"
+  style={{ overflow: "visible", zIndex: 1 }} // Đảm bảo không bị ẩn
+>
+  <div className="bg-coffee-background h-full p-4 min-w-[130px] md:min-w-[150px] rounded-l-lg">
+    <img
+      className="object-cover h-full w-full rounded-md transition-transform hover:scale-110"
+      src={product.productImage[0]}
+      alt={product.productName}
+    />
+  </div>
+  <div className="p-4 flex flex-col justify-between">
+    <h2 className="font-semibold text-base md:text-lg text-ellipsis line-clamp-1 text-black">
+      {product.productName}
+    </h2>
+    
+    {product?.sellingPrice === product?.price ? (
+      <p className="capitalize text-slate-500">{product.category}</p>
+    ) : (
+      <div className="items-center flex gap-2 flex-nowrap">
+        {/* Danh mục sản phẩm */}
+        <p className="capitalize text-slate-500 text-sm">
+          {product.category}
+        </p>
+        {/* Phần giảm giá */}
+        <p className="flex items-center justify-center text-xs bg-yellow-200 rounded-md p-1 hover:shadow-md transition-transform duration-300 transform hover:scale-105">
+          <BiSolidDiscount className="mr-1" /> {/* Khoảng cách nhỏ giữa icon và text */}
+          Giảm giá {Math.round(((product.price - product.sellingPrice) / product.price) * 100)} %
+        </p>
+      </div>
+    )}
+
+    {/* Hiển thị giá sản phẩm */}
+    {product?.sellingPrice === product?.price ? (
+      <div className="gap-2 items-center w-36">
+        <p className="text-[#00d084] font-medium">
+          {displayVNCurrency(product.sellingPrice)}
+        </p>
+      </div>
+    ) : (
+      <div className="flex gap-2 items-center">
+        <p className="text-red-600 font-medium">
+          {displayVNCurrency(product.sellingPrice)}
+        </p>
+        <p className="text-slate-500 line-through">
+          {displayVNCurrency(product.price)}
+        </p>
+      </div>
+    )}
+
+    {/* Nút hành động */}
+    <button
+      onClick={(e) => handleAction(e, product._id)}
+      className="text-sm flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg shadow-md z-20"
     >
-      <div className="bg-coffee-background h-full p-4 min-w-[120px] md:min-w-[145px] rounded-l-lg">
-        <img
-          className="object-cover  h-full w-full rounded-md transition-transform hover:scale-110"
-          src={product.productImage[0]}
-          alt={product.productName}
-        />
-      </div>
-      <div className="p-4 flex flex-col justify-between">
-        <h2 className="font-semibold text-base md:text-lg text-ellipsis line-clamp-1 text-black hover:underline">
-          {product.productName}
-        </h2>
-        {product?.sellingPrice === product?.price ? (
-          <p className="capitalize text-slate-500">{product.category}</p>
-        ) : (
-          <div className="items-center flex gap-2">
-            <p className="capitalize text-slate-500 text-sm">
-              {product.category}
-            </p>
-            <p className="flex items-center justify-center text-xs bg-yellow-200 rounded-md p-1 hover:shadow-md transition-transform duration-300 transform hover:scale-105">
-              <BiSolidDiscount /> Giảm giá
-            </p>
-          </div>
-        )}
+      {isFavorite ? <MdFavorite /> : <TbShoppingCartFilled />}
+      {isFavorite ? "Favorite" : "Add to Cart"}
+    </button>
+  </div>
+</Link>
 
-        {
-          // Hiển thị giá sản phẩm
-          product?.sellingPrice === product?.price ? (
-            <div className=" gap-2 items-center w-36">
-              <p className="text-[#00d084] font-medium transition-transform duration-300 transform hover:scale-105">
-                {displayVNCurrency(product.sellingPrice)}
-              </p>
-            </div>
-          ) : (
-            <div className="flex gap-2 items-center">
-              <p className="text-red-600 font-medium transition-transform duration-300 transform hover:scale-105">
-                {displayVNCurrency(product.sellingPrice)}
-              </p>
-              <p className="text-slate-500 line-through">
-                {displayVNCurrency(product.price)}
-              </p>
-            </div>
-          )
-        }
 
-        <button
-          onClick={(e) => handleAction(e, product._id)}
-          className="text-sm flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg shadow-md z-20"
-        >
-          {isFavorite ? <MdFavorite /> : <TbShoppingCartFilled />}
-          {isFavorite ? "Favorite" : "Add to Cart"}
-        </button>
-      </div>
-    </Link>
   );
 };
 
-const HorizontalCardProduct = ({ category, heading }) => {
+const HorizontalCardDiscountProduct = ({ heading }) => {
   const user = useSelector((state) => state?.user?.user);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -88,8 +94,20 @@ const HorizontalCardProduct = ({ category, heading }) => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const categoryProduct = await fetchCategoryWiseProduct(category);
-      setData(categoryProduct?.data);
+      const categoryProduct = await fetch(SummaryApi.getDiscountProduct.url, {
+        method: SummaryApi.getDiscountProduct.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const dataResponse = await categoryProduct.json();
+      if (dataResponse.success) {
+        console.log("dataResponse", dataResponse);
+      }
+      if (dataResponse.error) {
+        console.log("error");
+      }
+      setData(dataResponse?.data);
     } finally {
       setLoading(false);
     }
@@ -183,4 +201,4 @@ const HorizontalCardProduct = ({ category, heading }) => {
   );
 };
 
-export default HorizontalCardProduct;
+export default HorizontalCardDiscountProduct;

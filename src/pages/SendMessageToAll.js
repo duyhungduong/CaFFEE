@@ -42,10 +42,10 @@ const SendMessageToAll = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-coffee-background py-5 overflow-y-scroll h-[calc(100vh-190px)]">
+    <div className="min-h-screen flex items-center justify-center bg-coffee-background py-5 h-[calc(100vh-190px)]">
       <div className="bg-white shadow-2xl rounded-lg p-8 w-full max-w-lg mx-5">
         <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Gửi tin nhắn đến tất cả người dùng
+          Gửi Thông Báo
         </h2>
         <div className="w-36 h-36 mx-auto relative overflow-hidden rounded-full border-4 border-coffee-brown shadow-md">
           {user?.profilePic ? (
