@@ -29,7 +29,7 @@ const TypeTableList = () => {
   }, []);
   return (
     <div className="container mx-auto p-4 m-2">
-      <div className="flex items-center gap-4 justify-center overflow-scroll scrollbar-coffee p-4">
+      <div className="flex items-center md:mx-52 gap-4 justify-between overflow-scroll scrollbar-coffee p-4">
         {loading
           ? typeTableLoading.map((el, index) => {
               return (
@@ -74,7 +74,7 @@ const TypeTableList = () => {
                     </p>
                   )}{table?.tableType === "VIP table" && (
                     <p className="text-center flex items-center justify-center hover:text-amber-600 font-serif font-medium mt-2 text-sm md:text-base capitalize">
-                    <RiVipCrown2Fill  size={20} className="mr-2"/> {table?.tableType}
+                    <RiVipCrown2Fill  size={20} className="mr-2"/>  Bàn Vị Trí Tốt
                     </p>
                   )}
                   {/* <p className="text-center text-sm md:text-base capitalize">

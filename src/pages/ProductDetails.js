@@ -66,7 +66,7 @@ const ProductDetails = () => {
   console.log("data product ", data);
 
   useEffect(() => {
-    scrollTop()
+    scrollTop();
     fetchProductDetails();
   }, [params]);
 
@@ -180,12 +180,16 @@ const ProductDetails = () => {
                 {data?.sellingPrice === data?.price ? (
                   <p className="capitalize text-slate-500">{data.category}</p>
                 ) : (
-                  <div className="items-center flex gap-2">
+                  <div className="items-center flex gap-2 mt-2">
                     <p className="capitalize text-slate-500 text-base">
                       {data.category}
                     </p>
-                    <p className="flex items-center gap-3 justify-center mx-2 text-lg bg-yellow-200 rounded-md p-1 hover:shadow-md transition-transform duration-300 transform hover:scale-105">
-                      <BiSolidDiscount /> Giảm giá
+                    <p className="flex items-center text-lg justify-center bg-yellow-200 rounded-md p-1 hover:shadow-md transition-transform duration-300 transform hover:scale-105">
+                      <BiSolidDiscount className="mr-1" /> Giảm giá{" "}
+                      {Math.round(
+                        ((data.price - data.sellingPrice) / data.price) * 100
+                      )}{""}
+                      %
                     </p>
                   </div>
                 )}
@@ -247,7 +251,6 @@ const ProductDetails = () => {
                 </div>
               )
             }
-            
           </div>
           {user?.role === ROLE.GENERAL ? (
             <div className="flex space-x-4">
@@ -255,7 +258,7 @@ const ProductDetails = () => {
                 <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
               ) : (
                 <button
-                  className="w-full flex items-center gap-2 lg:w-2/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                  className="w-full flex items-center gap-2 lg:w-2/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all hover:shadow-md duration-300 transform hover:scale-105"
                   onClick={(e) => handleAddToFavorite(e, data?._id)}
                 >
                   <MdFavoriteBorder /> Thêm vào yêu thích
@@ -268,7 +271,7 @@ const ProductDetails = () => {
                 <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
               ) : (
                 <button
-                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all"
+                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-brown to-coffee-dark text-white rounded-md hover:from-coffee-light hover:to-coffee-green transition-all hover:shadow-md duration-300 transform hover:scale-105"
                   onClick={(e) => handleBuyProduct(e, data?._id)}
                 >
                   Mua
@@ -278,7 +281,7 @@ const ProductDetails = () => {
                 <div className="w-full lg:w-1/3 h-12 bg-skeleton-loading rounded" />
               ) : (
                 <button
-                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark transition-all"
+                  className="w-full lg:w-1/3 px-4 py-2 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark rounded-md hover:from-pastel-teal hover:to-pastel-blue-dark hover:shadow-md transition-all duration-300 transform hover:scale-105"
                   onClick={(e) => handleAddToCart(e, data?._id)}
                 >
                   Thêm vào giỏ

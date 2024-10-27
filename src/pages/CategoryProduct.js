@@ -19,6 +19,7 @@ const CategoryProduct = () => {
 
   const [selectCategory, setSelectCategory] = useState(urlCategoryListObject);
   const [filterCategoryList, setFilterCategoryList] = useState([]);
+  const [selectAll, setSelectAll] = useState(false); // New state for "Select All"
 
   const [sortBy, setSortBy] = useState("");
 
@@ -38,14 +39,32 @@ const CategoryProduct = () => {
   };
 
   const handleSelectCategory = (e) => {
-    const { name, value, checked } = e.target;
+    const { value, checked } = e.target;
 
-    setSelectCategory((preve) => {
+    setSelectCategory((prev) => {
       return {
-        ...preve,
+        ...prev,
         [value]: checked,
       };
     });
+
+    // Uncheck "Select All" if any individual checkbox is unchecked
+    if (!checked) {
+      setSelectAll(false);
+    }
+  };
+
+  const handleSelectAll = (e) => {
+    const { checked } = e.target;
+    setSelectAll(checked);
+
+    // Set all categories to either true (checked) or false (unchecked)
+    const updatedSelectCategory = productCategory.reduce((acc, category) => {
+      acc[category.value] = checked;
+      return acc;
+    }, {});
+
+    setSelectCategory(updatedSelectCategory);
   };
 
   useEffect(() => {
@@ -64,7 +83,7 @@ const CategoryProduct = () => {
 
     setFilterCategoryList(arrayOfCategory);
 
-    //format for url change when change on the checkbox
+    // Format for URL change when checkbox changes
     const urlFormat = arrayOfCategory.map((el, index) => {
       if (arrayOfCategory.length - 1 === index) {
         return `category=${el}`;
@@ -81,15 +100,13 @@ const CategoryProduct = () => {
     setSortBy(value);
 
     if (value === "asc") {
-      setData((preve) => preve.sort((a, b) => a.sellingPrice - b.sellingPrice));
+      setData((prev) => prev.sort((a, b) => a.sellingPrice - b.sellingPrice));
     }
 
     if (value === "dsc") {
-      setData((preve) => preve.sort((a, b) => b.sellingPrice - a.sellingPrice));
+      setData((prev) => prev.sort((a, b) => b.sellingPrice - a.sellingPrice));
     }
   };
-
-  useEffect(() => {}, [sortBy]);
 
   return (
     <div className="container mx-auto p-4">
@@ -127,13 +144,24 @@ const CategoryProduct = () => {
               </div>
             </form>
           </div>
-          {/**Filter by*/}
+
+          {/**Filter by */}
           <div className="">
             <h3 className="text-base uppercase font-medium text-slate-500 border-b pb-1 border-slate-300">
               Category
             </h3>
 
-            <form className="text-sm flex flex-col gap-2 py-2">
+            <form className="text-sm flex flex-col gap-2 py-2 ">
+              {/** Checkbox for "Select All" */}
+              <div className="flex items-center gap-3 border-b pb-1  border-slate-100">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={handleSelectAll}
+                />
+                <label htmlFor="selectAll">Select All</label>
+              </div>
+
               {productCategory.map((categoryName, index) => {
                 return (
                   <div className="flex items-center gap-3" key={index}>
@@ -155,7 +183,7 @@ const CategoryProduct = () => {
           </div>
         </div>
 
-        {/**Right side - Product Result (no grid wrapping here) */}
+        {/**Right side - Product Result */}
         <div className="lg:px-4 lg:min-h-[calc(100vh-120px)] lg:overflow-y-auto">
           <p className="font-medium text-slate-800 text-lg my-2">
             Search Results :

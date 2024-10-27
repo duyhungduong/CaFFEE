@@ -15,16 +15,16 @@ import { HiInformationCircle } from "react-icons/hi";
 import { FaBuysellads } from "react-icons/fa6";
 
 const AdminPanel = () => {
-  const user = useSelector((state) => state?.user?.user);// Them "? " neu ko co san user thi se thanh loi~
+  const user = useSelector((state) => state?.user?.user); // Them "? " neu ko co san user thi se thanh loi~
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(()=> {
-    if(user?.role !== ROLE.ADMIN){
-      navigate('/')
+  useEffect(() => {
+    if (user?.role !== ROLE.ADMIN) {
+      navigate("/");
     }
-  },[user])
-  
+  }, [user]);
+
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
       method: SummaryApi.logout_user.method,
@@ -37,13 +37,11 @@ const AdminPanel = () => {
       toast.success(dataApi.message);
       //window.location.reload();
       dispatch(setUserDetails(null));
-      
     }
     if (dataApi.error) {
       toast.error(dataApi.message);
     }
   };
-
 
   return (
     <div className="min-h-[calc(100vh-130px)] md:flex hidden">
@@ -51,7 +49,10 @@ const AdminPanel = () => {
       <aside className="bg-coffee-beige min-h-full w-full max-w-xs customShadow">
         {/* User Info */}
         <div className="h-36 flex justify-center items-center bg-coffee-brown text-white">
-          <Link  to="admin-info"  className="text-7xl relative flex justify-center flex-col items-center">
+          <Link
+            to="admin-info"
+            className="text-7xl relative flex justify-center flex-col items-center"
+          >
             {user?.profilePic ? (
               <img
                 src={user?.profilePic}
@@ -61,7 +62,9 @@ const AdminPanel = () => {
             ) : (
               <TiUser />
             )}
-            <p className="text-lg m-1 capitalize bg-coffee-dark text-white p-1 rounded-md">{user?.name}</p>
+            <p className="text-lg m-1 capitalize bg-coffee-dark text-white p-1 rounded-md">
+              {user?.name}
+            </p>
             <p className="text-sm italic text-coffee-beige">{user?.role}</p>
           </Link>
         </div>
@@ -69,29 +72,53 @@ const AdminPanel = () => {
         {/* Navigation Links */}
         <div className="mt-4">
           <nav className="grid gap-4">
-            <Link to="dashboard" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <Link
+              to="dashboard"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
               <MdDashboard className="text-xl" /> Dashboard
             </Link>
-            <Link to="all-users" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <Link
+              to="all-users"
+              className="flex items-center border-t-2 gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
               <FaUsers className="text-xl" /> Users
             </Link>
-            <Link to="all-products" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
+            <Link
+              to="all-products"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
               <FaBoxOpen className="text-xl" /> Products
             </Link>
-            <Link to="all-tables" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-            <FaTablets className="text-xl" /> Tables
+            <Link
+              to="all-tables"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
+              <FaTablets className="text-xl" /> Tables
             </Link>
-            <Link to="all-orders" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-            <IoReorderFour className="text-xl" /> Orders
+            <Link
+              to="all-orders"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
+              <IoReorderFour className="text-xl" /> Orders
             </Link>
-            <Link to="all-booking" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-            <TbBrandBooking  className="text-xl" /> Booking
+            <Link
+              to="all-booking"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
+              <TbBrandBooking className="text-xl" /> Booking
             </Link>
-            <Link to="admin-send-message" className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-            <FaBuysellads  className="text-xl" /> Ads
+            <Link
+              to="admin-send-message"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
+              <FaBuysellads className="text-xl" /> Thông báo
             </Link>
-            <Link to="admin-info"  className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark">
-            <HiInformationCircle  className="text-xl" /> Thông tin tài khoản
+            <Link
+              to="admin-info"
+              className="flex items-center gap-2 px-4 py-3 hover:bg-coffee-green text-coffee-dark"
+            >
+              <HiInformationCircle className="text-xl" /> Thông tin tài khoản
             </Link>
           </nav>
         </div>

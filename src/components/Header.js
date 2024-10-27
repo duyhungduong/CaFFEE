@@ -25,6 +25,8 @@ const Header = () => {
   const searchQuery = URLSearch.getAll("q");
   const [search, setSearch] = useState(searchQuery);
 
+  const [showMiniSearch, setShowMiniSearch] = useState(false);
+
   const handleLogout = async () => {
     const fetchData = await fetch(SummaryApi.logout_user.url, {
       method: SummaryApi.logout_user.method,
@@ -56,8 +58,15 @@ const Header = () => {
       navigate("/search");
     }
   };
-  // console.log("context?.unreadMessage", context?.unreadMessage);
 
+  const handleClickAvater = () => {
+    toast.error("Vui lòng đăng nhập");
+    navigate("/");
+  };
+  // console.log("context?.unreadMessage", context?.unreadMessage);
+  const handleClicMiniSearch = () => {
+    setShowMiniSearch(!showMiniSearch); // Hiển thị/Ẩn mini search khi click
+  };
   return (
     <header className="h-20 shadow-sm bg-[#f6f4f3] fixed w-full z-20">
       <div className="h-full container mx-auto px-3 flex items-center justify-between">
@@ -88,6 +97,26 @@ const Header = () => {
 
         <div className="flex items-center gap-6 ">
           <div className="relative flex justify-center">
+            {/* Nút search icon cho màn hình nhỏ */}
+            <div className="mr-3 relative flex md:hidden items-center">
+              <div className="text-lg min-w-[35px] h-8 bg-amber-900 flex items-center justify-center rounded-full text-white hover:scale-105  transition-all">
+                <HiSearch onClick={handleClicMiniSearch} />
+              </div>
+              {/* MiniSearch xuất hiện bên trái icon */}
+              {showMiniSearch && (
+                <div className="absolute left-[-240px] top--1 w-[245px] border rounded-lg shadow-md hover:shadow-xl bg-white p-2 flex items-center hover:scale-105 transition-all">
+                  <input
+                   
+                    type="text"
+                    placeholder="Tìm kiếm"
+                    className="w-full outline-none"
+                    onChange={handleSearch}
+                    value={search}
+                  />
+                </div>
+              )}
+            </div>
+
             <div
               className="text-3xl cursor-pointer relative flex justify-center"
               onClick={() => setMenuDisplay((preve) => !preve)}
@@ -99,7 +128,13 @@ const Header = () => {
                   className="w-10 h-10 rounded-full"
                 />
               ) : (
-                <TiUser />
+                <div>
+                {
+                  user?._id ? (<TiUser />) : (<TiUser onClick={handleClickAvater} />)
+                }
+                  
+                </div>
+                
               )}
             </div>
             {user?._id && menuDisplay && (
@@ -137,7 +172,6 @@ const Header = () => {
                         {context?.bookingCount}
                       </span>
                     </Link>
-
                   )}
 
                   {user?._id && (

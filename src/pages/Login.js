@@ -15,12 +15,18 @@ const Login = () => {
     password: "",
   });
 
-  const navigate = useNavigate()
-  const generalContext = useContext(Context)
-  const {fetchUserDetails, fetchUserAddToCart , fetchUserAddToFavorite} = useContext(Context)
-  
+  const navigate = useNavigate();
+  const generalContext = useContext(Context);
+  const {
+    fetchUserDetails,
+    fetchUserAddToCart,
+    fetchUserAddToFavorite,
+    fetchUserOrderProduct,
+    fetchUserMessage,
+    fetchUserBookingProduct,
+  } = useContext(Context);
 
-  console.log("generalContext", generalContext.fetchUserDetails())
+  console.log("generalContext", generalContext.fetchUserDetails());
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +37,7 @@ const Login = () => {
 
     const dataResponse = await fetch(SummaryApi.signIn.url, {
       method: SummaryApi.signIn.method,
-      credentials : 'include',
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },
@@ -42,11 +48,14 @@ const Login = () => {
 
     if (dataApi.success) {
       toast.success(dataApi.message);
-      
-      navigate('/')
-      fetchUserDetails() // Thong tin tai khoan
-      fetchUserAddToCart()// Thong tin gio hang
-      fetchUserAddToFavorite() //Thong tin trang san pham yeu thich
+
+      navigate("/");
+      fetchUserDetails(); // Thong tin tai khoan
+      fetchUserAddToCart(); // Thong tin gio hang
+      fetchUserAddToFavorite(); //Thong tin trang san pham yeu thich
+      fetchUserOrderProduct(); // Thong tin don hang
+      fetchUserMessage(); // Thong tin tin nhắn
+      fetchUserBookingProduct();
     }
     if (dataApi.error) {
       toast.error(dataApi.message);

@@ -15,6 +15,11 @@ const Notification = () => {
   const user = useSelector((state) => state?.user?.user);
   // console.log("user", user?._id);
 
+  const {
+    
+    fetchUserMessage,
+  } = useContext(Context);
+
   const fetchData = async () => {
     const response = await fetch(SummaryApi.getMessage.url, {
       method: SummaryApi.getMessage.method,
@@ -66,6 +71,7 @@ const Notification = () => {
       const responseData = await response.json();
       if (responseData.success) {
         console.log("Message marked as read:", responseData.data);
+        fetchUserMessage()
       }
     } catch (error) {
       console.error("Error marking message as read:", error);

@@ -12,14 +12,15 @@ const Home = () => {
   return (
     <div>
       <CategoryList />
-      <BannerProduct />
-      <HorizontalCardDiscountProduct heading={"Sale"}/>
+      <BannerProduct />   
+      <HorizontalCardDiscountProduct heading={"Chương trình Siêu Sale từ 15 đến 45%"}/>
+      <VerticalCardProduct category={"matcha"} heading={"Matcha for life"} />
       <HorizontalCardProduct category={"latte"} heading={"Enjoy Latte"} />
       <HorizontalCardProduct category={"matcha"} heading={"Enjoy Matcha"} />
       <HorizontalCardProduct category={"cake"} heading={"Enjoy 1st Cake"} />
       <VerticalCardProduct category={"takeaway"} heading={"Take Away Coffee"} />
       <VerticalCardProduct category={"icecoffee"} heading={"Super IceCoffee"} />
-      <VerticalCardProduct category={"matcha"} heading={"Matcha for life"} />
+      
       <VerticalCardProduct category={"latte"} heading={"Real Latte"} />
       <VerticalCardProduct
         category={"cappuccino"}

@@ -4,12 +4,13 @@ import SummaryApi from "../common";
 import displayVNCurrency from "../helper/displayCurrency";
 import { MdDelete } from "react-icons/md";
 import { IoHeartDislike } from "react-icons/io5";
+import Spinner from "../helper/Spinner";
 
 const Favorite = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const context = useContext(Context);
-  const loadingCart = new Array(context.cartProductCount).fill(null);
+  const loadingCart = new Array(context.favoriteProductCount).fill(null);
 
   const fetchData = async () => {
     const response = await fetch(SummaryApi.addToFavoriteProductView.url, {
@@ -35,9 +36,11 @@ const Favorite = () => {
     //  fetchData();
     setLoading(true);
 
-    
-      handleLoading();
-      setLoading(false);
+    setTimeout(() => {
+       handleLoading();
+    setLoading(false);
+    },500)
+   
     
   }, []);
 
@@ -75,6 +78,9 @@ const Favorite = () => {
       <div className="flex flex-col lg:flex-row gap-7 lg:justify-between">
         {/* Sản phẩm trong giỏ hàng */}
         <div className="w-full ">
+        {
+          loading && (<Spinner/>)
+        }
           {loading
             ? loadingCart.map((_, index) => (
                 <div
@@ -85,13 +91,13 @@ const Favorite = () => {
             : data.map((product) => (
                 <div
                   key={product._id}
-                  className="w-full bg-white rounded-lg shadow-lg p-4 flex gap-4 mb-6 transition-all hover:shadow-xl"
+                  className="w-full bg-white rounded-lg shadow-lg p-4 flex gap-4 mb-6 transition-all hover:shadow-xl duration-300 transform hover:scale-105"
                 >
                   <div className="w-40 h-40 bg-gray-100 flex items-center justify-center">
                     <img
                       src={product?.productId?.productImage[0]}
                       alt={product?.productId?.productName}
-                      className="object-contain h-full"
+                      className="object-contain h-full hover:shadow-md transition-transform duration-300 transform hover:scale-105"
                     />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
@@ -113,8 +119,9 @@ const Favorite = () => {
                   <div
                     className="text-red-600 hover:text-red-800 cursor-pointer"
                     onClick={() => deleteFavoriteProduct(product?._id)}
+                    alt="Xóa sản phẩm yêu thích"
                   >
-                    <IoHeartDislike size={24} />
+                    <IoHeartDislike size={24} className=" transition-all duration-300 transform hover:scale-105"/>
                   </div>
                 </div>
               ))}

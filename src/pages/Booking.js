@@ -43,7 +43,7 @@ const Booking = () => {
   
     // Kiểm tra nếu endTime được điền và khoảng cách thời gian vượt quá 12 tiếng
     if (formData.endTime && (endTimeMillis - arrivalTimeMillis) > 12 * 60 * 60 * 1000) {
-      toast.error("The end time cannot be more than 12 hours after the arrival time.");
+      toast.error("Bạn không được chọn thời quan rời đi quá thời gian đến quá 12 tiếng");
       return;
     }
   

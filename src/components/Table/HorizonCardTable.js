@@ -125,19 +125,19 @@ const HorizonCardTable = ({ tableType, heading }) => {
                       <h2 className="font-medium text-base md:text-lg text-ellipsis line-clamp-1 text-black">
                         Bàn số {table?.tableNumber}
                       </h2>
-                      <p className="capitalize text-slate-500">
+                      <p className="capitalize text-slate-500 text-sm md:text-base">
                         {table?.tableType}
                       </p>
-                      <div className="flex gap-2">
-                        <p className="text-[#00d084] font-medium">
+                      <div className="flex gap-1">
+                        <p className="text-[#00d084] text-xs md:text-base font-medium">
                           {table?.tableStatus}
                         </p>
-                        <p className="text-slate-500 font-medium">
+                        <p className="text-slate-500 text-xs md:text-base font-medium">
                           {table?.tableArea}
                         </p>
                       </div>
                       <Link
-                    to={"table/" + table?._id}
+                        to={"table/" + table?._id}
                         className="text-sm flex items-center gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-teal hover:to-pastel-blue-dark rounded-lg"
                       >
                         <PiCursorClickDuotone /> Booking
@@ -147,13 +147,13 @@ const HorizonCardTable = ({ tableType, heading }) => {
                 ) : (
                   <div
                     // to={"product/" + table?._id}
-                    className="relative w-full min-w-[360px] md:min-w-[400px] max-w-[360px] md:max-w-[400px] h-48 bg-red-200 rounded-xl shadow-lg flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 cursor-not-allowed" // Sản phẩm nhỏ hơn một chút khi rê chuột vào
+                    className="relative w-full min-w-[380px] md:min-w-[420px] max-w-[380px] md:max-w-[420px] h-48 bg-red-200 rounded-xl shadow-lg flex transition-transform duration-300 transform hover:scale-105 hover:z-20 m-2 cursor-not-allowed" // Sản phẩm nhỏ hơn một chút khi rê chuột vào
                     style={{ overflow: "visible", zIndex: 1 }}
                     key={
                       index + table?.tableNumber + table?.tableType + table?._id
                     }
                   >
-                    <div className="bg-red-100 h-full p-3 min-w-[120px] md:min-w-[145px] flex items-center justify-center">
+                    <div className="bg-red-100 h-full p-3 min-w-[140px] md:min-w-[165px] flex items-center justify-center">
                       {table?.tableImage?.[0] && (
                         <img
                           className="object-scale-down h-full w-full  transition-transform hover:scale-110"
@@ -183,7 +183,7 @@ const HorizonCardTable = ({ tableType, heading }) => {
                           {table?.tableArea}
                         </p>
                       </div>
-                      <div className="text-sm flex items-center cursor-not-allowed gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-pink hover:to-pastel-purple rounded-lg">
+                      <div className=" text-xs md:text-sm flex items-center cursor-not-allowed gap-2 px-3 py-1 bg-gradient-to-r from-coffee-beige to-coffee-light text-coffee-dark hover:from-pastel-pink hover:to-pastel-purple rounded-lg">
                         <CgUnavailable /> Bàn không khả dụng
                       </div>
                     </div>
