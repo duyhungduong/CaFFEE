@@ -124,7 +124,10 @@ const VerticalCardProduct = ({ category, heading }) => {
                   </div>
                   <p className="text-ellipsis line-clamp-2">{product?.description}</p>
                   <div className="flex gap-2">
-                    <p className="text-red-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>
+                  {
+                    product?.sellingPrice !== product?.price ? (<p className="text-red-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>) : (<p className="text-green-600 font-medium">{displayVNCurrency(product?.sellingPrice)}</p>)
+                  }
+                    
                     {product?.sellingPrice !== product?.price && (
                       <p className="text-slate-500 line-through">
                         {displayVNCurrency(product?.price)}

@@ -104,7 +104,7 @@ const Header = () => {
               </div>
               {/* MiniSearch xuất hiện bên trái icon */}
               {showMiniSearch && (
-                <div className="absolute left-[-240px] top--1 w-[245px] border rounded-lg shadow-md hover:shadow-xl bg-white p-2 flex items-center hover:scale-105 transition-all">
+                <div className="absolute left-[-183px] sm:left-[-240px] top--1 w-[185px] sm:w-[245px] border rounded-lg shadow-md hover:shadow-xl bg-white p-2 flex items-center hover:scale-105 transition-all">
                   <input
                    
                     type="text"
